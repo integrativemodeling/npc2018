@@ -19,7 +19,6 @@ import IMP.pmi.restraints.stereochemistry
 #import IMP.pmi.restraints.em2d
 import IMP.pmi.restraints.basic
 import IMP.pmi.restraints.proteomics
-#import representation_nup82
 import IMP.pmi.representation
 import IMP.pmi.macros
 import IMP.pmi.restraints
@@ -28,6 +27,8 @@ import IMP.pmi.output
 import IMP.pmi.samplers
 import IMP.pmi.topology
 import IMP.pmi.dof
+import IMP.npc
+import IMP.npc.npc_restraints
 import random
 
 import os
@@ -119,9 +120,10 @@ m = IMP.Model()
 s = IMP.pmi.topology.System(m)
 st = s.create_state()
 simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
-#simo = representation_nup82.Representation(m,upperharmonic=True,disorderedlength=False)
+#simo = representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
-
+#print type(simo)
+#exit(0)
 #####################################################
 # setting up parameters
 #####################################################
@@ -206,10 +208,15 @@ n84_rb = 1
 domains = []
 
 domains.append(('Nup84',  "Nup84", 0.0,   n84_fastafile,   "Nup84",   n84_pdbfile,  "A",  (  1, 726,0),   None,     beadsize,   n84_rb,   [n84_rb],   7,    None,   None, [n84_rb]))
-cnames=['Nup84@%i'%n for n in range(2,9)]       # clones
+cnames=['Nup84@%i'%n for n in range(2,4)]       # clones
 for i in range(len(cnames)):
     cname = cnames[i];
     domains.append((cname,  "Nup84"+"@"+str(i+2), 0.0,   n84_fastafile,   "Nup84",   n84_pdbfile,  "A",  (  1, 726,0),   None,  beadsize,   None,   None,   7,  None,   None, None))
+
+cnames=['Nup84@%i'%n for n in range(11,14)]       # clones
+for i in range(len(cnames)):
+    cname = cnames[i];
+    domains.append((cname,  "Nup84"+"@"+str(i+11),0.0,   n84_fastafile,   "Nup84",   n84_pdbfile,  "A",  (  1, 726,0),   None,  beadsize,   None,   None,   7,  None,   None, None))
 
 """
 cnames=["Nup85", "Nup85@2", "Nup85@3", "Nup85@4", "Nup85@5", "Nup85@6", "Nup85@7", "Nup85@8"]
@@ -287,8 +294,10 @@ bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, seque
 #model_ps = []
 #for h in self.densities:
 #    model_ps += IMP.atom.get_leaves(h)
+simo.create_rotational_symmetry("Nup84", ['Nup84@11'], rotational_axis="X")
+simo.create_rotational_symmetry("Nup84", ['Nup84@%i'%n for n in range(2,4)], rotational_axis="Z", nSymmetry=8)
+simo.create_rotational_symmetry("Nup84@11", ['Nup84@%i'%n for n in range(12,14)], rotational_axis="Z", nSymmetry=8)
 
-simo.create_rotational_symmetry("Nup84",['Nup84@%i'%n for n in range(2,9)])
 """
 simo.create_rotational_symmetry("Nup85",["Nup85@2","Nup85@3","Nup85@4","Nup85@5","Nup85@6","Nup85@7","Nup85@8"])
 simo.create_rotational_symmetry("Nup120",["Nup120@2", "Nup120@3", "Nup120@4", "Nup120@5", "Nup120@6", "Nup120@7", "Nup120@8"])
@@ -333,6 +342,11 @@ rigid_tuples = ['Nup84@8','Nup85@8','Nup120@8','Nup133@8','Nup145c@8','Seh1@8','
 for rt in rigid_tuples:
     hs = IMP.pmi.tools.select_by_tuple(simo,rt)
     simo.remove_floppy_bodies(hs)
+rigid_tuples = ['Nup84@11','Nup84@12','Nup84@13','Nup84@14','Nup84@15','Nup84@16','Nup84@17','Nup84@18']
+for rt in rigid_tuples:
+    hs = IMP.pmi.tools.select_by_tuple(simo,rt)
+    simo.remove_floppy_bodies(hs)
+
 
 rigid_tuples = ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', (1,381,'Nup159.1'),(1,381,'Nup159.2'), (1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (751,1113,'Nup116.1'),(751,1113,'Nup116.2')]
 for rt in rigid_tuples:
@@ -350,8 +364,8 @@ for rt in rigid_tuples:
 #####################################################
 #if (inputs.rmf_input is None) :
 if (True) :
-    #simo.shuffle_configuration(50)
-    simo.shuffle_configuration(100)
+    simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
+    simo.shuffle_configuration(max_translation=100, bounding_box=((200, -100, 1), (650, 100, 250)))
 
 
 #####################################################
@@ -376,8 +390,10 @@ sampleobjects.append(simo)
 # Excluded Volume restraint
 #####################################################
 #ev = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo, resolution = res_ev)
-included_objects = [simo.hier_dict['Nup84']]
-other_objects = included_objects + [simo.hier_dict['Nup84@%i'%n] for n in range(2,9)]
+included_objects = []
+included_objects.append(simo.hier_dict['Nup84'])
+included_objects.append(simo.hier_dict['Nup84@11'])
+other_objects = included_objects + [simo.hier_dict['Nup84@%i'%n] for n in range(2,4)] + [simo.hier_dict['Nup84@%i'%n] for n in range(12,14)]
 ev = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                              included_objects = included_objects,
                                                              other_objects = other_objects,
@@ -402,124 +418,123 @@ print "ExternalBarrier !!\n"
 #####################################################
 # Restraints setup - Immuno-EM
 # Supplementary Table 7. Upper and lower bounds on R-radial restraints of C-terminal bead of nups
-# NupType : (min R value, max R value) (in nm)
-#####################################################
-RADIAL = { "Gle1" : [200, 320],
-    "Gle2" : [15, 33],
-    "Ndc1" : [28, 140],
-    "Nic96" : [25.5, 52.5],
-    "Nsp1" : [15.5, 42.5],
-    "Nup1" : [20, 36],
-    "Nup100" : [23, 33],
-    "Nup116" : [25, 35],
-    "Nup120" : [25, 38],
-    "Nup133" : [30, 42],
-    "Nup145C" : [27, 47],
-    "Nup145N" : [12.5, 39.5],
-    "Nup157" : [19, 35],
-    "Nup159" : [25, 43],
-    "Nup170" : [17, 33],
-    "Nup188" : [20, 33],
-    "Nup192" : [20, 32],
-    "Nup42" : [22, 40],
-    "Nup49" : [20, 30],
-    "Nup53" : [28, 38],
-    "Nup57" : [8, 30],
-    "Nup59" : [25, 37],
-    "Nup60" : [24, 40],
-    "Nup82" : [17.5, 50.5],
-    "Nup84" : [29, 45],
-    "Nup85" : [30, 42],
-    "Pom152" : [37, 163],
-    "Pom34" : [28, 138],
-    "Seh1" : [25, 37],
-    "Sec13" : [5, 55] }
-
-
-#####################################################
-# Restraints setup - Immuno-EM
+# NupType : (min R value, max R value) (in Angstrom)
 # Supplementary Table 7. Upper and lower bounds on Z-axial restraints of C-terminal bead of nups
-# NupType : (min Z value, max Z value) (in nm)
+# NupType : (min Z value, max Z value) (in Angstrom)
 #####################################################
-ZAXIAL = { "Gle1" : [11, 17],
-    "Gle2" : [2, 12],
-    "Ndc1" : [0, 9],
-    "Nic96" : [2.5, 17.5],
-    "Nsp1" : [0, 12],
-    "Nup1" : [14, 22],
-    "Nup100" : [4, 12],
-    "Nup116" : [7, 15],
-    "Nup120" : [7, 15],
-    "Nup133" : [10, 20],
-    "Nup145C" : [7, 15],
-    "Nup145N" : [5, 17],
-    "Nup157" : [0, 9.5],
-    "Nup159" : [12, 24],
-    "Nup170" : [0, 7.5],
-    "Nup188" : [4, 10],
-    "Nup192" : [2, 10],
-    "Nup42" : [7, 15],
-    "Nup49" : [4, 10],
-    "Nup53" : [2, 10],
-    "Nup57" : [0, 7.5],
-    "Nup59" : [4, 12],
-    "Nup60" : [10, 20],
-    "Nup82" : [14.5, 29.5],
-    "Nup84" : [15, 17],
-    "Nup85" : [14, 20],
-    "Pom152" : [0, 9.5],
-    "Pom34" : [0, 6.5],
-    "Seh1" : [5, 17],
-    "Sec13" : [0, 50] }
+RADIAL = {
+    "Gle1" : [200, 320],
+    "Gle2" : [150, 330],
+    "Ndc1" : [280, 1400],
+    "Nic96" : [255, 525],
+    "Nsp1" : [155, 425],
+    "Nup1" : [200, 360],
+    "Nup100" : [230, 330],
+    "Nup116" : [250, 350],
+    "Nup120" : [250, 380],
+    "Nup133" : [300, 420],
+    "Nup145C" : [270, 470],
+    "Nup145N" : [125, 395],
+    "Nup157" : [190, 350],
+    "Nup159" : [250, 430],
+    "Nup170" : [170, 330],
+    "Nup188" : [200, 330],
+    "Nup192" : [200, 320],
+    "Nup42" : [220, 400],
+    "Nup49" : [200, 300],
+    "Nup53" : [280, 380],
+    "Nup57" : [80, 300],
+    "Nup59" : [250, 370],
+    "Nup60" : [240, 400],
+    "Nup82" : [175, 505],
+    "Nup84" : [290, 450],
+    "Nup85" : [300, 420],
+    "Pom152" : [370, 1630],
+    "Pom34" : [280, 1380],
+    "Seh1" : [250, 370],
+    "Sec13" : [50, 550]
+}
+ZAXIAL = {
+    "Gle1" : [110, 170],
+    "Gle2" : [20, 120],
+    "Ndc1" : [0, 90],
+    "Nic96" : [25, 175],
+    "Nsp1" : [0, 120],
+    "Nup1" : [-220, -140],
+    "Nup100" : [40, 120],
+    "Nup116" : [70, 150],
+    "Nup120" : [70, 150],
+    "Nup133" : [100, 200],
+    "Nup145C" : [70, 150],
+    "Nup145N" : [-170, -50],
+    "Nup157" : [0, 95],
+    "Nup159" : [120, 240],
+    "Nup170" : [0, 75],
+    "Nup188" : [40, 100],
+    "Nup192" : [20, 100],
+    "Nup42" : [70, 150],
+    "Nup49" : [40, 100],
+    "Nup53" : [20, 100],
+    "Nup57" : [0, 75],
+    "Nup59" : [40, 120],
+    "Nup60" : [-200, -100],
+    "Nup82" : [145, 295],
+    "Nup84" : [150, 170],
+    "Nup85" : [140, 200],
+    "Pom152" : [0, 95],
+    "Pom34" : [0, 65],
+    "Seh1" : [50, 170],
+    "Sec13" : [0, 500]
+}
+
+nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+nup_list_unique = list(set(nup_list))   # Make a unique list
+
+print "\nXYRadialPositionLowerRestraint !!"
+print "XYRadialPositionUpperRestraint !!\n"
+radial_weight=1.0
+for protein, r in RADIAL.iteritems():
+    if (protein not in nup_list_unique):
+        continue
+    #print protein, r
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionLowerRestraint(simo, protein, r[0], False, 1.0)
+    xyr.set_label('Radial_Position_Lower_%d_%s' % (r[0], protein))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionUpperRestraint(simo, protein, r[1], False, 1.0)
+    xyr.set_label('Radial_Position_Upper_%d_%s' % (r[1], protein))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+print "\nZAxialPositionLowerRestraint !!"
+print "ZAxialPositionUpperRestraint !!\n"
+zaxial_weight=1.0
+for protein, z in ZAXIAL.iteritems():
+    if (protein not in nup_list_unique):
+        continue
+    #print protein, z
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionLowerRestraint(simo, protein, z[0], False, 1.0)
+    zax.set_label('Zaxial_Position_Lower_%d_%s' % (z[0], protein))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionUpperRestraint(simo, protein, z[1], False, 1.0)
+    zax.set_label('Zaxial_Position_Upper_%d_%s' % (z[1], protein))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
 """
-all_restraints = IMP.RestraintSet(m, "all restraints")
-
-radial_position_restraints = []
-if RADIAL_POSITION:
-# Radial position
-  for residue, r in RADIAL.iteritems():
-    for i, beads in enumerate(T.get_beads(residue, 1)):
-      xyr = IMP.npc.XYRadialPositionLowerRestraint(m, r[0], False, 0.1)
-      xyr.add_particle(beads[0])
-      #xyr.add_particles(beads)
-      xyr.set_name('Radial_Position_Lower_%s_%d' % (residue, i))
-      all_restraints.add_restraint(xyr)
-      radial_position_restraints.append(xyr)
-      xyr = IMP.npc.XYRadialPositionUpperRestraint(m, r[1], False, 0.1)
-      xyr.add_particle(beads[0])
-      #xyr.add_particles(beads)
-      xyr.set_name('Radial_Position_Upper_%s_%d' % (residue, i))
-      all_restraints.add_restraint(xyr)
-      radial_position_restraints.append(xyr)
-
-
-zaxial_position_restraints = []
-if ZAXIAL_POSITION:
-# Z-axial position
-  for residue, (zmin, zmax) in ZAXIAL.iteritems():
-    for i, beads in enumerate(T.get_beads(residue, 1)):
-      if IMP.core.XYZ(beads[0]).get_coordinate(2) < 0:
-        nzmin, nzmax = -zmax, -zmin
-      else:
-        nzmin, nzmax = zmin, zmax
-      zrest = IMP.npc.ZAxialPositionLowerRestraint(m, nzmin, False, 0.1)
-      zrest.add_particle(beads[0])
-      #zrest.add_particles(beads)
-      zrest.set_name('Zaxial_Position_Lower_%s_%d' % (residue, i))
-      all_restraints.add_restraint(zrest)
-      zaxial_position_restraints.append(zrest)
-      zrest = IMP.npc.ZAxialPositionUpperRestraint(m, nzmax, False, 0.1)
-      zrest.add_particle(beads[0])
-      zrest.set_name('Zaxial_Position_Upper_%s_%d' % (residue, i))
-      #zrest.add_particles(beads)
-      all_restraints.add_restraint(zrest)
-      zaxial_position_restraints.append(zrest)
-
-after = all_restraints.evaluate(False)
-print '-- after randomize score is %s' % after
-sys.stdout.flush()
-
 membrane_surface_location_restraints = []
 if MEMBRANE_SURFACE_LOCATION:
 # Membrane-surface location
