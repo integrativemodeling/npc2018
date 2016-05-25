@@ -446,7 +446,7 @@ for rt in rigid_tuples:
 #####################################################
 if (True) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
-    simo.shuffle_configuration(bounding_box=((200, -125, 50), (700, 125, 300)), ignore_initial_coordinates=True)
+    simo.shuffle_configuration(bounding_box=((200, -125, 50), (700, 125, 350)), ignore_initial_coordinates=True)
 
 
 #####################################################
