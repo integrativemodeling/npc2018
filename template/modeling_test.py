@@ -558,7 +558,7 @@ if (use_Immuno_EM):
     }
     print "\nXYRadialPositionLowerRestraint !!"
     print "XYRadialPositionUpperRestraint !!\n"
-    radial_weight=1.0
+    radial_weight = 1.0
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
@@ -615,7 +615,7 @@ if (use_Immuno_EM):
     }
     print "\nZAxialPositionLowerRestraint !!"
     print "ZAxialPositionUpperRestraint !!\n"
-    zaxial_weight=1.0
+    zaxial_weight = 1.0
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
@@ -704,23 +704,24 @@ if PORE_SIDE:
 # Distance_to_ponit restraints for orientation of the Nup84 complex
 #####################################################
 if (use_Distance_to_Point):
-    dpr_weight = 10.0
+    dpr_weight = 1.0
+    dpr_radius = 150.0
 
-    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.155, 195.314, 150.0), radius=100.0, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.155, 195.314, 150.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(338.093, -170.387, 170.0), radius=100.0, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(338.093, -170.387, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(555.849, -159.949, 110.0), radius=100.0, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.Distance_to_Point_Restraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(555.849, -159.949, 110.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -839,7 +840,7 @@ if (True):
     simo.optimize_floppy_bodies(150)
     print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(150)) - ", rank
 
-    initial_nframes = 100
+    initial_nframes = 200
     if (use_XL):
         XL_restraints = [xl1]
     else:
