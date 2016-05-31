@@ -206,10 +206,10 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362.pdb"
 #####################################################
 # Parameters for Debugging
 #####################################################
-is_n84 = False
-is_n82 = False
-is_nic96 = False
-is_inner_ring = False
+is_n84 = True
+is_n82 = True
+is_nic96 = True
+is_inner_ring = True
 #Stopwatch_None_delta_seconds 10.466711 for inner_ring
 #Stopwatch_None_delta_seconds 25.927492 for inner_ring with EM using only the main spoke
 #Stopwatch_None_delta_seconds 51.372556 for inner_ring with EM using all clones
@@ -383,7 +383,7 @@ if (is_inner_ring):
 ##########################
 if (is_membrane):
     domains.append(("Nup53",     "Nup53",         0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, 53,  None, 2,  " ",   " ",  None))
-    domains.append(("Nup59",     "Nup59",         0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, 59,  None, 2,  " ",   " ",  None))    
+    domains.append(("Nup59",     "Nup59",         0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, 59,  None, 2,  " ",   " ",  None))
     domains.append(("Ndc1",      "Ndc1",          0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, 101, None, 0,  None,  None, None))
     domains.append(("Pom34",     "Pom34",         0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, 34,  None, 0,  None,  None, None))
     domains.append(("Pom152",    "Pom152" ,       1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, 152, None, 0,  None,  None, None))
@@ -406,7 +406,7 @@ if (is_cytoplasm):
     domains.append(("Nup100.2", "Nup100.2_10", 0.4, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, 2101, None, 0,  None,  None, None))
     domains.append(("Nup100.2", "Nup100.2",    0.4, f_npc+"Nup100.txt", "YKL068W", n100_pdbfile, "B", (551, 959,0), gmm,  beadsize25,  2100, None, 2,  " ",   " ",  None))
     domains.append(("Nup42",    "Nup42",       0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (  1, 430,0), None, beadsize100, 42,   None, 0,  None,  None, None))
-    
+
     if (use_clones):
         for i in range(2,4):
             domains.append(("Nup100.1@%d"%i, "Nup100.1_10@%d"%i, 0.2, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, None, None, 0,  None,                 None,                 None))
@@ -452,16 +452,11 @@ if (inputs.rmf_input is not None) :
     for d in list(n84):
         bm1.set_rmf_file(d, inputs.rmf_input, int(inputs.rmf_frame_number))     #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
 
-    """
-    nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57'}
+    nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
     for key,val in nic96_dict.items():
         print("{} = {}".format(key, val))
-        bm1.set_rmf_file(key, "../data_nic96/rmfs/30-162.rmf3", 0, rmf_names_map=val)
+        bm1.set_rmf_file(key, "../data_nic96/rmfs/30-162.rmf3", 0, rmf_component_name=val)
 
-    nic96=['Nic96.1', 'Nic96.2', 'Nsp1.3', 'Nsp1.4', 'Nup49.1', 'Nup49.2', 'Nup57.1', 'Nup57.2']
-    for d in list(nic96):
-        bm1.set_rmf_file(d, "../data_nic96/rmfs/30-162.rmf3", 0)
-    """
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -519,12 +514,11 @@ for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
     rigid_tuples.append(protein)
 for protein in [(1,381,'Nup159.2'), (1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (751,1113,'Nup116.1'),(751,1113,'Nup116.2')]:
     rigid_tuples.append(protein)
-"""
 for protein in [(1,56,'Nic96.1'),(205,394,'Nic96.1'),(405,839,'Nic96.1'), (637,737,'Nsp1.3'),(742,823,'Nsp1.3'), (270,359,'Nup49.1'),(369,427,'Nup49.1'),(433,472,'Nup49.1'), (287,496,'Nup57.1'),(505,541,'Nup57.1')]:
     rigid_tuples.append(protein)
 for protein in [(1,56,'Nic96.2'),(205,394,'Nic96.2'),(405,839,'Nic96.2'), (637,737,'Nsp1.4'),(742,823,'Nsp1.4'), (270,359,'Nup49.2'),(369,427,'Nup49.2'),(433,472,'Nup49.2'), (287,496,'Nup57.2'),(505,541,'Nup57.2')]:
     rigid_tuples.append(protein)
-"""
+
 # Remove flexible movers for all clones
 for protein in clone_list_unique:
     rigid_tuples.append(protein)
@@ -540,7 +534,7 @@ for rt in rigid_tuples:
 #####################################################
 if (use_shuffle) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
-    simo.shuffle_configuration(bounding_box=((200, -125, 50), (700, 125, 350)), ignore_initial_coordinates=True)
+    simo.shuffle_configuration(bounding_box=((250, -125, 50), (1500, 125, 550)), ignore_initial_coordinates=True, cutoff=3.0, niterations=1000)
 
 
 #####################################################
@@ -673,14 +667,14 @@ if (use_Immuno_EM):
             continue
 
         xyr = IMP.npc.npc_restraints.XYRadialPositionLowerRestraint(simo, protein, r[0], False, 1.0)
-        xyr.set_label('Radial_Position_Lower_%d_%s' % (r[0], protein))
+        xyr.set_label('Lower_%d_%s' % (r[0], protein))
         xyr.set_weight(radial_weight)
         xyr.add_to_model()
         outputobjects.append(xyr)
         print (xyr.get_output())
 
         xyr = IMP.npc.npc_restraints.XYRadialPositionUpperRestraint(simo, protein, r[1], False, 1.0)
-        xyr.set_label('Radial_Position_Upper_%d_%s' % (r[1], protein))
+        xyr.set_label('Upper_%d_%s' % (r[1], protein))
         xyr.set_weight(radial_weight)
         xyr.add_to_model()
         outputobjects.append(xyr)
@@ -739,14 +733,14 @@ if (use_Immuno_EM):
             continue
 
         zax = IMP.npc.npc_restraints.ZAxialPositionLowerRestraint(simo, protein, z[0], False, 1.0)
-        zax.set_label('Zaxial_Position_Lower_%d_%s' % (z[0], protein))
+        zax.set_label('Lower_%d_%s' % (z[0], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
         outputobjects.append(zax)
         print (zax.get_output())
 
         zax = IMP.npc.npc_restraints.ZAxialPositionUpperRestraint(simo, protein, z[1], False, 1.0)
-        zax.set_label('Zaxial_Position_Upper_%d_%s' % (z[1], protein))
+        zax.set_label('Upper_%d_%s' % (z[1], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
         outputobjects.append(zax)
