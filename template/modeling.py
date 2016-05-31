@@ -185,16 +185,16 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362.pdb"
 #####################################################
 # Parameters for Debugging
 #####################################################
-is_n84 = False
-is_n82 = False
-is_nic96 = False
-is_inner_ring = False
+is_n84 = True
+is_n82 = True
+is_nic96 = True
+is_inner_ring = True
 #Stopwatch_None_dTrueelta_seconds 10.466711 for inner_ring
 #Stopwatch_None_delta_seconds 25.927492 for inner_ring with EM using only the main spoke
 #Stopwatch_None_delta_seconds 51.372556 for inner_ring with EM using all clones
 is_membrane = True
-is_cytoplasm = False
-is_nucleoplasm = False
+is_cytoplasm = True
+is_nucleoplasm = True
 
 use_neighboring_spokes = False
 use_shuffle = True
@@ -203,14 +203,13 @@ use_Immuno_EM = True
 use_XL = True
 use_EM3D = True
 
-gmm = use_EM3D
-XL_restraints = None
-
 #####################################################
 # REPRESENTATION
 #####################################################
 # compname  hier_name      color   fastafile                fastaid    pdbname      chain  res_range   read_em_files bead_size  rigid_body super_rigid_body em_num_components em_txt_file_name em_mrc_file_name chain_of_super_rb
 domains = []
+if (use_EM3D):  gmm = True
+else:           gmm = None
 if (use_neighboring_spokes):
     clones_range_A = range(2,4)+range(11,14)
     clones_range_B = range(2,4)
@@ -900,6 +899,7 @@ if (False):
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
+XL_restraints = None
 if (True):
     simo.optimize_floppy_bodies(150)
     print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(150)) - ", rank
