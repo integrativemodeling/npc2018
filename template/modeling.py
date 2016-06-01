@@ -185,18 +185,18 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362.pdb"
 #####################################################
 # Parameters for Debugging
 #####################################################
-is_n84 = True
-is_n82 = True
-is_nic96 = True
-is_inner_ring = True
+is_n84 = False
+is_n82 = False
+is_nic96 = False
+is_inner_ring = False
 #Stopwatch_None_dTrueelta_seconds 10.466711 for inner_ring
 #Stopwatch_None_delta_seconds 25.927492 for inner_ring with EM using only the main spoke
 #Stopwatch_None_delta_seconds 51.372556 for inner_ring with EM using all clones
 is_membrane = True
-is_cytoplasm = True
-is_nucleoplasm = True
+is_cytoplasm = False
+is_nucleoplasm = False
 
-use_neighboring_spokes = False
+use_neighboring_spokes = True
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -368,11 +368,18 @@ if (is_membrane):
     domains.append(("Pom152",    "Pom152" ,       1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, 152, None, 0,  None,  None, None))
 
     for i in clones_range_A:
-        domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
-        domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
-        domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-        domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"POM34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-        domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"POM152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+        if (i==11):
+            domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
+            domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
+            domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"POM34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"POM152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+        else:
+            domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  None, beadsize100, None, None, 2,  None,                None,                None))
+            domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  None, beadsize100, None, None, 2,  None,                None,                None))
+            domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  None, beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"POM34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  None, beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"POM152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  None, beadsize100, None, None, 0,  None,                None,                None))
 
 ##########################
 # Cytoplasm only
@@ -469,8 +476,8 @@ if (use_neighboring_spokes):
     if (is_membrane):
         for protein in ['Nup53', 'Nup59', 'Ndc1', 'Pom34', 'Pom152']:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
-            simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8)
-            simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8)
+            simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
+            simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_cytoplasm):
         #for protein in ['Nup100.1', 'Nup100.2', 'Nup42', 'Dbp5', 'Gle1', 'Gle2.1', 'Gle2.2']:
         for protein in ['Nup100.1', 'Nup100.2', 'Nup42']:
@@ -566,21 +573,34 @@ included_objects = [];  other_objects = []
 for entry in main_spoke_unique:
     obj = simo.hier_dict[entry]
     included_objects.append(obj)
-    other_objects.append(obj)
+    #other_objects.append(obj)
 for entry in other_spokes_unique:
     other_objects.append(simo.hier_dict[entry])
 print ("EV included_objects in the main spoke = ", included_objects)
 print ("EV other_objects = ", other_objects)
+print ("resolution for EV = ", res_ev)
 
-ev = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                              included_objects = included_objects,
                                                              #other_objects = other_objects,
                                                              resolution = res_ev)
 #ev = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo, resolution = res_ev)
-ev.add_to_model()
-outputobjects.append(ev)
-print(ev.get_output())
-print "ExcludedVolumeSphere !!\n"
+ev1.add_to_model()
+ev1.set_label('main_spoke')
+outputobjects.append(ev1)
+print(ev1.get_output())
+print "ExcludedVolumeSphere1 for the main spoke !!\n"
+
+ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+                                                             included_objects = included_objects,
+                                                             other_objects = other_objects,
+                                                             resolution = res_ev)
+#ev = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo, resolution = res_ev)
+ev2.add_to_model()
+ev2.set_label('bipartite')
+outputobjects.append(ev2)
+print(ev2.get_output())
+print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 
 #####################################################
