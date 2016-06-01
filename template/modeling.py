@@ -630,15 +630,16 @@ outputobjects.append(ev1)
 print(ev1.get_output())
 print "ExcludedVolumeSphere1 for the main spoke !!\n"
 
-ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
-                                                             included_objects = included_objects,
-                                                             other_objects = other_objects,
-                                                             resolution = res_ev)
-ev2.add_to_model()
-ev2.set_label('bipartite')
-outputobjects.append(ev2)
-print(ev2.get_output())
-print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
+if (use_neighboring_spokes):
+    ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+                                                                 included_objects = included_objects,
+                                                                 other_objects = other_objects,
+                                                                 resolution = res_ev)
+    ev2.add_to_model()
+    ev2.set_label('bipartite')
+    outputobjects.append(ev2)
+    print(ev2.get_output())
+    print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 
 #####################################################
