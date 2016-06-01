@@ -257,7 +257,7 @@ if (is_n84):
             domains.append(('Nup145c@%d'%i,"Nup145c_1@%d"%i,0.65,n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),   None, beadsize,   None,   None,   1,  None,                  None,                  None))
             domains.append(('Nup145c@%d'%i,"Nup145c_2@%d"%i,0.7, n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),   None, beadsize,   None,   None,   6,  None,                  None,                  None))
             domains.append(('Seh1@%d'%i,   "Seh1@%d"%i,     0.8, seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
-            domains.append(('Sec13@%d'%i,  "Sec13@%d"%i,    0.95,sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))        
+            domains.append(('Sec13@%d'%i,  "Sec13@%d"%i,    0.95,sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
 
 ##########################
 # Nup82 complex
@@ -375,10 +375,10 @@ if (is_nic96):
 # Inner Ring scaffold
 ##########################
 if (is_inner_ring):
-    domains.append(("Nup157",    "Nup157N",       0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm,  beadsize25,  1571, None, 9,  " ",   " ",  None))
-    domains.append(("Nup157",    "Nup157C",       0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm,  beadsize25,  1572, None, 5,  " ",   " ",  None))
-    domains.append(("Nup170",    "Nup170N",       0.25, f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm,  beadsize25,  1701, None, 10, " ",   " ",  None))
-    domains.append(("Nup170",    "Nup170C",       0.25, f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm,  beadsize25,  1702, None, 5,  " ",   " ",  None))
+    domains.append(("Nup157",    "Nup157n",       0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm,  beadsize25,  1571, None, 9,  " ",   " ",  None))
+    domains.append(("Nup157",    "Nup157c",       0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm,  beadsize25,  1572, None, 5,  " ",   " ",  None))
+    domains.append(("Nup170",    "Nup170n",       0.25, f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm,  beadsize25,  1701, None, 10, " ",   " ",  None))
+    domains.append(("Nup170",    "Nup170c",       0.25, f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm,  beadsize25,  1702, None, 5,  " ",   " ",  None))
     domains.append(("Nup188",    "Nup188",        0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  188,  None, 17, " ",   " ",  None))
     domains.append(("Nup192",    "Nup192",        0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  192,  None, 17, " ",   " ",  None))
 
