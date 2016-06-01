@@ -144,6 +144,7 @@ beadsize20 = 20
 beadsize25 = 25
 beadsize100 = 100
 em2d_weight = float(inputs.weight)
+initial_nframes = 200
 
 n82   = "../data_nup82/"
 f_n82 = "../data_nup82/protein_fasta."
@@ -189,14 +190,14 @@ is_n84 = True
 is_n82 = True
 is_nic96 = True
 is_inner_ring = True
-#Stopwatch_None_dTrueelta_seconds 10.466711 for inner_ring
-#Stopwatch_None_delta_seconds 25.927492 for inner_ring with EM using only the main spoke
-#Stopwatch_None_delta_seconds 51.372556 for inner_ring with EM using all clones
 is_membrane = True
 is_cytoplasm = True
 is_nucleoplasm = True
 
 use_neighboring_spokes = True
+#Stopwatch_None_delta_seconds 50 for the main spokes -> 32 sec after improving Immuno-EM restraints
+#Stopwatch_None_delta_seconds 52 for the main spoke with XL -> 34 sec after improving Immuno-EM restraints
+#Stopwatch_None_delta_seconds 165 for the main spoke with XL + EM -> 105.6 sec after improving Immuno-EM restraints
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -715,15 +716,8 @@ if (use_Immuno_EM):
         if (protein not in nup_list_unique):
             continue
 
-        xyr = IMP.npc.npc_restraints.XYRadialPositionLowerRestraint(simo, protein, r[0], False, 1.0)
-        xyr.set_label('Lower_%d_%s' % (r[0], protein))
-        xyr.set_weight(radial_weight)
-        xyr.add_to_model()
-        outputobjects.append(xyr)
-        print (xyr.get_output())
-
-        xyr = IMP.npc.npc_restraints.XYRadialPositionUpperRestraint(simo, protein, r[1], False, 1.0)
-        xyr.set_label('Upper_%d_%s' % (r[1], protein))
+        xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0)
+        xyr.set_label('Lower_%d_Upper_%d_%s' % (r[0], r[1], protein))
         xyr.set_weight(radial_weight)
         xyr.add_to_model()
         outputobjects.append(xyr)
@@ -781,15 +775,8 @@ if (use_Immuno_EM):
         if (protein not in nup_list_unique):
             continue
 
-        zax = IMP.npc.npc_restraints.ZAxialPositionLowerRestraint(simo, protein, z[0], False, 1.0)
-        zax.set_label('Lower_%d_%s' % (z[0], protein))
-        zax.set_weight(zaxial_weight)
-        zax.add_to_model()
-        outputobjects.append(zax)
-        print (zax.get_output())
-
-        zax = IMP.npc.npc_restraints.ZAxialPositionUpperRestraint(simo, protein, z[1], False, 1.0)
-        zax.set_label('Upper_%d_%s' % (z[1], protein))
+        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
+        zax.set_label('Lower_%d_Upper_%d_%s' % (z[0], z[1], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
         outputobjects.append(zax)
@@ -865,24 +852,24 @@ if PORE_SIDE:
 # Distance_to_ponit restraints for orientation of the Nup84 complex
 #####################################################
 if (is_n84 and use_Distance_to_Point):
-    dpr_weight = 1.0
-    dpr_radius = 100.0
+    dpr_weight = 100.0
+    dpr_radius = 50.0
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.155, 195.314, 150.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.0, 195.0, 150.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(338.093, -170.387, 170.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(338.0, -170.0, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(555.849, -159.949, 110.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(556.0, -160.0, 110.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -962,7 +949,6 @@ simo.optimize_floppy_bodies(150)
 print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(150)) - ", rank
 
 XL_restraints = None
-initial_nframes = 100
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
@@ -1034,7 +1020,6 @@ else:
 #####################################################
 # 2nd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-initial_nframes = 200
 mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
