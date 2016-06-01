@@ -414,14 +414,14 @@ if (is_membrane):
             domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
             domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
             domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"POM34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"POM152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
         else:
             domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  None, beadsize100, None, None, 2,  None,                None,                None))
             domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  None, beadsize100, None, None, 2,  None,                None,                None))
             domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  None, beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"POM34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  None, beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"POM152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  None, beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  None, beadsize100, None, None, 0,  None,                None,                None))
+            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  None, beadsize100, None, None, 0,  None,                None,                None))
 
 ##########################
 # Cytoplasm only
