@@ -195,9 +195,9 @@ is_cytoplasm = True
 is_nucleoplasm = True
 
 use_neighboring_spokes = True
-#Stopwatch_None_delta_seconds 50 for the main spokes -> 32 sec after improving Immuno-EM restraints
+#Stopwatch_None_delta_seconds 50 for the main spokes -> 32 sec after improving Immuno-EM Restraints
 #Stopwatch_None_delta_seconds 52 for the main spoke with XL -> 34 sec after improving Immuno-EM restraints
-#Stopwatch_None_delta_seconds 165 for the main spoke with XL + EM -> 105.6 sec after improving Immuno-EM restraints
+#Stopwatch_None_delta_seconds 165 for the main spoke with XL + EM -> 135 sec after improving Immuno-EM restraints -> ~100 sec after reducing GMMs
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -1058,7 +1058,8 @@ if (use_EM3D):
 
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/avg_monomer_final_sj2_new.770.txt',
+                                                    '../data_npc/em_gmm_model/avg_monomer_final_sj2_ring.456.txt',
+                                                    #'../data_npc/em_gmm_model/avg_monomer_final_sj2.770.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.000001,
                                                     target_radii_scale=3.0)
