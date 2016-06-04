@@ -115,6 +115,7 @@ print inputs
 m = IMP.Model()
 #s = IMP.pmi.topology.System(m)
 #st = s.create_state()
+#simo = IMP.npc.npc_restraints.Representation(m,upperharmonic=True,disorderedlength=False)
 simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
 
@@ -193,11 +194,12 @@ is_inner_ring = True
 is_membrane = True
 is_cytoplasm = True
 is_nucleoplasm = True
+is_FG = False
 
 use_neighboring_spokes = False
-#Stopwatch_None_delta_seconds 50 for the main spokes -> 32 sec after improving Immuno-EM Restraints
-#Stopwatch_None_delta_seconds 52 for the main spoke with XL -> 34 sec after improving Immuno-EM restraints
-#Stopwatch_None_delta_seconds 165 for the main spoke with XL + EM -> 135 sec after improving Immuno-EM restraints -> ~100 sec after reducing GMMs
+#Stopwatch_None_delta_seconds 32 (the main spoke) / 90~100 sec (3 spokes)
+#Stopwatch_None_delta_seconds 34 (the main spoke) / 90~100 sec (3 spokes) with XL
+#Stopwatch_None_delta_seconds 110 (the main spoke) / ~170 sec (3 spokes) with XL + EM
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -235,30 +237,19 @@ if (is_n84):
     domains.append(('Sec13',  "Sec13",    0.95, sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),  gmm,  beadsize,  n84_rb,  None,  3,  " ",   " ",  None))
 
     for i in clones_range_A:
-        if (i==11):
-            domains.append(('Nup84@%d'%i,  "Nup84@%d"%i,    0.0, n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),   gmm,  beadsize,   None,   None,   7,  gmm_f+"Nup84.txt",     gmm_f+"Nup84.mrc",     None))
-            domains.append(('Nup85@%d'%i,  "Nup85_1@%d"%i,  0.2, n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),   gmm,  beadsize,   None,   None,   5,  gmm_f+"Nup85_1.txt",   gmm_f+"Nup85_1.mrc",   None))
-            domains.append(('Nup85@%d'%i,  "Nup85_2@%d"%i,  0.25,n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),   gmm,  beadsize,   None,   None,   3,  gmm_f+"Nup85_2.txt",   gmm_f+"Nup85_2.mrc",   None))
-            domains.append(('Nup120@%d'%i, "Nup120_1@%d"%i, 0.35,n120_fastafile,  "Nup120",  n84_pdb, "M",  (  1, 711,0),   gmm,  beadsize,   None,   None,   7,  gmm_f+"Nup120_1.txt",  gmm_f+"Nup120_1.mrc",  None))
-            domains.append(('Nup120@%d'%i, "Nup120_2@%d"%i, 0.4, n120_fastafile,  "Nup120",  n84_pdb, "M",  (712,1037,0),   gmm,  beadsize,   None,   None,   3,  gmm_f+"Nup120_2.txt",  gmm_f+"Nup120_2.mrc",  None))
-            domains.append(('Nup133@%d'%i, "Nup133_1@%d"%i, 0.5, n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 480,0),   gmm,  beadsize,   None,   None,   5,  gmm_f+"Nup133_1.txt",  gmm_f+"Nup133_1.mrc",  None))
-            domains.append(('Nup133@%d'%i, "Nup133_2@%d"%i, 0.55,n133_fastafile,  "Nup133",  n84_pdb, "N",  (481,1157,0),   gmm,  beadsize,   None,   None,   7,  gmm_f+"Nup133_2.txt",  gmm_f+"Nup133_2.mrc",  None))
-            domains.append(('Nup145c@%d'%i,"Nup145c_1@%d"%i,0.65,n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),   gmm,  beadsize,   None,   None,   1,  gmm_f+"Nup145c_1.txt", gmm_f+"Nup145c_1.mrc", None))
-            domains.append(('Nup145c@%d'%i,"Nup145c_2@%d"%i,0.7, n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),   gmm,  beadsize,   None,   None,   6,  gmm_f+"Nup145c_2.txt", gmm_f+"Nup145c_2.mrc", None))
-            domains.append(('Seh1@%d'%i,   "Seh1@%d"%i,     0.8, seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),   gmm,  beadsize,   None,   None,   3,  gmm_f+"Seh1.txt",      gmm_f+"Seh1.mrc",      None))
-            domains.append(('Sec13@%d'%i,  "Sec13@%d"%i,    0.95,sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),   gmm,  beadsize,   None,   None,   3,  gmm_f+"Sec13.txt",     gmm_f+"Sec13.mrc",     None))
-        else:
-            domains.append(('Nup84@%d'%i,  "Nup84@%d"%i,    0.0, n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),   None, beadsize,   None,   None,   7,  None,                  None,                  None))
-            domains.append(('Nup85@%d'%i,  "Nup85_1@%d"%i,  0.2, n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),   None, beadsize,   None,   None,   5,  None,                  None,                  None))
-            domains.append(('Nup85@%d'%i,  "Nup85_2@%d"%i,  0.25,n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
-            domains.append(('Nup120@%d'%i, "Nup120_1@%d"%i, 0.35,n120_fastafile,  "Nup120",  n84_pdb, "M",  (  1, 711,0),   None, beadsize,   None,   None,   7,  None,                  None,                  None))
-            domains.append(('Nup120@%d'%i, "Nup120_2@%d"%i, 0.4, n120_fastafile,  "Nup120",  n84_pdb, "M",  (712,1037,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
-            domains.append(('Nup133@%d'%i, "Nup133_1@%d"%i, 0.5, n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 480,0),   None, beadsize,   None,   None,   5,  None,                  None,                  None))
-            domains.append(('Nup133@%d'%i, "Nup133_2@%d"%i, 0.55,n133_fastafile,  "Nup133",  n84_pdb, "N",  (481,1157,0),   None, beadsize,   None,   None,   7,  None,                  None,                  None))
-            domains.append(('Nup145c@%d'%i,"Nup145c_1@%d"%i,0.65,n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),   None, beadsize,   None,   None,   1,  None,                  None,                  None))
-            domains.append(('Nup145c@%d'%i,"Nup145c_2@%d"%i,0.7, n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),   None, beadsize,   None,   None,   6,  None,                  None,                  None))
-            domains.append(('Seh1@%d'%i,   "Seh1@%d"%i,     0.8, seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
-            domains.append(('Sec13@%d'%i,  "Sec13@%d"%i,    0.95,sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),   None, beadsize,   None,   None,   3,  None,                  None,                  None))
+        if (i==11): gmm_c = gmm
+        else:       gmm_c = None
+        domains.append(('Nup84@%d'%i,  "Nup84@%d"%i,    0.0, n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),  gmm_c,  beadsize,   None,   None,   7,  gmm_f+"Nup84.txt",     gmm_f+"Nup84.mrc",     None))
+        domains.append(('Nup85@%d'%i,  "Nup85_1@%d"%i,  0.2, n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),  gmm_c,  beadsize,   None,   None,   5,  gmm_f+"Nup85_1.txt",   gmm_f+"Nup85_1.mrc",   None))
+        domains.append(('Nup85@%d'%i,  "Nup85_2@%d"%i,  0.25,n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup85_2.txt",   gmm_f+"Nup85_2.mrc",   None))
+        domains.append(('Nup120@%d'%i, "Nup120_1@%d"%i, 0.35,n120_fastafile,  "Nup120",  n84_pdb, "M",  (  1, 711,0),  gmm_c,  beadsize,   None,   None,   7,  gmm_f+"Nup120_1.txt",  gmm_f+"Nup120_1.mrc",  None))
+        domains.append(('Nup120@%d'%i, "Nup120_2@%d"%i, 0.4, n120_fastafile,  "Nup120",  n84_pdb, "M",  (712,1037,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup120_2.txt",  gmm_f+"Nup120_2.mrc",  None))
+        domains.append(('Nup133@%d'%i, "Nup133_1@%d"%i, 0.5, n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 480,0),  gmm_c,  beadsize,   None,   None,   5,  gmm_f+"Nup133_1.txt",  gmm_f+"Nup133_1.mrc",  None))
+        domains.append(('Nup133@%d'%i, "Nup133_2@%d"%i, 0.55,n133_fastafile,  "Nup133",  n84_pdb, "N",  (481,1157,0),  gmm_c,  beadsize,   None,   None,   7,  gmm_f+"Nup133_2.txt",  gmm_f+"Nup133_2.mrc",  None))
+        domains.append(('Nup145c@%d'%i,"Nup145c_1@%d"%i,0.65,n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),  gmm_c,  beadsize,   None,   None,   1,  gmm_f+"Nup145c_1.txt", gmm_f+"Nup145c_1.mrc", None))
+        domains.append(('Nup145c@%d'%i,"Nup145c_2@%d"%i,0.7, n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),  gmm_c,  beadsize,   None,   None,   6,  gmm_f+"Nup145c_2.txt", gmm_f+"Nup145c_2.mrc", None))
+        domains.append(('Seh1@%d'%i,   "Seh1@%d"%i,     0.8, seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Seh1.txt",      gmm_f+"Seh1.mrc",      None))
+        domains.append(('Sec13@%d'%i,  "Sec13@%d"%i,    0.95,sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Sec13.txt",     gmm_f+"Sec13.mrc",     None))
 
 ##########################
 # Nup82 complex
@@ -269,19 +260,19 @@ if (is_n82):
     domains.append(("Dyn2.2",  "Dyn2.2",      0.65,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "B", (   1,  92,0),  gmm,   beadsize,   n82_rb,  None,  1,  " ",   " ",  None))
     domains.append(("Nup82.1", "Nup82.1",     0.0,   f_n82+"Nup82.txt",  "Nup82",  n82_pdb,  "C", (   1, 713,0),  gmm,   beadsize,   n82_rb,  None,  9,  " ",   " ",  None))
     domains.append(("Nup82.2", "Nup82.2",     0.15,  f_n82+"Nup82.txt",  "Nup82",  n82_pdb,  "D", (   1, 713,0),  gmm,   beadsize,   n82_rb,  None,  9,  " ",   " ",  None))
-    domains.append(("Nup159.1","Nup159.1_1",  1.0,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "E", (   1, 381,0),  None,  beadsize,     1160,  None,  0,  None,  None, None))
+    domains.append(("Nup159.1","Nup159.1_1",  1.0,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "E", (   1, 381,0),  None,  beadsize,     1159,  None,  0,  None,  None, None))
     domains.append(("Nup159.1","Nup159.1_10", 1.0,   f_n82+"Nup159.txt", "Nup159", "BEADS",  " ", ( 382,1116,0),  None,  beadsize100,  1159,  None,  0,  None,  None, None))
     domains.append(("Nup159.1","Nup159.1",    1.0,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "E", (1117,1460,0),  gmm,   beadsize,   n82_rb,  None,  5,  " ",   " ",  None))
-    domains.append(("Nup159.2","Nup159.2_1",  0.9,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "F", (   1, 381,0),  None,  beadsize,     2160,  None,  0,  None,  None, None))
+    domains.append(("Nup159.2","Nup159.2_1",  0.9,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "F", (   1, 381,0),  None,  beadsize,     2159,  None,  0,  None,  None, None))
     domains.append(("Nup159.2","Nup159.2_10", 0.9,   f_n82+"Nup159.txt", "Nup159", "BEADS",  " ", ( 382,1116,0),  None,  beadsize100,  2159,  None,  0,  None,  None, None))
     domains.append(("Nup159.2","Nup159.2",    0.9,   f_n82+"Nup159.txt", "Nup159", n82_pdb,  "F", (1117,1460,0),  gmm,   beadsize,   n82_rb,  None,  5,  " ",   " ",  None))
-    domains.append(("Nsp1.1",  "Nsp1.1_10",   0.3,   f_n82+"Nsp1.txt",   "Nsp1",   "BEADS",  " ", (   1, 636,0),  None,  beadsize100,  1062,  None,  0,  None,  None, None))
+    domains.append(("Nsp1.1",  "Nsp1.1_10",   0.3,   f_n82+"Nsp1.txt",   "Nsp1",   "BEADS",  " ", (   1, 636,0),  None,  beadsize100,n82_rb,  None,  0,  None,  None, None))
     domains.append(("Nsp1.1",  "Nsp1.1",      0.3,   f_n82+"Nsp1.txt",   "Nsp1",   n82_pdb,  "G", ( 637, 823,0),  gmm,   beadsize,   n82_rb,  None,  5,  " ",   " ",  None))
-    domains.append(("Nsp1.2",  "Nsp1.2_10",   0.38,  f_n82+"Nsp1.txt",   "Nsp1",   "BEADS",  " ", (   1, 636,0),  None,  beadsize100,  2062,  None,  0,  None,  None, None))
+    domains.append(("Nsp1.2",  "Nsp1.2_10",   0.38,  f_n82+"Nsp1.txt",   "Nsp1",   "BEADS",  " ", (   1, 636,0),  None,  beadsize100,n82_rb,  None,  0,  None,  None, None))
     domains.append(("Nsp1.2",  "Nsp1.2",      0.38,  f_n82+"Nsp1.txt",   "Nsp1",   n82_pdb,  "H", ( 637, 823,0),  gmm,   beadsize,   n82_rb,  None,  5,  " ",   " ",  None))
-    domains.append(("Nup116.1","Nup116.1_10", 0.75,  f_n82+"Nup116.txt", "Nup116", "BEADS",  " ", (   1, 750,0),  None,  beadsize100,  1116,  None,  0,  None,  None, None))
+    domains.append(("Nup116.1","Nup116.1_10", 0.75,  f_n82+"Nup116.txt", "Nup116", "BEADS",  " ", (   1, 750,0),  None,  beadsize100,n82_rb,  None,  0,  None,  None, None))
     domains.append(("Nup116.1","Nup116.1",    0.75,  f_n82+"Nup116.txt", "Nup116", n82_pdb,  "I", ( 751,1113,0),  gmm,   beadsize25, n82_rb,  None,  2,  " ",   " ",  None))
-    domains.append(("Nup116.2","Nup116.2_10", 0.8,   f_n82+"Nup116.txt", "Nup116", "BEADS",  " ", (   1, 750,0),  None,  beadsize100,  2116,  None,  0,  None,  None, None))
+    domains.append(("Nup116.2","Nup116.2_10", 0.8,   f_n82+"Nup116.txt", "Nup116", "BEADS",  " ", (   1, 750,0),  None,  beadsize100,n82_rb,  None,  0,  None,  None, None))
     domains.append(("Nup116.2","Nup116.2",    0.8,   f_n82+"Nup116.txt", "Nup116", n82_pdb,  "J", ( 751,1113,0),  gmm,   beadsize25, n82_rb,  None,  2,  " ",   " ",  None))
 
     for i in clones_range_B:
@@ -312,65 +303,46 @@ if (is_nic96):
     domains.append(("Nic96.1",  "Nic96.1_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, None, 2,  " ",   " ",  None))
     domains.append(("Nic96.1",  "Nic96.1_2",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    1097,   None, 2,  " ",   " ",  None))
     domains.append(("Nic96.1",  "Nic96.1",    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    1096,   None, 6,  " ",   " ",  None))
-    domains.append(("Nsp1.3",   "Nsp1.3_10",  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, 3062,   None, 0,  None,  None, None))
+    domains.append(("Nsp1.3",   "Nsp1.3_10",  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nsp1.3",   "Nsp1.3",     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm,  beadsize,    n96_rb, None, 5,  " ",   " ",  None))
-    domains.append(("Nup49.1",  "Nup49.1_10", 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, 1049,   None, 0,  None,  None, None))
+    domains.append(("Nup49.1",  "Nup49.1_10", 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nup49.1",  "Nup49.1",    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm,  beadsize,    n96_rb, None, 5,  " ",   " ",  None))
-    domains.append(("Nup57.1",  "Nup57.1_10", 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, 1057,   None, 0,  None,  None, None))
+    domains.append(("Nup57.1",  "Nup57.1_10", 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nup57.1",  "Nup57.1",    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm,  beadsize,    n96_rb, None, 6,  " ",   " ",  None))
 
     n96_rb = 296
     domains.append(("Nic96.2",  "Nic96.2_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
     domains.append(("Nic96.2",  "Nic96.2_2",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    2097,   None, 2,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
     domains.append(("Nic96.2",  "Nic96.2",    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    2096,   None, 6,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None))
-    domains.append(("Nsp1.4",   "Nsp1.4_10",  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, 4062,   None, 0,  None,                  None,                  None))
+    domains.append(("Nsp1.4",   "Nsp1.4_10",  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nsp1.4",   "Nsp1.4",     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm,  beadsize,    n96_rb, None, 5,  gmm_f+"Nsp1.3.txt",    gmm_f+"Nsp1.3.mrc",    None))
-    domains.append(("Nup49.2",  "Nup49.2_10", 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, 2049,   None, 0,  None,                  None,                  None))
+    domains.append(("Nup49.2",  "Nup49.2_10", 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nup49.2",  "Nup49.2",    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm,  beadsize,    n96_rb, None, 5,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None))
-    domains.append(("Nup57.2",  "Nup57.2_10", 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, 2057,   None, 0,  None,                  None,                  None))
+    domains.append(("Nup57.2",  "Nup57.2_10", 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, n96_rb, None, 0,  None,  None, None))
     domains.append(("Nup57.2",  "Nup57.2",    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm,  beadsize,    n96_rb, None, 6,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None))
 
     for i in clones_range_A:
-        if (i==11):
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    None, None, 6,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None))
-            domains.append(("Nsp1.3@%d"%i,   "Nsp1.3_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nsp1.3@%d"%i,   "Nsp1.3@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm,  beadsize,    None, None, 5,  gmm_f+"Nsp1.3.txt",    gmm_f+"Nsp1.3.mrc",    None))
-            domains.append(("Nup49.1@%d"%i,  "Nup49.1_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup49.1@%d"%i,  "Nup49.1@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm,  beadsize,    None, None, 5,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None))
-            domains.append(("Nup57.1@%d"%i,  "Nup57.1_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup57.1@%d"%i,  "Nup57.1@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm,  beadsize,    None, None, 6,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None))
+        if (i==11): gmm_c = gmm
+        else:       gmm_c = None
+        domains.append(("Nic96.1@%d"%i,  "Nic96.1_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
+        domains.append(("Nic96.1@%d"%i,  "Nic96.1_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
+        domains.append(("Nic96.1@%d"%i,  "Nic96.1@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm_c,  beadsize,    None, None, 6,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None))
+        domains.append(("Nsp1.3@%d"%i,   "Nsp1.3_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nsp1.3@%d"%i,   "Nsp1.3@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm_c,  beadsize,    None, None, 5,  gmm_f+"Nsp1.3.txt",    gmm_f+"Nsp1.3.mrc",    None))
+        domains.append(("Nup49.1@%d"%i,  "Nup49.1_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nup49.1@%d"%i,  "Nup49.1@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm_c,  beadsize,    None, None, 5,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None))
+        domains.append(("Nup57.1@%d"%i,  "Nup57.1_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nup57.1@%d"%i,  "Nup57.1@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm_c,  beadsize,    None, None, 6,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None))
 
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    None, None, 6,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None))
-            domains.append(("Nsp1.4@%d"%i,   "Nsp1.4_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nsp1.4@%d"%i,   "Nsp1.4@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm,  beadsize,    None, None, 5,  gmm_f+"Nsp1.3.txt",    gmm_f+"Nsp1.3.mrc",    None))
-            domains.append(("Nup49.2@%d"%i,  "Nup49.2_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup49.2@%d"%i,  "Nup49.2@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm,  beadsize,    None, None, 5,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None))
-            domains.append(("Nup57.2@%d"%i,  "Nup57.2_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup57.2@%d"%i,  "Nup57.2@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm,  beadsize,    None, None, 6,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None))
-        else:
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  None, beadsize,    None, None, 2,  None,                  None,                  None))
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  None, beadsize,    None, None, 2,  None,                  None,                  None))
-            domains.append(("Nic96.1@%d"%i,  "Nic96.1@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  None, beadsize,    None, None, 6,  None,                  None,                  None))
-            domains.append(("Nsp1.3@%d"%i,   "Nsp1.3_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nsp1.3@%d"%i,   "Nsp1.3@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  None, beadsize,    None, None, 5,  None,                  None,                  None))
-            domains.append(("Nup49.1@%d"%i,  "Nup49.1_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup49.1@%d"%i,  "Nup49.1@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  None, beadsize,    None, None, 5,  None,                  None,                  None))
-            domains.append(("Nup57.1@%d"%i,  "Nup57.1_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup57.1@%d"%i,  "Nup57.1@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  None, beadsize,    None, None, 6,  None,                  None,                  None))
-
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  None, beadsize,    None, None, 2,  None,                  None,                  None))
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  None, beadsize,    None, None, 2,  None,                  None,                  None))
-            domains.append(("Nic96.2@%d"%i,  "Nic96.2@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  None, beadsize,    None, None, 6,  None,                  None,                  None))
-            domains.append(("Nsp1.4@%d"%i,   "Nsp1.4_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nsp1.4@%d"%i,   "Nsp1.4@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  None, beadsize,    None, None, 5,  None,                  None,                  None))
-            domains.append(("Nup49.2@%d"%i,  "Nup49.2_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup49.2@%d"%i,  "Nup49.2@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  None, beadsize,    None, None, 5,  None,                  None,                  None))
-            domains.append(("Nup57.2@%d"%i,  "Nup57.2_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None, beadsize100, None, None, 0,  None,                  None,                  None))
-            domains.append(("Nup57.2@%d"%i,  "Nup57.2@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  None, beadsize,    None, None, 6,  None,                  None,                  None))
+        domains.append(("Nic96.2@%d"%i,  "Nic96.2_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
+        domains.append(("Nic96.2@%d"%i,  "Nic96.2_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
+        domains.append(("Nic96.2@%d"%i,  "Nic96.2@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm_c,  beadsize,    None, None, 6,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None))
+        domains.append(("Nsp1.4@%d"%i,   "Nsp1.4_10@%d"%i,  0.50, f_n96+"Nsp1.txt",  "YJL041W", "BEADS",  " ",  (  1,636,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nsp1.4@%d"%i,   "Nsp1.4@%d"%i,     0.50, f_n96+"Nsp1.txt",  "YJL041W", n96_pdb,  "B",  (637,823,0),  gmm_c,  beadsize,    None, None, 5,  gmm_f+"Nsp1.3.txt",    gmm_f+"Nsp1.3.mrc",    None))
+        domains.append(("Nup49.2@%d"%i,  "Nup49.2_10@%d"%i, 0.75, f_n96+"Nup49.txt", "YGL172W", "BEADS",  " ",  (  1,269,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nup49.2@%d"%i,  "Nup49.2@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm_c,  beadsize,    None, None, 5,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None))
+        domains.append(("Nup57.2@%d"%i,  "Nup57.2_10@%d"%i, 1.0,  f_n96+"Nup57.txt", "YGR119C", "BEADS",  " ",  (  1,286,0),  None,   beadsize100, None, None, 0,  None,                  None,                  None))
+        domains.append(("Nup57.2@%d"%i,  "Nup57.2@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm_c,  beadsize,    None, None, 6,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None))
 
 ##########################
 # Inner Ring scaffold
@@ -384,20 +356,14 @@ if (is_inner_ring):
     domains.append(("Nup192",    "Nup192",        0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  192,  None, 17, " ",   " ",  None))
 
     for i in clones_range_A:
-        if (i==11):
-            domains.append(("Nup157@%d"%i,  "Nup157n@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm,  beadsize25,  None, None, 9,  gmm_f+"Nup157n.txt", gmm_f+"Nup157n.mrc", None))
-            domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm,  beadsize25,  None, None, 5,  gmm_f+"Nup157c.txt", gmm_f+"Nup157c.mrc", None))
-            domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm,  beadsize25,  None, None, 10, gmm_f+"Nup170n.txt", gmm_f+"Nup170n.mrc", None))
-            domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm,  beadsize25,  None, None, 5,  gmm_f+"Nup170c.txt", gmm_f+"Nup170c.mrc", None))
-            domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  None, None, 17, gmm_f+"Nup188.txt",  gmm_f+"Nup188.mrc",  None))
-            domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  None, None, 17, gmm_f+"Nup192.txt",  gmm_f+"Nup192.mrc",  None))
-        else:
-            domains.append(("Nup157@%d"%i,  "Nup157n@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  None, beadsize25,  None, None, 9,  None,                None,                None))
-            domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  None, beadsize25,  None, None, 5,  None,                None,                None))
-            domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  None, beadsize25,  None, None, 10, None,                None,                None))
-            domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  None, beadsize25,  None, None, 5,  None,                None,                None))
-            domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  None, beadsize25,  None, None, 17, None,                None,                None))
-            domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  None, beadsize25,  None, None, 17, None,                None,                None))
+        if (i==11): gmm_c = gmm
+        else:       gmm_c = None
+        domains.append(("Nup157@%d"%i,  "Nup157n@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm_c,  beadsize25,  None, None, 9,  gmm_f+"Nup157n.txt", gmm_f+"Nup157n.mrc", None))
+        domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm_c,  beadsize25,  None, None, 5,  gmm_f+"Nup157c.txt", gmm_f+"Nup157c.mrc", None))
+        domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm_c,  beadsize25,  None, None, 10, gmm_f+"Nup170n.txt", gmm_f+"Nup170n.mrc", None))
+        domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.25, f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm_c,  beadsize25,  None, None, 5,  gmm_f+"Nup170c.txt", gmm_f+"Nup170c.mrc", None))
+        domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm_c,  beadsize25,  None, None, 17, gmm_f+"Nup188.txt",  gmm_f+"Nup188.mrc",  None))
+        domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm_c,  beadsize25,  None, None, 17, gmm_f+"Nup192.txt",  gmm_f+"Nup192.mrc",  None))
 
 ##########################
 # Membrane nups
@@ -411,56 +377,63 @@ if (is_membrane):
     domains.append(("Pom152",    "Pom152" ,       1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, 152, None, 0,  None,  None, None))
 
     for i in clones_range_A:
-        if (i==11):
-            domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
-            domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
-            domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, None, None, 0,  None,                None,                None))
-        else:
-            domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  None, beadsize100, None, None, 2,  None,                None,                None))
-            domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  None, beadsize100, None, None, 2,  None,                None,                None))
-            domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  None, beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  None, beadsize100, None, None, 0,  None,                None,                None))
-            domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  None, beadsize100, None, None, 0,  None,                None,                None))
+        if (i==11): gmm_c = gmm
+        else:       gmm_c = None
+        domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
+        domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
+        domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
+        domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
+        domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
 
 ##########################
 # Cytoplasm only
-# TODO: Dbp5, Gle1, Gle2.1, Gle2.2
+# TODO: Dbp5
+# TODO: Gle1, Gle2.1, Gle2.2
 ##########################
 if (is_cytoplasm):
-    domains.append(("Nup100.1", "Nup100.1_10", 0.2, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, 1101, None, 0,  None,  None, None))
+    if (is_FG):
+        domains.append(("Nup100.1", "Nup100.1_10", 0.2, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, 1100, None, 0,  None,  None, None))
+        domains.append(("Nup100.2", "Nup100.2_10", 0.4, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, 2100, None, 0,  None,  None, None))
+        domains.append(("Nup42",    "Nup42_10",    0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (  1, 363,0), None, beadsize100, 42,   None, 0,  None,  None, None))
     domains.append(("Nup100.1", "Nup100.1",    0.2, f_npc+"Nup100.txt", "YKL068W", n100_pdbfile, "A", (551, 959,0), gmm,  beadsize25,  1100, None, 2,  " ",   " ",  None))
-    domains.append(("Nup100.2", "Nup100.2_10", 0.4, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, 2101, None, 0,  None,  None, None))
     domains.append(("Nup100.2", "Nup100.2",    0.4, f_npc+"Nup100.txt", "YKL068W", n100_pdbfile, "B", (551, 959,0), gmm,  beadsize25,  2100, None, 2,  " ",   " ",  None))
-    domains.append(("Nup42",    "Nup42",       0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (  1, 430,0), None, beadsize100, 42,   None, 0,  None,  None, None))
+    domains.append(("Nup42",    "Nup42",       0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (364, 430,0), gmm,  beadsize100, 42,   None, 0,  None,  None, None))
 
     for i in clones_range_B:
-        domains.append(("Nup100.1@%d"%i, "Nup100.1_10@%d"%i, 0.2, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, None, None, 0,  None,  None, None))
+        if (is_FG):
+            domains.append(("Nup100.1@%d"%i, "Nup100.1_10@%d"%i, 0.2, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup100.2@%d"%i, "Nup100.2_10@%d"%i, 0.4, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup42@%d"%i,    "Nup42_10@%d"%i,    0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (  1, 363,0), None, beadsize100, None, None, 0,  None,  None, None))
         domains.append(("Nup100.1@%d"%i, "Nup100.1@%d"%i,    0.2, f_npc+"Nup100.txt", "YKL068W", n100_pdbfile, "A", (551, 959,0), None, beadsize25,  None, None, 2,  None,  None, None))
-        domains.append(("Nup100.2@%d"%i, "Nup100.2_10@%d"%i, 0.4, f_npc+"Nup100.txt", "YKL068W", "BEADS",      " ", (  1, 550,0), None, beadsize100, None, None, 0,  None,  None, None))
         domains.append(("Nup100.2@%d"%i, "Nup100.2@%d"%i,    0.4, f_npc+"Nup100.txt", "YKL068W", n100_pdbfile, "B", (551, 959,0), None, beadsize25,  None, None, 2,  None,  None, None))
-        domains.append(("Nup42@%d"%i,    "Nup42@%d"%i,       0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (  1, 430,0), None, beadsize100, None, None, 0,  None,  None, None))
+        domains.append(("Nup42@%d"%i,    "Nup42@%d"%i,       0.6, f_npc+"Nup42.txt",  "YDR192C", "BEADS",      " ", (364, 430,0), None, beadsize100, None, None, 0,  None,  None, None))
 
 ##########################
 # Nucleoplasm only
-# TODO: Nup1, Mlp1, Mlp2
+# TODO: Mlp1, Mlp2
 ##########################
 if (is_nucleoplasm):
-    domains.append(("Nup145.1", "Nup145.1_10", 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 1146, None, 0,  None,  None, None))
+    if (is_FG):
+        domains.append(("Nup145.1", "Nup145.1_10", 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 1145, None, 0,  None,  None, None))
+        domains.append(("Nup145.2", "Nup145.2_10", 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 2145, None, 0,  None,  None, None))
+        domains.append(("Nup1",     "Nup1_10",     0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (352,1076,0), None, beadsize100, 1,    None, 0,  None,  None, None))
+        domains.append(("Nup60",    "Nup60_10",    0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, 60,   None, 0,  None,  None, None))
     domains.append(("Nup145.1", "Nup145.1",    0.7, f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"A", (201, 605,0), gmm,  beadsize25,  1145, None, 2,  " ",   " ",  None))
-    domains.append(("Nup145.2", "Nup145.2_10", 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 2146, None, 0,  None,  None, None))
     domains.append(("Nup145.2", "Nup145.2",    0.75,f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"B", (201, 605,0), gmm,  beadsize25,  2145, None, 2,  " ",   " ",  None))
-    domains.append(("Nup60.1",  "Nup60.1",     0.85,f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 539,0), None, beadsize100, 1060, None, 0,  None,  None, None))
-    domains.append(("Nup60.2",  "Nup60.2",     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 539,0), None, beadsize100, 2060, None, 0,  None,  None, None))
+    domains.append(("Nup1",     "Nup1",        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), gmm,  beadsize100, 1,    None, 0,  None,  None, None))
+    domains.append(("Nup60",    "Nup60",       0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), gmm,  beadsize100, 60,   None, 0,  None,  None, None))
 
     for i in clones_range_B:
-        domains.append(("Nup145.1@%d"%i, "Nup145.1_10@%d"%i, 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
+        if (is_FG):
+            domains.append(("Nup145.1@%d"%i, "Nup145.1_10@%d"%i, 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup145.2@%d"%i, "Nup145.2_10@%d"%i, 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup1@%d"%i,     "Nup1_10@%d"%i,     0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (352,1076,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup60@%d"%i,    "Nup60_10@%d"%i,    0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
         domains.append(("Nup145.1@%d"%i, "Nup145.1@%d"%i,    0.7, f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"A", (201, 605,0), None, beadsize25,  None, None, 2,  None,  None, None))
-        domains.append(("Nup145.2@%d"%i, "Nup145.2_10@%d"%i, 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
         domains.append(("Nup145.2@%d"%i, "Nup145.2@%d"%i,    0.75,f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"B", (201, 605,0), None, beadsize25,  None, None, 2,  None,  None, None))
-        domains.append(("Nup60.1@%d"%i,  "Nup60.1@%d"%i,     0.85,f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
-        domains.append(("Nup60.2@%d"%i,  "Nup60.2@%d"%i,     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
+        domains.append(("Nup1@%d"%i,     "Nup1@%d"%i,        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), None, beadsize100, None, None, 0,  None,  None, None))
+        domains.append(("Nup60@%d"%i,    "Nup60@%d"%i,       0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), None, beadsize100, None, None, 0,  None,  None, None))
+
 
 #####################################################
 # Model Building
@@ -469,18 +442,21 @@ bm1 = IMP.pmi.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
 if (inputs.rmf_input is not None) :
-    n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
-    for d in list(n82):
-        bm1.set_rmf_file(d, inputs.rmf_input, int(inputs.rmf_frame_number))     #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+    if (is_n82):
+        n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
+        for d in list(n82):
+            bm1.set_rmf_file(d, inputs.rmf_input, int(inputs.rmf_frame_number))     #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
 
-    n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
-    for d in list(n84):
-        bm1.set_rmf_file(d, inputs.rmf_input, int(inputs.rmf_frame_number))     #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+    if (is_n84):
+        n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
+        for d in list(n84):
+            bm1.set_rmf_file(d, inputs.rmf_input, int(inputs.rmf_frame_number))     #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
 
-    nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
-    for key,val in nic96_dict.items():
-        bm1.set_rmf_file(key, "../data_nic96/rmfs/30-162.rmf3", 0, rmf_component_name=val)
-        #print("{} = {}".format(key, val))
+    if (is_nic96):
+        nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
+        for key,val in nic96_dict.items():
+            bm1.set_rmf_file(key, "../data_nic96/rmfs/30-162.rmf3", 0, rmf_component_name=val)
+            #print("{} = {}".format(key, val))
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -489,7 +465,7 @@ print ("clone_list_unique = ", clone_list_unique)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_representation=use_EM3D)
-#bm1.scale_bead_radii(40, 0.8)
+bm1.scale_bead_radii(100, 0.8)
 
 
 #####################################################
@@ -520,12 +496,12 @@ if (use_neighboring_spokes):
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
             simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_cytoplasm):
-        #for protein in ['Nup100.1', 'Nup100.2', 'Nup42', 'Dbp5', 'Gle1', 'Gle2.1', 'Gle2.2']:
+        #for protein in ['Nup100.1', 'Nup100.2', 'Nup42', 'Gle1', 'Gle2.1', 'Gle2.2', 'Dbp5']:
         for protein in ['Nup100.1', 'Nup100.2', 'Nup42']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_nucleoplasm):
-        #for protein in ['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2', 'Nup1', 'Mlp1', 'Mlp2']:
-        for protein in ['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2']:
+        #for protein in ['Nup145.1', 'Nup145.2', 'Nup60', 'Nup1', 'Mlp1', 'Mlp2']:
+        for protein in ['Nup145.1', 'Nup145.2', 'Nup60', 'Nup1']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
 else:
     if (is_n84):
@@ -700,8 +676,7 @@ if (use_Immuno_EM):
         "Nup57.1" : [80, 300],
         "Nup57.2" : [80, 300],
         "Nup59" : [250, 370],
-        "Nup60.1" : [240, 400],
-        "Nup60.2" : [240, 400],
+        "Nup60" : [240, 400],
         "Nup82.1" : [175, 505],
         "Nup82.2" : [175, 505],
         "Nup84" : [290, 520],       #"Nup84" : [290, 450],
@@ -757,8 +732,7 @@ if (use_Immuno_EM):
         "Nup57.1" : [0, 75],
         "Nup57.2" : [0, 75],
         "Nup59" : [40, 120],
-        "Nup60.1" : [-200, -100],
-        "Nup60.2" : [-200, -100],
+        "Nup60" : [-200, -100],
         "Nup82.1" : [125, 295],     #"Nup82.1" : [145, 295],
         "Nup82.2" : [125, 295],     #"Nup82.2" : [145, 295],
         "Nup84" : [130, 170],       #"Nup84" : [150, 170],
@@ -945,8 +919,8 @@ if (False):
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
-simo.optimize_floppy_bodies(150)
-print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(150)) - ", rank
+simo.optimize_floppy_bodies(300)
+print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
 
 XL_restraints = None
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,

@@ -945,8 +945,8 @@ if (False):
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
-simo.optimize_floppy_bodies(150)
-print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(150)) - ", rank
+simo.optimize_floppy_bodies(1000)
+print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(1000)) - ", rank
 
 XL_restraints = None
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
