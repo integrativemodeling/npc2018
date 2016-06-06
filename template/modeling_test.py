@@ -176,6 +176,7 @@ n192_pdbfile   = npc + "Nup192_1_1683_v2_new.pdb"
 
 n53_pdbfile    = npc + "Nup53_dimer.pdb"
 n59_pdbfile    = npc + "Nup59_dimer.pdb"
+pom152_pdb     = npc + "Pom152r.pdb"
 n100_pdbfile   = npc + "Nup100_3nf5_AB_816_958.pdb"
 n145N_pdbfile  = npc + "Nup145N_3kep_AB_459_605r.pdb"
 
@@ -367,23 +368,38 @@ if (is_inner_ring):
 
 ##########################
 # Membrane nups
-# TODO: Pom152
 ##########################
 if (is_membrane):
-    domains.append(("Nup53",     "Nup53",         0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm,  beadsize100, 53,  None, 2,  " ",   " ",  None))
-    domains.append(("Nup59",     "Nup59",         0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm,  beadsize100, 59,  None, 2,  " ",   " ",  None))
-    domains.append(("Ndc1",      "Ndc1",          0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm,  beadsize100, 101, None, 0,  None,  None, None))
-    domains.append(("Pom34",     "Pom34",         0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm,  beadsize100, 34,  None, 0,  None,  None, None))
-    domains.append(("Pom152",    "Pom152" ,       1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm,  beadsize100, 152, None, 0,  None,  None, None))
+    domains.append(("Nup53",     "Nup53",         0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (   1, 475,0),  gmm,  beadsize100, 53,   None, 2,  " ",   " ",  None))
+    domains.append(("Nup59",     "Nup59",         0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (   1, 528,0),  gmm,  beadsize100, 59,   None, 2,  " ",   " ",  None))
+    domains.append(("Ndc1",      "Ndc1",          0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (   1, 655,0),  gmm,  beadsize100, 101,  None, 0,  None,  None, None))
+    domains.append(("Pom34",     "Pom34",         0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (   1, 299,0),  gmm,  beadsize100, 34,   None, 0,  None,  None, None))
+    domains.append(("Pom152",    "Pom152_1" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", (   1, 496,0),  gmm,  beadsize100, 1521, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_2" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", ( 497, 613,0),  gmm,  beadsize100, 1522, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_3" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", ( 614, 718,0),  gmm,  beadsize100, 1523, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_4" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", ( 719, 821,0),  gmm,  beadsize100, 1524, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_5" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", ( 822, 924,0),  gmm,  beadsize100, 1525, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_6" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", ( 925,1031,0),  gmm,  beadsize100, 1526, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_7" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", (1032,1145,0),  gmm,  beadsize100, 1527, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_8" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", (1146,1236,0),  gmm,  beadsize100, 1528, [152],2,  " ",   " ",  None))
+    domains.append(("Pom152",    "Pom152_9" ,     1.0,  f_npc+"Pom152.txt", "YMR129W", pom152_pdb,   "A", (1237,1337,0),  gmm,  beadsize100, 1529, [152],2,  " ",   " ",  None))
 
     for i in clones_range_A:
         if (i==11): gmm_c = gmm
         else:       gmm_c = None
-        domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,  0.0,  f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile,  "A", (  1, 475,0),  gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",   gmm_f+"Nup53.mrc",   None))
-        domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,  0.66, f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile,  "A", (  1, 528,0),  gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",   gmm_f+"Nup59.mrc",   None))
-        domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,   0.8,  f_npc+"Ndc1.txt",   "YML031W", "BEADS",      " ", (  1, 655,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
-        domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,  0.9,  f_npc+"Pom34.txt",  "YLR018C", "BEADS",      " ", (  1, 299,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
-        domains.append(("Pom152@%d"%i, "Pom152@%d"%i, 1.0,  f_npc+"Pom152.txt", "YMR129W", "BEADS",      " ", (  1,1337,0),  gmm_c,  beadsize100, None, None, 0,  None,                None,                None))
+        domains.append(("Nup53@%d"%i,  "Nup53@%d"%i,    0.0, f_npc+"Nup53.txt",  "YMR153W", n53_pdbfile, "A", (   1, 475,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup53.txt",    gmm_f+"Nup53.mrc",    None))
+        domains.append(("Nup59@%d"%i,  "Nup59@%d"%i,    0.66,f_npc+"Nup59.txt",  "YDL088C", n59_pdbfile, "A", (   1, 528,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Nup59.txt",    gmm_f+"Nup59.mrc",    None))
+        domains.append(("Ndc1@%d"%i,   "Ndc1@%d"%i,     0.8, f_npc+"Ndc1.txt",   "YML031W", "BEADS",     " ", (   1, 655,0), gmm_c,  beadsize100, None, None, 0,  None,                 None,                 None))
+        domains.append(("Pom34@%d"%i,  "Pom34@%d"%i,    0.9, f_npc+"Pom34.txt",  "YLR018C", "BEADS",     " ", (   1, 299,0), gmm_c,  beadsize100, None, None, 0,  None,                 None,                 None))
+        domains.append(("Pom152@%d"%i, "Pom152_1@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", (   1, 496,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_1.txt", gmm_f+"Pom152_1.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_2@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", ( 497, 613,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_2.txt", gmm_f+"Pom152_2.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_3@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", ( 614, 718,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_3.txt", gmm_f+"Pom152_3.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_4@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", ( 719, 821,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_4.txt", gmm_f+"Pom152_4.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_5@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", ( 822, 924,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_5.txt", gmm_f+"Pom152_5.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_6@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", ( 925,1031,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_6.txt", gmm_f+"Pom152_6.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_7@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", (1032,1145,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_7.txt", gmm_f+"Pom152_7.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_8@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", (1146,1236,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_8.txt", gmm_f+"Pom152_8.mrc", None))
+        domains.append(("Pom152@%d"%i, "Pom152_9@%d"%i, 1.0, f_npc+"Pom152.txt", "YMR129W", pom152_pdb,  "A", (1237,1337,0), gmm_c,  beadsize100, None, None, 2,  gmm_f+"Pom152_9.txt", gmm_f+"Pom152_9.mrc", None))
 
 ##########################
 # Cytoplasm only
@@ -465,7 +481,7 @@ print ("clone_list_unique = ", clone_list_unique)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_representation=use_EM3D)
-bm1.scale_bead_radii(100, 0.8)
+#bm1.scale_bead_radii(100, 0.8)
 
 
 #####################################################
@@ -646,7 +662,7 @@ if (use_Immuno_EM):
         "Gle1" : [200, 320],
         "Gle2.1" : [150, 330],
         "Gle2.2" : [150, 330],
-        "Ndc1" : [280, 1400],
+        "Ndc1" : [280, 400],
         "Nic96.1" : [255, 525],
         "Nic96.2" : [255, 525],
         "Nsp1.1" : [155, 425],
@@ -658,7 +674,7 @@ if (use_Immuno_EM):
         "Nup100.2" : [230, 330],
         "Nup116.1" : [200, 350],    #"Nup116.1" : [250, 350],
         "Nup116.2" : [200, 350],    #"Nup116.2" : [250, 350],
-        "Nup120" : [250, 450],      #"Nup120" : [250, 380],
+        "Nup120" : [250, 450],      #"Nup120" : [250, 370],
         "Nup133" : [300, 520],      #"Nup133" : [300, 420],
         "Nup145c" : [270, 520],     #"Nup145c" : [270, 470],
         "Nup145.1" : [125, 395],
@@ -667,7 +683,7 @@ if (use_Immuno_EM):
         "Nup159.1" : [200, 430],    #"Nup159.1" : [250, 430],
         "Nup159.2" : [200, 430],    #"Nup159.2" : [250, 430],
         "Nup170" : [170, 330],
-        "Nup188" : [200, 330],
+        "Nup188" : [200, 320],
         "Nup192" : [200, 320],
         "Nup42" : [220, 400],
         "Nup49.1" : [200, 300],
@@ -681,10 +697,9 @@ if (use_Immuno_EM):
         "Nup82.2" : [175, 505],
         "Nup84" : [290, 520],       #"Nup84" : [290, 450],
         "Nup85" : [300, 520],       #"Nup85" : [300, 420],
-        "Pom152" : [370, 1630],
-        "Pom34" : [280, 1380],
+        "Pom34" : [280, 380],
         "Seh1" : [250, 370],
-        "Sec13" : [50, 550]
+        "Pom152" : [370, 630]
     }
     radial_weight = 1.0
     for protein, r in RADIAL.iteritems():
@@ -699,7 +714,7 @@ if (use_Immuno_EM):
         print (xyr.get_output())
 
     ZAXIAL = {
-        "Gle1" : [110, 170],
+        "Gle1" : [110, 190],        #"Gle1" : [120, 180],
         "Gle2.1" : [20, 120],
         "Gle2.2" : [20, 120],
         "Ndc1" : [0, 90],
@@ -722,25 +737,24 @@ if (use_Immuno_EM):
         "Nup157" : [0, 95],
         "Nup159.1" : [100, 240],    #"Nup159.1" : [120, 240],
         "Nup159.2" : [100, 240],    #"Nup159.2" : [120, 240],
-        "Nup170" : [0, 75],
+        "Nup170" : [0, 100],
         "Nup188" : [40, 100],
         "Nup192" : [20, 100],
         "Nup42" : [70, 150],
         "Nup49.1" : [40, 100],
         "Nup49.2" : [40, 100],
         "Nup53" : [20, 100],
-        "Nup57.1" : [0, 75],
-        "Nup57.2" : [0, 75],
+        "Nup57.1" : [0, 80],
+        "Nup57.2" : [0, 80],
         "Nup59" : [40, 120],
         "Nup60" : [-200, -100],
         "Nup82.1" : [125, 295],     #"Nup82.1" : [145, 295],
         "Nup82.2" : [125, 295],     #"Nup82.2" : [145, 295],
-        "Nup84" : [130, 170],       #"Nup84" : [150, 170],
-        "Nup85" : [120, 200],       #"Nup85" : [140, 200],
-        "Pom152" : [0, 95],
+        "Nup84" : [150, 190],       #"Nup84" : [150, 170],
+        "Nup85" : [140, 220],       #"Nup85" : [140, 200],
         "Pom34" : [0, 65],
         "Seh1" : [50, 170],
-        "Sec13" : [0, 500]
+        "Pom152" : [0, 95]
     }
     print "\nZAxialPositionLowerRestraint !!"
     print "ZAxialPositionUpperRestraint !!\n"
@@ -823,33 +837,50 @@ if PORE_SIDE:
 
 #####################################################
 # Restraints setup
-# Distance_to_ponit restraints for orientation of the Nup84 complex
+# Distance_to_point restraints for orientation of the Nup84 complex
 #####################################################
 if (is_n84 and use_Distance_to_Point):
     dpr_weight = 100.0
     dpr_radius = 50.0
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.0, 195.0, 150.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(434.0, 154.0, 150.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(338.0, -170.0, 170.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.0, -202.0, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(556.0, -160.0, 110.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.0, -213.0, 110.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
     print "DistanceToPointRestraint !!\n"
+
+
+#####################################################
+# Restraints setup
+# Distance restraints for Nup145n - Nup145c
+#####################################################
+if (is_n84 and is_nucleoplasm):
+    dist_min = 3.0
+    dist_max = 15.0
+    dr_weight = 100.0
+
+    dr1 = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr1.add_to_model()
+    dr1.set_label("Nup145n-Nup145c")
+    dr1.set_weight(dr_weight)
+    outputobjects.append(dr1)
+    print(dr1.get_output())
 
 
 #####################################################
