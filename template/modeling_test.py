@@ -122,10 +122,16 @@ simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedleng
 #####################################################
 # setting up parameters
 #####################################################
-from mpi4py import MPI
+try:
+    from mpi4py import MPI
+except ImportError:
+    MPI = None
 
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
+if MPI:
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+else:
+    rank = 0
 print "rank = ", rank
 
 # rigid body movement params
