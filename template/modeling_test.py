@@ -780,12 +780,12 @@ if (use_Immuno_EM):
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
+tor_th = 45.0
+tor_R = 390.0 + 150.0
+tor_r = 150.0 - tor_th/2.0
+msl_sigma = 0.2
+msl_weight = 1.0
 if (is_membrane):
-    tor_th = 45.0
-    tor_R = 390.0 + 150.0
-    tor_r = 150.0 - tor_th/2.0
-    msl_sigma = 0.2
-    msl_weight = 1.0
 
     print "\nMembraneSurfaceLocationRestraint !!"
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (101,200,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
