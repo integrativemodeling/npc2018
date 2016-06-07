@@ -29,6 +29,7 @@ import IMP.npc
 import IMP.npc.npc_restraints
 import random
 import os
+import math
 
 #####################################################
 # Parsing parameter inputs
@@ -210,6 +211,7 @@ use_neighboring_spokes = False
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
+use_Composite = False
 use_XL = True
 use_EM3D = True
 
@@ -652,6 +654,178 @@ if (False):
     print(eb.get_output())
     print "ExternalBarrier !!\n"
 
+class CompositeRepresentation(object):
+    """Simple representation for composites. For speed, each protein
+       is represented with a single sphere that covers the 10 residue
+       beads used for excluded volume. This is very approximate but
+       that should be fine for composites. This should dramatically
+       reduce the number of distances the composite restraint needs
+       to calculate at each evaluation.
+
+       The class acts like a dictionary where the keys are protein
+       names and the values are the one-bead-per-protein particles,
+       which are calculated on demand."""
+
+    # All proteins that have multiple copies in the primary spoke
+    # (proteins not explicitly listed here have only a single copy)
+    COPIES = { 'Gle2': 3, 'Nic96': 3, 'Nsp1': 5, 'Nup100': 3,
+               'Nup116': 3, 'Nup145': 3, 'Nup159': 3, 'Nup49': 3,
+               'Nup57': 3, 'Nup82': 3, 'Dyn2': 3}
+
+    def __init__(self, simo):
+        self.simo = simo
+        self.protein_beads = {}
+
+    def __getitem__(self, protein):
+        if protein not in self.protein_beads:
+            # Make a single particle that covers the entire protein
+            low_res = IMP.pmi.tools.select(self.simo, resolution=res_ev,
+                                           name=protein)
+            p = IMP.Particle(self.simo.m, "Sphere covering " + protein)
+            c = IMP.core.Cover.setup_particle(p, low_res)
+            self.protein_beads[protein] = c
+        return self.protein_beads[protein]
+
+    def get_all_copies(self, protein):
+        """Return a list of particles for all copies of the given protein
+           (e.g. r.get_all_copies('Gle2') should be equivalent to
+           [r['Gle2'], r['Gle2.1'], r['Gle2.2']]"""
+        copies = self.COPIES.get(protein, 1)
+        return [self[protein]] + [self['%s.%d'] % i for i in range(1, copies)]
+
+
+if use_Composite:
+    COMPOSITE = {
+        "C1"  : ("Gle2", "Nup116", 1),
+        "C2"  : ("Nup82", "Nsp1", 1),
+        "C3"  : ("Nsp1", "Nup57", 1),
+        "C4"  : ("Nup188", "Nic96", 1),
+        "C5"  : ("Nsp1", "Nic96", 1),
+        "C6"  : ("Nup192", "Nic96", 1),
+        "C7"  : ("Seh1", "Nup85", 1),
+        "C8"  : ("Nup49", "Nup57", 1),
+        "C9"  : ("Gle1", "Nup42", 1),
+        "C10" : ("Nup42", "Gle1", 1),
+        "C11" : ("Nsp1", "Nup49", 1),
+        "C12" : ("Pom152", "Pom34", 1),
+        "C13" : ("Nup53", "Nup170", 1),
+        "C14" : ("Nup84", "Nup145C", 1),
+        "C15" : ("Nup85", "Seh1", 1),
+        "C16" : ("Nup57", "Nsp1", 1),
+        "C17" : ("Nup116", "Gle2", 1),
+        "C18" : ("Nup57", "Nup49", 1),
+        "C19" : ("Nup82", "Nsp1", "Nup159", 2),
+        "C20" : ("Nup84", "Nup145C", "Sec13", 2),
+        "C21" : ("Nup192", "Nup60", "Pom152", 3),
+        "C22" : ("Nup170", "Ndc1", "Pom152", 3),
+        "C24" : ("Nup82", "Nsp1", "Nup159", 3),
+        "C25" : ("Nup170", "Nup192", "Nup59", 2),
+        "C26" : ("Nup84", "Nup145C", "Sec13", 1),
+        "C27" : ("Nup82", "Nup116", "Gle2", 1),
+        "C28" : ("Nsp1", "Nup57", "Nup49", "Nic96", 1),
+        "C30" : ("Nup145C", "Nup84", "Sec13", "Nup133", 2),
+        "C31" : ("Nup82", "Nsp1", "Nup159", 1),
+        "C32" : ("Nup82", "Nsp1", "Nup116", "Nup159", 2),
+        "C33" : ("Nup84", "Nup145C", "Nup120", "Nup85", 1),
+        "C34" : ("Nsp1", "Nup82", "Nup159", "Nup116", "Nup82", 3),
+        "C35" : ("Nup53", "Nup170", "Pom152", "Nic96", "Nup145C", 2),
+        "C36" : ("Nup159", "Nup82", "Nsp1", "Gle2", "Nup116", 2),
+        "C37" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nup157", 2),
+        "C38" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup192", "Pom152", 1),
+        "C39" : ("Nup84", "Nup145C", "Nup85", "Nup120", "Nup133", 1),
+        "C40" : ("Pom152", "Nup192", "Nup170", "Ndc1", "Nup59", 3),
+        "C41" : ("Pom34", "Pom152", "Nup170", "Ndc1", "Nup157", 2),
+        "C42" : ("Seh1", "Nup120", "Nup145N", "Nup170", "Nup53", 3),
+        "C43" : ("Nup42", "Gle1", "Nup82", "Nup100", "Nup116", "Nup159", 3),
+        "C44" : ("Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120", 1),
+        "C46" : ("Gle2", "Nup116", "Nup82", "Nsp1", "Nup159", "Nup84", 2),
+        "C47" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup192", "Pom152", 1),
+        "C48" : ("Nup49", "Nup57", "Nsp1", "Nic96", "Nup192", "Pom152", 2),
+        "C49" : ("Pom152", "Nup192", "Nup170", "Nup157", "Nup188", "Nup1", 3),
+        "C50" : ("Nup57", "Nsp1", "Nup49", "Nic96", "Nup82", "Nup159", 1),
+        "C51" : ("Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120", 1),
+        "C52" : ("Nsp1", "Nup188", "Nup192", "Pom152", "Nup157", "Nup60", 3),
+        "C53" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13", "Nup133", 1),
+        "C55" : ("Nup53", "Nup170", "Nup157", "Nup192", "Nup188", "Nup145N",
+                 "Pom152", 3),
+        "C56" : ("Nup159", "Nup82", "Nsp1", "Nup188", "Nup192", "Nup170", "Pom152", 1),
+        "C57" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13", "Nup133", 1),
+        "C58" : ("Nup49", "Nsp1", "Nup57", "Nic96", "Nup82", "Nup192", "Nup159", 2),
+        "C59" : ("Nup57", "Nsp1", "Nic96", "Nup192", "Pom152", "Nup82", "Nup84",
+                 "Nup116", 3),
+        "C60" : ("Nup145N", "Nup120", "Seh1", "Nup85", "Nup84", "Sec13", "Nup145C",
+                 "Nup133", 3),
+        "C61" : ("Nup159", "Nup82", "Nsp1", "Nup188", "Nup192", "Nup170", "Pom152", 1),
+        "C62" : ("Nup57", "Nup49", "Nic96", "Nup170", "Nup157", "Nup59", "Pom152",
+                 "Ndc1", 3),
+        "C63" : ("Nup133", "Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120",
+                 "Nup145N", "Nup157", 1),
+        "C64" : ("Nup116", "Nup82", "Nsp1", "Nic96", "Nup192", "Pom152", "Nup170",
+                 "Nup157", 3),
+        "C65" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup116", "Nup133", "Nup192",
+                 "Nup170", "Nup157", 2),
+        "C66" : ("Nup133", "Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120",
+                 "Nup145N", "Nup157", 2),
+        "C67" : ("Gle2", "Nup116", "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188",
+                 "Nup192", "Pom152", "Nup170", 1),
+        "C68" : ("Sec13", "Nup84", "Nup145C", "Nup133", "Nup116", "Nup82", "Nup85",
+                 "Seh1", "Nup120", "Nup145N", 2),
+        "C69" : ("Nup53", "Nup170", "Nup192", "Nic96", "Nup188", "Nsp1", "Nup82",
+                 "Nup159", "Nup116", "Nup84", 3),
+        "C70" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nic96", "Nup188", "Nsp1",
+                 "Nup82", "Nup159", "Nup84", 2),
+        "C71" : ("Nup145N", "Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13",
+                 "Nup133", "Nic96", "Nup157", "Pom152", 3),
+        "C72" : ("Pom152", "Nup192", "Nup170", "Ndc1", "Nup53", "Nic96", "Nup188",
+                 "Nsp1", "Nup82", "Nup159", "Nup84", 2),
+        "C73" : ("Gle2", "Nup116", "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188",
+                 "Nup192", "Nup170", "Pom152", "Nup157", 3),
+        "C74" : ("Nup133", "Nup84", "Nup82", "Nup116", "Nup159", "Nsp1", "Nic96",
+                 "Nup188", "Nup192", "Nup170", "Nup53", "Nup157", 2),
+        "C75" : ("Nup120", "Nup145C", "Nup84", "Nup82", "Nup159", "Nsp1", "Nup188",
+                 "Nup1", "Nup192", "Pom152", "Nup170", "Nup157", 3),
+        "C76" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nup53", "Nup59", "Nup157",
+                 "Nic96", "Nup188", "Nsp1", "Nup82", "Gle2", "Nup159", 2),
+        "C77" : ("Nup100", "Nup188", "Nic96", "Nup192", "Nup170", "Nup53", "Nup59",
+                 "Nsp1", "Nup57", "Nup82", "Nup84", "Nup116", "Nup159", "Gle1",
+                 "Nup42", 3),
+        "C78" : ("Nup133", "Nup145C", "Nup120", "Nup84", "Nup82", "Nup116",
+                 "Nup159", "Nsp1", "Nic96", "Nup188", "Nup100", "Nup192", "Pom152",
+                 "Nup170", "Nup59", 2),
+        "C79" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Nup133", "Sec13",
+                 "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188", "Nup192",
+                 "Nup170", "Pom152", 1),
+        "C80" : ("Nup120", "Seh1", "Nup85", "Nup84", "Sec13", "Nup145C", "Nup133",
+                 "Nic96", "Nsp1", "Nup57", "Nup188", "Nup192", "Pom152",
+                 "Nup170", "Nup157", "Nup53", 1),
+        "C81" : ("Nup42", "Gle1", "Nup82", "Nup116", "Gle2", "Nup159", "Nup84",
+                 "Nup133", "Nup120", "Nup145N", "Nsp1", "Nup57", "Nic96", "Nup188",
+                 "Nup192", "Nup170", "Nup157", "Pom152", "Pom34", 1),
+        "C82" : ("Nup133", "Nup84", "Nup82", "Gle1", "Nup42", "Nup159", "Nup116",
+                 "Gle2", "Nsp1", "Nup57", "Nic96", "Nup188", "Nup100", "Nup192",
+                 "Pom152", "Pom34", "Nup170", "Nup59", "Nup157", "Nup53", 1) }
+    cr = CompositeRepresentation(simo)
+    # Score distance between protein pairs considering that one protein might
+    # not be in the primary spoke (i.e. rotated +/- 45 degrees)
+    axis = IMP.algebra.Vector3D(0,0,1)
+    rot = IMP.algebra.get_rotation_about_axis(axis, math.pi / 2.)
+    transforms = [IMP.algebra.Transformation3D(r, IMP.algebra.Vector3D(0,0,0))
+                  for r in rot, rot.get_inverse()]
+    # Penalize configurations where spheres are not in contact
+    penalty = 1.
+    uf = IMP.core.HarmonicUpperBound(0., penalty)
+    ps = IMP.npc.MinimumSphereDistancePairScore(uf, transforms)
+
+    for c, res in COMPOSITE.items():
+        rsr = IMP.npc.CompositeRestraint(simo.m, ps)
+        rsr.set_name("CompositeRestraint " + c)
+        # Speed up evaluation by immediately discarding subtrees with
+        # high scores
+        rsr.set_maximum_score(penalty * 5.)
+        for protein in res[:-1]:
+            rsr.add_type(cr.get_all_copies(protein))
+        # Add restraint to the PMI scoring function
+        IMP.pmi.tools.add_restraint_to_model(simo.m, rsr)
 
 #####################################################
 # Restraints setup - Immuno-EM
