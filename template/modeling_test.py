@@ -209,7 +209,7 @@ is_nucleoplasm = True
 is_basket = False
 is_FG = False
 
-use_neighboring_spokes = True
+use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds 31 (the main spoke) / 90~100 sec (3 spokes)
 #Stopwatch_None_delta_seconds 33 (the main spoke) / 90~100 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds 90 (the main spoke) / ~160 sec (3 spokes) with XL + EM
@@ -985,7 +985,7 @@ if (use_Immuno_EM):
         "Nup85" : [140, 220],       #"Nup85" : [140, 200],
         "Pom34" : [0, 65],
         "Seh1" : [50, 170],
-        "Pom152" : [0, 30]          #"Pom152" : [0, 95]
+        "Pom152" : [0, 35]          #"Pom152" : [0, 95]
     }
     print "\nZAxialPositionRestraint !!"
     zaxial_weight = 10.0
@@ -1007,8 +1007,8 @@ if (use_Immuno_EM):
 tor_th = 45.0
 tor_R = 390.0 + 150.0
 tor_r = 150.0 - tor_th/2.0
-msl_sigma = 0.2
-msl_weight = 10.0
+msl_sigma = 1.0
+msl_weight = 1.0
 
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
@@ -1133,24 +1133,21 @@ if (is_n84 and use_Distance_to_Point):
     dpr_weight = 100.0
     dpr_radius = 100.0
 
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(435.1, 150.3, 150.0), radius=dpr_radius, kappa=10.0)
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(434.0, 154.0, 150.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(433.8, 154.1, 150.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(318.4, -204.4, 170.0), radius=dpr_radius, kappa=10.0)
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.0, -202.0, 170.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.2, -201.6, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(536.2, -217.2, 110.0), radius=dpr_radius, kappa=10.0)
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.0, -213.0, 110.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.1, -212.6, 110.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1176,22 +1173,39 @@ if (is_n84 and is_nucleoplasm):
     outputobjects.append(dr)
     print(dr.get_output())
 
-# The Pom152 ring   // + z-axis restraint for middle region
+# The Pom152 ring
 if (is_membrane):
     dist_max = 30.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(301,301,"Pom152"), (301,301,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
+    #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (379,379,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (379,379,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
-    dr.set_label("Pom152@12-Pom152")
+    dr.set_label("Pom152-Pom152@12")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
 
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (1337,1337,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
-    dr.set_label("Pom152@2-Pom152")
+    dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=530, upper_bound=580, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (530, 580, "Pom152_859"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=0, upper_bound=25, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 25, "Pom152_859"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
 
 #####################################################
 # Restraints setup
@@ -1372,7 +1386,7 @@ if (use_EM3D):
     print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
 
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
-    mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
+    mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 3.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/avg_monomer_final_sj2_ring_5p5rot.456.txt',
@@ -1380,7 +1394,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(100.0)        # play with weight
+    gem.set_weight(10.0)        # play with weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
