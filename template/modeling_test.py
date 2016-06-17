@@ -210,9 +210,9 @@ is_basket = False
 is_FG = False
 
 use_neighboring_spokes = False
-#Stopwatch_None_delta_seconds 31 (the main spoke) / 90~100 sec (3 spokes)
-#Stopwatch_None_delta_seconds 33 (the main spoke) / 90~100 sec (3 spokes) with XL
-#Stopwatch_None_delta_seconds 90 (the main spoke) / ~160 sec (3 spokes) with XL + EM
+#Stopwatch_None_delta_seconds  32~38 (1 spoke) /  100~110 sec (3 spokes)
+#Stopwatch_None_delta_seconds  34~40 (1 spoke) /  105~115 sec (3 spokes) with XL
+#Stopwatch_None_delta_seconds  51~57 (1 spoke) /  120~130 sec (3 spokes) with XL + EM
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -1111,14 +1111,14 @@ if (is_n84):
     print (msl.get_output())
 
 if (is_inner_ring):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (87,87,'Nup157'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,338,'Nup157'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Nup157')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (97,97,'Nup170'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,352,'Nup170'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Nup170')
     msl.set_weight(msl_weight)
     msl.add_to_model()
