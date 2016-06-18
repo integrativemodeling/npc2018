@@ -198,13 +198,13 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362.pdb"
 #####################################################
 # Parameters for Debugging
 #####################################################
-is_n84 = True
-is_n82 = True
-is_nic96 = True
-is_inner_ring = True
-is_membrane = True
-is_cytoplasm = True
-is_nucleoplasm = True
+is_n84 = False
+is_n82 = False
+is_nic96 = False
+is_inner_ring = False
+is_membrane = False
+is_cytoplasm = False
+is_nucleoplasm = False
 is_basket = True
 is_FG = False
 
@@ -217,7 +217,7 @@ use_Distance_to_Point = True
 use_Immuno_EM = True
 use_Composite = False
 use_XL = True
-use_EM3D = True
+use_EM3D = False
 
 #####################################################
 # REPRESENTATION
@@ -1343,7 +1343,7 @@ if (use_XL):
     ids_map.set_map_element(1.0, 1.0)
 
     xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
-                                                        '../data_npc/XL_Merged_wholeNPC.csv',
+                                                        '../data_npc/XL_Merged_wholeNPC_MLPs.csv',
                                                         length = 21.0,
                                                         slope = 0.00,
                                                         columnmapping = columnmap,
