@@ -502,8 +502,8 @@ if (is_nucleoplasm):
 # Basket proteins - Mlp1, Mlp2
 ##########################
 if (is_basket):
-    domains.append((    "Mlp1",      "Mlp1",      0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  9191,  [9191], 0,  None,  None, None))
-    domains.append((    "Mlp2",      "Mlp2",      0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), None, beadsize50,  9191,  [9191], 0,  None,  None, None))
+    domains.append((    "Mlp1",      "Mlp1",      0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  9191,  None,   0,  None,  None, None))
+    domains.append((    "Mlp2",      "Mlp2",      0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), None, beadsize50,  9191,  None,   0,  None,  None, None))
 
     for i in clones_range_B:
         domains.append(("Mlp1@%d"%i, "Mlp1@%d"%i, 0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  None,  None,   0,  None,  None, None))
@@ -532,6 +532,11 @@ if (is_nic96):
         if (is_FG): bm1.set_rmf_file(key, "../data_nic96/rmfs/cluster2.rmf3", 0, rmf_component_name=val)
         else:       bm1.set_rmf_file(key, "../data_nic96/rmfs/cluster2_FGtruncated.rmf3", 0, rmf_component_name=val)
         #print("{} = {}".format(key, val))
+
+if (is_basket):
+    Mlps=['Mlp1', 'Mlp2']
+    for d in list(Mlps):
+        bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -608,6 +613,8 @@ for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'
 for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
     rigid_tuples.append(protein)
 for protein in [(1,56,'Nic96.2'),(205,839,'Nic96.2'), (637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
+    rigid_tuples.append(protein)
+for protein in ['Mlp1', 'Mlp2']:
     rigid_tuples.append(protein)
 # Remove flexible movers for all clones
 for protein in clone_list_unique:
@@ -969,7 +976,7 @@ if (use_Immuno_EM):
         "Nup116.2" : [70, 170],     #"Nup116.2" : [70, 150],
         "Nup120" : [70, 150],
         "Nup133" : [100, 200],
-        "Nup145c" : [70, 150],
+        "Nup145c" : [70, 180],      #"Nup145c" : [70, 150],
         "Nup145.1" : [-170, -50],
         "Nup145.2" : [-170, -50],
         "Nup157" : [0, 95],
@@ -1155,21 +1162,21 @@ if (is_n84 and use_Distance_to_Point):
     dpr_weight = 100.0
     dpr_radius = 100.0
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(433.8, 154.1, 150.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(433.8, 154.1, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.2, -201.6, 170.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.2, -201.6, 190.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.1, -212.6, 110.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.1, -212.6, 130.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
