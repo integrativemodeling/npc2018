@@ -1,0 +1,92 @@
+{
+    "data": [
+        {
+            "active": true,
+            "fileGroup": {
+                "files": [
+                    "XL_Nic96complex.csv"
+                ]
+            },
+            "mapping": {
+                "Nic96": [
+                    "Nic96"
+                ],
+                "Nsp1": [
+                    "Nsp1"
+                ],
+                "Nup49": [
+                    "Nup49"
+                ],
+                "Nup57": [
+                    "Nup57"
+                ]
+            },
+            "name": "XL_Nic96complex",
+            "type": "xquest"
+        }
+    ],
+    "subcomplexes": [],
+    "subunits": [
+        {
+            "chainIds": [
+                "A"
+            ],
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "domains": [],
+            "name": "Nic96",
+            "selection": ":.A",
+            "type": "component"
+        },
+        {
+            "chainIds": [
+                "B"
+            ],
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "domains": [],
+            "name": "Nsp1",
+            "selection": ":.B",
+            "type": "component"
+        },
+        {
+            "chainIds": [
+                "C"
+            ],
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "domains": [],
+            "name": "Nup49",
+            "selection": ":.C",
+            "type": "component"
+        },
+        {
+            "chainIds": [
+                "D"
+            ],
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "domains": [],
+            "name": "Nup57",
+            "selection": ":.D",
+            "type": "component"
+        }
+    ],
+    "xlinkanalyzerVersion": "1.1"
+}

@@ -1,0 +1,38 @@
+{
+    "data": [
+        {
+            "active": true,
+            "fileGroup": {
+                "files": [
+                    "XL_intra_structures.csv"
+                ]
+            },
+            "mapping": {
+                "Pom152": [
+                    "Pom152"
+                ]
+            },
+            "name": "XL_intra_structures",
+            "type": "xquest"
+        }
+    ],
+    "subcomplexes": [],
+    "subunits": [
+        {
+            "chainIds": [
+                "A"
+            ],
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "domains": [],
+            "name": "Pom152",
+            "selection": ":.A",
+            "type": "component"
+        }
+    ],
+    "xlinkanalyzerVersion": "1.1"
+}
