@@ -151,7 +151,7 @@ beadsize25 = 25
 beadsize50 = 50
 beadsize100 = 100
 em2d_weight = float(inputs.weight)
-initial_nframes = 100
+initial_nframes = 50
 
 n82   = "../data_nup82/"
 f_n82 = "../data_nup82/protein_fasta."
@@ -209,9 +209,9 @@ is_basket = True
 is_FG = False
 
 use_neighboring_spokes = True
-#Stopwatch_None_delta_seconds  32~38 (1 spoke) / 100~110 sec (3 spokes)
-#Stopwatch_None_delta_seconds  34~40 (1 spoke) / 105~115 sec (3 spokes) with XL
-#Stopwatch_None_delta_seconds  51~57 (1 spoke) / 125~135 sec (3 spokes) with XL + EM
+#Stopwatch_None_delta_seconds  32~38 (1 spoke) / 70-80 sec (3 spokes)
+#Stopwatch_None_delta_seconds  34~40 (1 spoke) / 75-85 sec (3 spokes) with XL
+#Stopwatch_None_delta_seconds  51~57 (1 spoke) / 100~110 sec (3 spokes) with XL + EM
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -399,7 +399,7 @@ if (is_inner_ring):
     domains.append(("Nup157",    "Nup157c",       0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm,  beadsize25,  1572, [157], 3, " ",   " ",  None, False))
     domains.append(("Nup170",    "Nup170n",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm,  beadsize25,  1701, [170], 3, " ",   " ",  None, False))
     domains.append(("Nup170",    "Nup170c",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm,  beadsize25,  1702, [170], 4, " ",   " ",  None, False))
-    domains.append(("Nup188",    "Nup188",        0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  188,  [196], 6, " ",   " ",  None, False))
+    domains.append(("Nup188",    "Nup188",        0.85, f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  188,  [196], 6, " ",   " ",  None, False))
     domains.append(("Nup192",    "Nup192",        0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  192,  [296], 5, " ",   " ",  None, False))
     for i in clones_range_A:
         if (i==11): gmm_c = gmm
@@ -408,7 +408,7 @@ if (is_inner_ring):
         domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup157c.txt", gmm_f+"Nup157c.mrc", None, False))
         domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup170n.txt", gmm_f+"Nup170n.mrc", None, False))
         domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm_c,  beadsize25,  None, None, 4, gmm_f+"Nup170c.txt", gmm_f+"Nup170c.mrc", None, False))
-        domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.5,  f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm_c,  beadsize25,  None, None, 6, gmm_f+"Nup188.txt",  gmm_f+"Nup188.mrc",  None, False))
+        domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.85, f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm_c,  beadsize25,  None, None, 6, gmm_f+"Nup188.txt",  gmm_f+"Nup188.mrc",  None, False))
         domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm_c,  beadsize25,  None, None, 5, gmm_f+"Nup192.txt",  gmm_f+"Nup192.mrc",  None, False))
 
 ##########################
@@ -907,7 +907,7 @@ if (use_Immuno_EM):
         "Gle2.1" : [150, 330],
         "Gle2.2" : [150, 330],
         "Mlp1" : [150, 550],
-        "Mlp2" : [150, 550],
+        #"Mlp2" : [150, 550],
         "Ndc1" : [280, 400],
         "Nic96.1" : [255, 525],
         "Nic96.2" : [255, 525],
@@ -964,8 +964,8 @@ if (use_Immuno_EM):
         "Gle1" : [110, 190],        #"Gle1" : [120, 180],
         "Gle2.1" : [20, 120],
         "Gle2.2" : [20, 120],
-        "Mlp1" : [-100, -400],
-        "Mlp2" : [-100, -400],
+        "Mlp1" : [-400, -150],
+        #"Mlp2" : [-400, -150],
         "Ndc1" : [0, 90],
         "Nic96.1" : [25, 175],
         "Nic96.2" : [25, 175],
