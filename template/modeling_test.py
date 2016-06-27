@@ -176,24 +176,24 @@ n84_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
 n82_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
 n96_pdb        = n96 + 'rmfs/Cluster2_noBEA.pdb'
 
-n157N_pdbfile  = npc + "Nup157_4mhc_A_88_892.pdb"
-n157C_pdbfile  = npc + "Nup157_3i5p_A_900_1390.pdb"
-n170N_pdbfile  = npc + "Nup170_4mhc_A_98_992.pdb"
-n170C_pdbfile  = npc + "Nup170_3i5p_A_1000_1502.pdb"
-n188_pdbfile   = npc + "Nup188_12_1652.pdb"
-n192_pdbfile   = npc + "Nup192_1_1683_v2_new.pdb"
+n157N_pdbfile  = npc + "Nup157_4mhc_A_88_892ca.pdb"
+n157C_pdbfile  = npc + "Nup157_3i5p_A_900_1390ca.pdb"
+n170N_pdbfile  = npc + "Nup170_4mhc_A_98_992ca.pdb"
+n170C_pdbfile  = npc + "Nup170_3i5p_A_1000_1502ca.pdb"
+n188_pdbfile   = npc + "Nup188_12_1652ca.pdb"
+n192_pdbfile   = npc + "Nup192_1_1683_v2_new_ca.pdb"
 
-n53_pdbfile    = npc + "Nup53_dimer.pdb"
-n59_pdbfile    = npc + "Nup59_dimer.pdb"
+n53_pdbfile    = npc + "Nup53_dimer_ca.pdb"
+n59_pdbfile    = npc + "Nup59_dimer_ca.pdb"
 #pom152_pdb     = npc + "Pom152r.pdb"               # for GMM generation
 pom152_pdb     = npc + "Pom152_noBEA.pdb"
-n100_pdbfile   = npc + "Nup100_3nf5_AB_816_958.pdb"
-n145N_pdbfile  = npc + "Nup145N_3kep_AB_459_605r.pdb"
+n100_pdbfile   = npc + "Nup100_3nf5_AB_816_958ca.pdb"
+n145N_pdbfile  = npc + "Nup145N_3kep_AB_459_605r_ca.pdb"
 
 #Dbp5_pdbfile   = npc + "Dbp5_3rrm_A_91_482.pdb"    # Not using it for now
-Gle1N_pdbfile  = npc + "Gle1_4wij_A_121_239.pdb"
-Gle1C_pdbfile  = npc + "Gle1_3rrm_B_244_538.pdb"
-Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362.pdb"
+Gle1N_pdbfile  = npc + "Gle1_4wij_A_121_239ca.pdb"
+Gle1C_pdbfile  = npc + "Gle1_3rrm_B_244_538ca.pdb"
+Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362ca.pdb"
 
 #####################################################
 # Parameters for Debugging
