@@ -906,6 +906,8 @@ if (use_Immuno_EM):
         "Gle1" : [200, 320],
         "Gle2.1" : [150, 330],
         "Gle2.2" : [150, 330],
+        "Mlp1" : [150, 550],
+        "Mlp2" : [150, 550],
         "Ndc1" : [280, 400],
         "Nic96.1" : [255, 525],
         "Nic96.2" : [255, 525],
@@ -962,6 +964,8 @@ if (use_Immuno_EM):
         "Gle1" : [110, 190],        #"Gle1" : [120, 180],
         "Gle2.1" : [20, 120],
         "Gle2.2" : [20, 120],
+        "Mlp1" : [-100, -400],
+        "Mlp2" : [-100, -400],
         "Ndc1" : [0, 90],
         "Nic96.1" : [25, 175],
         "Nic96.2" : [25, 175],
@@ -986,8 +990,8 @@ if (use_Immuno_EM):
         "Nup188" : [40, 100],
         "Nup192" : [20, 100],
         "Nup42" : [70, 150],
-        "Nup49.1" : [40, 100],
-        "Nup49.2" : [40, 100],
+        "Nup49.1" : [0, 100],       #"Nup49.1" : [40, 100],
+        "Nup49.2" : [0, 100],       #"Nup49.2" : [40, 100],
         "Nup53" : [20, 100],
         "Nup57.1" : [0, 80],
         "Nup57.2" : [0, 80],
@@ -1026,21 +1030,21 @@ msl_weight = 1.0
 
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (101,200,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Pom152_101_200')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, 'Ndc1', tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Ndc1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, 'Pom34', tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Pom34')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1207,15 +1211,15 @@ if (is_membrane):
     dist_max = 30.0
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (379,379,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (379,379,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.add_to_model()
         dr.set_label("Pom152-Pom152@12")
         dr.set_weight(dr_weight)
         outputobjects.append(dr)
         print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(379,379,"Pom152"), (1337,1337,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
@@ -1350,7 +1354,7 @@ if (use_XL):
     ids_map.set_map_element(1.0, 1.0)
 
     xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
-                                                        '../data_npc/XL_Merged_wholeNPC.csv',
+                                                        '../data_npc/XL_optimized_ambiguity.csv',
                                                         length = 21.0,
                                                         slope = 0.00,
                                                         columnmapping = columnmap,
