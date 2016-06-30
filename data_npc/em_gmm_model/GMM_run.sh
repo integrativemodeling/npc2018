@@ -1,6 +1,6 @@
 m_start=0
-m_end=9
-FILE="Gle2.1"
+m_end=19
+FILE="Nup59"
 
 for ((i=$m_start; i<=$m_end; i++)); do
     cd ~/npc/data_npc/em_gmm_model

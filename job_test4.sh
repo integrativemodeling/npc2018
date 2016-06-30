@@ -44,7 +44,7 @@ EM2D_WEIGHT=10000.0
 
 # Parameters
 if [ -z $1 ]; then
-    REPEAT="5000"
+    REPEAT="2000"
 else
     REPEAT="$1"
 fi
@@ -61,7 +61,7 @@ echo "SGE_TASK_ID = $SGE_TASK_ID"
 echo "JOB_ID = $JOB_ID"
 echo "NSLOTS = $NSLOTS"
 
-# write hostname and starting time 
+# write hostname and starting time
 hostname
 date
 

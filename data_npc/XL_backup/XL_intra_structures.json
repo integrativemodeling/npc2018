@@ -8,8 +8,8 @@
                 ]
             },
             "mapping": {
-                "Pom152": [
-                    "Pom152"
+                "Nup192": [
+                    "Nup192"
                 ]
             },
             "name": "XL_intra_structures",
@@ -29,7 +29,7 @@
                 1.0
             ],
             "domains": [],
-            "name": "Pom152",
+            "name": "Nup192",
             "selection": ":.A",
             "type": "component"
         }

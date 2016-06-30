@@ -176,15 +176,15 @@ n84_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
 n82_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
 n96_pdb        = n96 + 'rmfs/Cluster2_noBEA.pdb'
 
-n157N_pdbfile  = npc + "Nup157_4mhc_A_88_892ca.pdb"
-n157C_pdbfile  = npc + "Nup157_3i5p_A_900_1390ca.pdb"
-n170N_pdbfile  = npc + "Nup170_4mhc_A_98_992ca.pdb"
-n170C_pdbfile  = npc + "Nup170_3i5p_A_1000_1502ca.pdb"
-n188_pdbfile   = npc + "Nup188_12_1652ca.pdb"
-n192_pdbfile   = npc + "Nup192_1_1683_v2_new_ca.pdb"
+n157N_pdbfile  = npc + "Nup157_0_noBEA.pdb"         #n157N_pdbfile  = npc + "Nup157_4mhc_A_88_892ca.pdb"
+n157C_pdbfile  = npc + "Nup157_0_noBEA.pdb"         #n157C_pdbfile  = npc + "Nup157_3i5p_A_900_1390ca.pdb"
+n170N_pdbfile  = npc + "Nup170_0_noBEA.pdb"         #n170N_pdbfile  = npc + "Nup170_4mhc_A_98_992ca.pdb"
+n170C_pdbfile  = npc + "Nup170_0_noBEA.pdb"         #n170C_pdbfile  = npc + "Nup170_3i5p_A_1000_1502ca.pdb"
+n188_pdbfile   = npc + "Nup188_2_noBEA.pdb"         #n188_pdbfile   = npc + "Nup188_12_1652ca.pdb"
+n192_pdbfile   = npc + "Nup192_4_noBEA.pdb"         #n192_pdbfile   = npc + "Nup192_1_1683_v2_new_ca.pdb"
 
-n53_pdbfile    = npc + "Nup53_dimer_ca.pdb"
-n59_pdbfile    = npc + "Nup59_dimer_ca.pdb"
+n53_pdbfile    = npc + "Nup53_9_noBEA.pdb"          #n53_pdbfile    = npc + "Nup53_dimer_ca.pdb"
+n59_pdbfile    = npc + "Nup59_0_noBEA.pdb"          #n59_pdbfile    = npc + "Nup59_dimer_ca.pdb"
 #pom152_pdb     = npc + "Pom152r.pdb"               # for GMM generation
 pom152_pdb     = npc + "Pom152_noBEA.pdb"
 n100_pdbfile   = npc + "Nup100_3nf5_AB_816_958ca.pdb"
@@ -395,21 +395,21 @@ if (is_nic96):
 # Inner Ring scaffold
 ##########################
 if (is_inner_ring):
-    domains.append(("Nup157",    "Nup157n",       0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm,  beadsize25,  1571, [157], 3, " ",   " ",  None, False))
-    domains.append(("Nup157",    "Nup157c",       0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm,  beadsize25,  1572, [157], 3, " ",   " ",  None, False))
-    domains.append(("Nup170",    "Nup170n",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm,  beadsize25,  1701, [170], 3, " ",   " ",  None, False))
-    domains.append(("Nup170",    "Nup170c",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm,  beadsize25,  1702, [170], 4, " ",   " ",  None, False))
-    domains.append(("Nup188",    "Nup188",        0.85, f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  188,  [196], 6, " ",   " ",  None, False))
-    domains.append(("Nup192",    "Nup192",        0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  192,  [296], 5, " ",   " ",  None, False))
+    domains.append(("Nup157",    "Nup157n",       0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 892,0),  gmm,  beadsize25,  1571, [157], 3, " ",   " ",  None, False))
+    domains.append(("Nup157",    "Nup157c",       0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (893,1391,0),  gmm,  beadsize25,  1572, [157], 3, " ",   " ",  None, False))
+    domains.append(("Nup170",    "Nup170n",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 992,0),  gmm,  beadsize25,  1701, [170], 3, " ",   " ",  None, False))
+    domains.append(("Nup170",    "Nup170c",       0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (993,1502,0),  gmm,  beadsize25,  1702, [170], 3, " ",   " ",  None, False))
+    domains.append(("Nup188",    "Nup188",        0.85, f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm,  beadsize25,  188,  None,  6, " ",   " ",  None, False))
+    domains.append(("Nup192",    "Nup192",        0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm,  beadsize25,  192,  None,  6, " ",   " ",  None, False))
     for i in clones_range_A:
         if (i==11): gmm_c = gmm
         else:       gmm_c = None
-        domains.append(("Nup157@%d"%i,  "Nup157n@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 896,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup157n.txt", gmm_f+"Nup157n.mrc", None, False))
-        domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (897,1391,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup157c.txt", gmm_f+"Nup157c.mrc", None, False))
-        domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 996,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup170n.txt", gmm_f+"Nup170n.mrc", None, False))
-        domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (997,1502,0),  gmm_c,  beadsize25,  None, None, 4, gmm_f+"Nup170c.txt", gmm_f+"Nup170c.mrc", None, False))
+        domains.append(("Nup157@%d"%i,  "Nup157n@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157N_pdbfile,  "A",  (  1, 892,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup157n.txt", gmm_f+"Nup157n.mrc", None, False))
+        domains.append(("Nup157@%d"%i,  "Nup157c@%d"%i,  0.0,  f_npc+"Nup157.txt", "YER105C", n157C_pdbfile,  "A",  (893,1391,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup157c.txt", gmm_f+"Nup157c.mrc", None, False))
+        domains.append(("Nup170@%d"%i,  "Nup170n@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170N_pdbfile,  "A",  (  1, 992,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup170n.txt", gmm_f+"Nup170n.mrc", None, False))
+        domains.append(("Nup170@%d"%i,  "Nup170c@%d"%i,  0.1,  f_npc+"Nup170.txt", "Nup170",  n170C_pdbfile,  "A",  (993,1502,0),  gmm_c,  beadsize25,  None, None, 3, gmm_f+"Nup170c.txt", gmm_f+"Nup170c.mrc", None, False))
         domains.append(("Nup188@%d"%i,  "Nup188@%d"%i,   0.85, f_npc+"Nup188.txt", "YML103C", n188_pdbfile,   "A",  (  1,1655,0),  gmm_c,  beadsize25,  None, None, 6, gmm_f+"Nup188.txt",  gmm_f+"Nup188.mrc",  None, False))
-        domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm_c,  beadsize25,  None, None, 5, gmm_f+"Nup192.txt",  gmm_f+"Nup192.mrc",  None, False))
+        domains.append(("Nup192@%d"%i,  "Nup192@%d"%i,   0.75, f_npc+"Nup192.txt", "YJL039C", n192_pdbfile,   "A",  (  1,1683,0),  gmm_c,  beadsize25,  None, None, 6, gmm_f+"Nup192.txt",  gmm_f+"Nup192.mrc",  None, False))
 
 ##########################
 # Membrane nups
@@ -486,7 +486,6 @@ if (is_nucleoplasm):
     domains.append(("Nup145.2", "Nup145.2",    0.75,f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"B", (201, 605,0), gmm,  beadsize25,  2145, [2145], 2,  " ",   " ",  None, False))
     domains.append(("Nup1",     "Nup1",        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), gmm,  beadsize50,  1,    [1],    0,  None,  None, None))
     domains.append(("Nup60",    "Nup60",       0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), gmm,  beadsize50,  60,   [60],   0,  None,  None, None))
-
     for i in clones_range_B:
         if (is_FG):
             domains.append(("Nup145.1@%d"%i, "Nup145.1_10@%d"%i, 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
@@ -529,9 +528,19 @@ if (is_n84):
 if (is_nic96):
     nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
     for key,val in nic96_dict.items():
-        if (is_FG): bm1.set_rmf_file(key, "../data_nic96/rmfs/cluster2.rmf3", 0, rmf_component_name=val)
-        else:       bm1.set_rmf_file(key, "../data_nic96/rmfs/cluster2_FGtruncated.rmf3", 0, rmf_component_name=val)
+        if (is_FG): bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2.rmf3", 0, rmf_component_name=val)
+        else:       bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2_FGtruncated.rmf3", 0, rmf_component_name=val)
         #print("{} = {}".format(key, val))
+
+if (is_inner_ring):
+    bm1.set_rmf_file('Nup157', "../data_npc/Nup157_0.rmf3", 0)
+    bm1.set_rmf_file('Nup170', "../data_npc/Nup170_0.rmf3", 0)
+    bm1.set_rmf_file('Nup188', "../data_npc/Nup188_2.rmf3", 0)
+    bm1.set_rmf_file('Nup192', "../data_npc/Nup192_4.rmf3", 0)
+
+if (is_membrane):
+    bm1.set_rmf_file('Nup53', "../data_npc/Nup53_9.rmf3", 0)
+    bm1.set_rmf_file('Nup59', "../data_npc/Nup59_0.rmf3", 0)
 
 if (is_basket):
     Mlps=['Mlp1', 'Mlp2']
@@ -544,7 +553,7 @@ clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
-                skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_representation=use_EM3D)
+                skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
 #exit(0)
 bm1.scale_bead_radii(100, 0.8)
 
@@ -614,7 +623,9 @@ for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,4
     rigid_tuples.append(protein)
 for protein in [(1,56,'Nic96.2'),(205,839,'Nic96.2'), (637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
     rigid_tuples.append(protein)
-for protein in ['Mlp1', 'Mlp2']:
+for protein in [(1,892,'Nup157'),(900,1391,'Nup157'), (1,992,'Nup170'),(1000,1502,'Nup170'), 'Nup188', 'Nup192']:
+    rigid_tuples.append(protein)
+for protein in [(201,410,'Nup53'), (251,402,'Nup59'), 'Mlp1', 'Mlp2']:
     rigid_tuples.append(protein)
 # Remove flexible movers for all clones
 for protein in clone_list_unique:
@@ -686,6 +697,7 @@ ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                              resolution = res_ev)
 ev1.add_to_model()
 ev1.set_label('main_spoke')
+ev1.set_weight(0.1)
 outputobjects.append(ev1)
 print(ev1.get_output())
 print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -697,6 +709,7 @@ if (use_neighboring_spokes):
                                                                  resolution = res_ev)
     ev2.add_to_model()
     ev2.set_label('bipartite')
+    ev2.set_weight(0.1)
     outputobjects.append(ev2)
     print(ev2.get_output())
     print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
@@ -1428,7 +1441,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(500.0)        # play with weight
+    gem.set_weight(100.0)        # play with weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
