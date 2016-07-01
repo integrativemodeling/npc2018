@@ -1,1 +1,3 @@
-Protein1,Protein2,AbsPos1,AbsPos2,ld-Score,etc,source,distanceNup145,Nup145,524,562,1,allow full ambiguity,XL_intra_structures,13.2047635Nup145,Nup145,524,565,1,allow full ambiguity,XL_intra_structures,13.82363805
+Protein1,Protein2,AbsPos1,AbsPos2,ld-Score,etc,source,distance
+Nup145,Nup145,524,562,1,allow full ambiguity,XL_intra_structures,13.2047635
+Nup145,Nup145,524,565,1,allow full ambiguity,XL_intra_structures,13.82363805

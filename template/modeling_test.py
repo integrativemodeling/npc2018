@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 #####################################################
-# Last Update: September 10th, 2015
-# by Seung Joong Kim and Riccardo Pellarin
-# at Andrej Sali group, University of California San Francisco (UCSF)
+# Last Update: June 30th, 2016 by Seung Joong Kim
+# Andrej Sali group, University of California San Francisco (UCSF)
 #####################################################
 import IMP
 import IMP.core
-#import IMP.base
 import IMP.algebra
 import IMP.atom
 import IMP.container
 
-#import crosslinking_nup82
 import IMP.pmi.restraints.crosslinking
 import IMP.pmi.restraints.stereochemistry
 import IMP.pmi.restraints.em
@@ -56,9 +53,9 @@ parser.add_argument('-res_compo', action="store", dest="res_compo", help="resolu
 parser.add_argument('-draw_hierarchy', action="store", dest="draw_hierarchy", help="draw hierarchy" )
 inputs = parser.parse_args()
 
-#----------------------------------------------------
+#####################################################
 # Setting up the input parameters
-#----------------------------------------------------
+#####################################################
 if (inputs.ncopy is None) :
     inputs.ncopy = "2"
 if (inputs.symmetry == "True") or (inputs.symmetry == "true") or (inputs.symmetry == "Yes") or (inputs.symmetry == "yes") :
@@ -111,17 +108,13 @@ print inputs
 
 
 #####################################################
-# setting up topology
+# setting up topology and parameters
 #####################################################
 m = IMP.Model()
 #s = IMP.pmi.topology.System(m)
 #st = s.create_state()
 simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
-
-#####################################################
-# setting up parameters
-#####################################################
 try:
     from mpi4py import MPI
 except ImportError:
@@ -209,9 +202,9 @@ is_basket = True
 is_FG = False
 
 use_neighboring_spokes = False
-#Stopwatch_None_delta_seconds  32~38 (1 spoke) / 70-80 sec (3 spokes)
-#Stopwatch_None_delta_seconds  34~40 (1 spoke) / 75-85 sec (3 spokes) with XL
-#Stopwatch_None_delta_seconds  51~57 (1 spoke) / 100~110 sec (3 spokes) with XL + EM
+#Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
+#Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
+#Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
 use_shuffle = True
 use_Distance_to_Point = True
 use_Immuno_EM = True
@@ -503,7 +496,6 @@ if (is_nucleoplasm):
 if (is_basket):
     domains.append((    "Mlp1",      "Mlp1",      0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  9191,  None,   0,  None,  None, None))
     domains.append((    "Mlp2",      "Mlp2",      0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), None, beadsize50,  9191,  None,   0,  None,  None, None))
-
     for i in clones_range_B:
         domains.append(("Mlp1@%d"%i, "Mlp1@%d"%i, 0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  None,  None,   0,  None,  None, None))
         domains.append(("Mlp2@%d"%i, "Mlp2@%d"%i, 0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), None, beadsize50,  None,  None,   0,  None,  None, None))
@@ -514,38 +506,39 @@ if (is_basket):
 bm1 = IMP.pmi.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
-if (is_n82):
-    n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
-    for d in list(n82):
-        if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
-        else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
+if (True):
+    if (is_n82):
+        n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
+        for d in list(n82):
+            if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+            else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
 
-if (is_n84):
-    n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
-    for d in list(n84):
-        bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+    if (is_n84):
+        n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
+        for d in list(n84):
+            bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
 
-if (is_nic96):
-    nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
-    for key,val in nic96_dict.items():
-        if (is_FG): bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2.rmf3", 0, rmf_component_name=val)
-        else:       bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2_FGtruncated.rmf3", 0, rmf_component_name=val)
-        #print("{} = {}".format(key, val))
+    if (is_nic96):
+        nic96_dict={'Nic96.1':'Nic96', 'Nsp1.3':'Nsp1', 'Nup49.1':'Nup49', 'Nup57.1':'Nup57', 'Nic96.2':'Nic96', 'Nsp1.4':'Nsp1', 'Nup49.2':'Nup49', 'Nup57.2':'Nup57'}
+        for key,val in nic96_dict.items():
+            if (is_FG): bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2.rmf3", 0, rmf_component_name=val)
+            else:       bm1.set_rmf_file(key, "../data_nic96/rmfs/Cluster2_FGtruncated.rmf3", 0, rmf_component_name=val)
+            #print("{} = {}".format(key, val))
 
-if (is_inner_ring):
-    bm1.set_rmf_file('Nup157', "../data_npc/Nup157_0.rmf3", 0)
-    bm1.set_rmf_file('Nup170', "../data_npc/Nup170_0.rmf3", 0)
-    bm1.set_rmf_file('Nup188', "../data_npc/Nup188_2.rmf3", 0)
-    bm1.set_rmf_file('Nup192', "../data_npc/Nup192_4.rmf3", 0)
+    if (is_inner_ring):
+        bm1.set_rmf_file('Nup157', "../data_npc/Nup157_0.rmf3", 0)
+        bm1.set_rmf_file('Nup170', "../data_npc/Nup170_0.rmf3", 0)
+        bm1.set_rmf_file('Nup188', "../data_npc/Nup188_2.rmf3", 0)
+        bm1.set_rmf_file('Nup192', "../data_npc/Nup192_4.rmf3", 0)
 
-if (is_membrane):
-    bm1.set_rmf_file('Nup53', "../data_npc/Nup53_9.rmf3", 0)
-    bm1.set_rmf_file('Nup59', "../data_npc/Nup59_0.rmf3", 0)
+    if (is_membrane):
+        bm1.set_rmf_file('Nup53', "../data_npc/Nup53_9.rmf3", 0)
+        bm1.set_rmf_file('Nup59', "../data_npc/Nup59_0.rmf3", 0)
 
-if (is_basket):
-    Mlps=['Mlp1', 'Mlp2']
-    for d in list(Mlps):
-        bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
+    if (is_basket):
+        Mlps=['Mlp1', 'Mlp2']
+        for d in list(Mlps):
+            bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -713,18 +706,6 @@ if (use_neighboring_spokes):
     outputobjects.append(ev2)
     print(ev2.get_output())
     print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
-
-
-#####################################################
-# Restraints setup
-# External Barrier restraint
-#####################################################
-if (False):
-    eb = IMP.pmi.restraints.basic.ExternalBarrier(simo, radius = 2000)
-    eb.add_to_model()
-    outputobjects.append(eb)
-    print(eb.get_output())
-    print "ExternalBarrier !!\n"
 
 
 #####################################################
@@ -916,56 +897,55 @@ if (use_Immuno_EM):
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
     RADIAL = {
-        "Gle1" : [200, 320],
-        "Gle2.1" : [150, 330],
-        "Gle2.2" : [150, 330],
-        "Mlp1" : [150, 550],
-        #"Mlp2" : [150, 550],
-        "Ndc1" : [280, 400],
-        "Nic96.1" : [255, 525],
-        "Nic96.2" : [255, 525],
-        "Nsp1.1" : [155, 425],
-        "Nsp1.2" : [155, 425],
-        "Nsp1.3" : [155, 425],
-        "Nsp1.4" : [155, 425],
-        "Nup1" : [200, 360],
+        "Gle1"     : [200, 320],
+        "Gle2.1"   : [150, 330],
+        "Gle2.2"   : [150, 330],
+        "Mlp1"     : [150, 550],
+        #"Mlp2"     : [150, 550],
+        "Ndc1"     : [280, 400],
+        "Nic96.1"  : [255, 525],
+        "Nic96.2"  : [255, 525],
+        "Nsp1.1"   : [155, 425],
+        "Nsp1.2"   : [155, 425],
+        "Nsp1.3"   : [155, 425],
+        "Nsp1.4"   : [155, 425],
+        #"Nup1"     : [200, 360],
         "Nup100.1" : [230, 330],
         "Nup100.2" : [230, 330],
         "Nup116.1" : [200, 350],    #"Nup116.1" : [250, 350],
         "Nup116.2" : [200, 350],    #"Nup116.2" : [250, 350],
-        "Nup120" : [250, 450],      #"Nup120" : [250, 370],
-        "Nup133" : [300, 520],      #"Nup133" : [300, 420],
-        "Nup145c" : [270, 520],     #"Nup145c" : [270, 470],
-        "Nup145.1" : [125, 395],
-        "Nup145.2" : [125, 395],
-        "Nup157" : [190, 350],
+        "Nup120"   : [250, 450],    #"Nup120" : [250, 370],
+        "Nup133"   : [300, 520],    #"Nup133" : [300, 420],
+        "Nup145c"  : [270, 520],    #"Nup145c" : [270, 470],
+        "Nup145.1" : [175, 345],    #"Nup145.1" : [125, 395],
+        "Nup145.2" : [175, 345],    #"Nup145.2" : [125, 395],
+        "Nup157"   : [190, 350],
         "Nup159.1" : [200, 430],    #"Nup159.1" : [250, 430],
         "Nup159.2" : [200, 430],    #"Nup159.2" : [250, 430],
-        "Nup170" : [170, 330],
-        "Nup188" : [200, 320],
-        "Nup192" : [200, 320],
-        "Nup42" : [220, 400],
-        "Nup49.1" : [200, 300],
-        "Nup49.2" : [200, 300],
-        "Nup53" : [280, 380],
-        "Nup57.1" : [80, 300],
-        "Nup57.2" : [80, 300],
-        "Nup59" : [250, 370],
-        "Nup60" : [240, 400],
-        "Nup82.1" : [175, 505],
-        "Nup82.2" : [175, 505],
-        "Nup84" : [290, 520],       #"Nup84" : [290, 450],
-        "Nup85" : [300, 520],       #"Nup85" : [300, 420],
-        "Pom34" : [280, 380],
-        "Seh1" : [250, 370],
-        "Pom152" : [470, 630]       #"Pom152" : [370, 630]
+        "Nup170"   : [170, 330],
+        "Nup188"   : [200, 320],
+        "Nup192"   : [200, 320],
+        "Nup42"    : [220, 400],
+        "Nup49.1"  : [200, 300],
+        "Nup49.2"  : [200, 300],
+        "Nup53"    : [280, 380],
+        "Nup57.1"  : [ 80, 300],
+        "Nup57.2"  : [ 80, 300],
+        "Nup59"    : [250, 370],
+        #"Nup60"    : [240, 400],
+        "Nup82.1"  : [175, 505],
+        "Nup82.2"  : [175, 505],
+        "Nup84"    : [290, 520],    #"Nup84" : [290, 450],
+        "Nup85"    : [300, 520],    #"Nup85" : [300, 420],
+        "Pom34"    : [280, 380],
+        "Seh1"     : [250, 370],
+        "Pom152"   : [470, 630]     #"Pom152" : [370, 630]
     }
     print "\nXYRadialPositionRestraint !!"
     radial_weight = 10.0
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
-
         xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0)
         xyr.set_label('Lower_%d_Upper_%d_%s' % (r[0], r[1], protein))
         xyr.set_weight(radial_weight)
@@ -974,62 +954,105 @@ if (use_Immuno_EM):
         print (xyr.get_output())
 
     ZAXIAL = {
-        "Gle1" : [110, 190],        #"Gle1" : [120, 180],
-        "Gle2.1" : [20, 120],
-        "Gle2.2" : [20, 120],
-        "Mlp1" : [-400, -150],
-        #"Mlp2" : [-400, -150],
-        "Ndc1" : [0, 90],
-        "Nic96.1" : [25, 175],
-        "Nic96.2" : [25, 175],
-        "Nsp1.1" : [0, 150],        #"Nsp1.1" : [0, 120],
-        "Nsp1.2" : [0, 150],        #"Nsp1.2" : [0, 120],
-        "Nsp1.3" : [0, 150],        #"Nsp1.2" : [0, 120],
-        "Nsp1.4" : [0, 150],        #"Nsp1.2" : [0, 120],
-        "Nup1" : [-220, -140],
-        "Nup100.1" : [40, 120],
-        "Nup100.2" : [40, 120],
-        "Nup116.1" : [70, 170],     #"Nup116.1" : [70, 150],
-        "Nup116.2" : [70, 170],     #"Nup116.2" : [70, 150],
-        "Nup120" : [70, 150],
-        "Nup133" : [100, 200],
-        "Nup145c" : [70, 180],      #"Nup145c" : [70, 150],
+        "Gle1"     : [ 110, 190],      #"Gle1" : [120, 180],
+        "Gle2.1"   : [  20, 120],
+        "Gle2.2"   : [  20, 120],
+        "Mlp1"     : [-400,-150],
+        #"Mlp2"     : [-400,-150],
+        "Ndc1"     : [   0,  90],
+        "Nic96.1"  : [  25, 175],
+        "Nic96.2"  : [  25, 175],
+        "Nsp1.1"   : [   0, 150],      #"Nsp1.1" : [0, 120],
+        "Nsp1.2"   : [   0, 150],      #"Nsp1.2" : [0, 120],
+        "Nsp1.3"   : [   0, 150],      #"Nsp1.2" : [0, 120],
+        "Nsp1.4"   : [   0, 150],      #"Nsp1.2" : [0, 120],
+        "Nup1"     : [-220,-140],
+        "Nup100.1" : [  40, 120],
+        "Nup100.2" : [  40, 120],
+        "Nup116.1" : [  70, 170],      #"Nup116.1" : [70, 150],
+        "Nup116.2" : [  70, 170],      #"Nup116.2" : [70, 150],
+        "Nup120"   : [  70, 150],
+        "Nup133"   : [ 100, 200],
+        "Nup145c"  : [  70, 180],      #"Nup145c" : [70, 150],
         "Nup145.1" : [-170, -50],
         "Nup145.2" : [-170, -50],
-        "Nup157" : [0, 95],
-        "Nup159.1" : [100, 240],    #"Nup159.1" : [120, 240],
-        "Nup159.2" : [100, 240],    #"Nup159.2" : [120, 240],
-        "Nup170" : [0, 100],
-        "Nup188" : [40, 100],
-        "Nup192" : [20, 100],
-        "Nup42" : [70, 150],
-        "Nup49.1" : [0, 100],       #"Nup49.1" : [40, 100],
-        "Nup49.2" : [0, 100],       #"Nup49.2" : [40, 100],
-        "Nup53" : [20, 100],
-        "Nup57.1" : [0, 80],
-        "Nup57.2" : [0, 80],
-        "Nup59" : [40, 120],
-        "Nup60" : [-200, -100],
-        "Nup82.1" : [125, 295],     #"Nup82.1" : [145, 295],
-        "Nup82.2" : [125, 295],     #"Nup82.2" : [145, 295],
-        "Nup84" : [150, 190],       #"Nup84" : [150, 170],
-        "Nup85" : [140, 220],       #"Nup85" : [140, 200],
-        "Pom34" : [0, 65],
-        "Seh1" : [50, 170],
-        "Pom152" : [0, 35]          #"Pom152" : [0, 95]
+        "Nup157"   : [   0,  95],
+        "Nup159.1" : [ 100, 240],      #"Nup159.1" : [120, 240],
+        "Nup159.2" : [ 100, 240],      #"Nup159.2" : [120, 240],
+        "Nup170"   : [   0, 100],
+        "Nup188"   : [  40, 100],
+        "Nup192"   : [  20, 100],
+        "Nup42"    : [  70, 150],
+        "Nup49.1"  : [   0, 100],      #"Nup49.1" : [40, 100],
+        "Nup49.2"  : [   0, 100],      #"Nup49.2" : [40, 100],
+        "Nup53"    : [  20, 100],
+        "Nup57.1"  : [   0,  80],
+        "Nup57.2"  : [   0,  80],
+        "Nup59"    : [  40, 120],
+        "Nup60"    : [-200,-100],
+        "Nup82.1"  : [ 125, 295],      #"Nup82.1" : [145, 295],
+        "Nup82.2"  : [ 125, 295],      #"Nup82.2" : [145, 295],
+        "Nup84"    : [ 150, 190],      #"Nup84" : [150, 170],
+        "Nup85"    : [ 140, 220],      #"Nup85" : [140, 200],
+        "Pom34"    : [   0,  65],
+        "Seh1"     : [  50, 170],
+        "Pom152"   : [   0,  35]       #"Pom152" : [0, 95]
     }
     print "\nZAxialPositionRestraint !!"
     zaxial_weight = 10.0
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
-
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
         zax.set_label('Lower_%d_Upper_%d_%s' % (z[0], z[1], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
         outputobjects.append(zax)
         print (zax.get_output())
+
+
+#####################################################
+# Restraints setup - FG nups restraints
+#####################################################
+if (not is_FG):
+    nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+    nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+
+    RADIAL = {
+        "Nup159.1" : [180, 240],
+        "Nup159.2" : [180, 240],
+        "Nsp1.1"   : [180, 220],
+        "Nsp1.2"   : [180, 220],
+        "Nup116.1" : [180, 240],
+        "Nup116.2" : [180, 240],
+        "Nsp1.3"   : [180, 220],
+        "Nup49.1"  : [180, 220],
+        "Nup57.1"  : [180, 220],
+        "Nsp1.4"   : [180, 220],
+        "Nup49.2"  : [180, 220],
+        "Nup57.2"  : [180, 220],
+        "Nup100.1" : [180, 240],
+        "Nup100.2" : [180, 240],
+        "Nup42"    : [180, 220],
+        "Nup145.1" : [180, 240],
+        "Nup145.2" : [180, 240],
+        "Nup1"     : [180, 300],
+        "Nup60"    : [180, 300],
+    }
+    print "\nFG_XYRadialPositionRestraint !!"
+    radial_weight = 10.0
+    for protein, r in RADIAL.iteritems():
+        if (protein not in nup_list_unique):
+            continue
+        if (protein in ['Nup1', 'Nup60']):
+            xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='C')
+        else:
+            xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='N')
+        xyr.set_label('Lower_%d_Upper_%d_%s' % (r[0], r[1], protein))
+        xyr.set_weight(radial_weight)
+        xyr.add_to_model()
+        outputobjects.append(xyr)
+        print (xyr.get_output())
 
 
 #####################################################
@@ -1177,7 +1200,7 @@ if (is_inner_ring):
 #####################################################
 if (is_n84 and use_Distance_to_Point):
     dpr_weight = 100.0
-    dpr_radius = 100.0
+    dpr_radius = 60.0
 
     dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(433.8, 154.1, 170.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
@@ -1252,67 +1275,6 @@ if (is_membrane):
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
-
-
-#####################################################
-# Restraints setup
-# Distance restraints for homo-dimers
-#####################################################
-if (False):
-    """
-    dist_min = 3.0
-    dist_max = 30.0
-    dr_weight = 100.0
-
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(1417,1417,"Nup159.1"), (1417,1417,"Nup159.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup159_1417-1417")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-    """
-
-
-#####################################################
-# Restraints setup
-# Distance restraints for XL cliques
-#####################################################
-if (False):
-    """
-    protein1 = columnmap["Protein1"]
-    protein2 = columnmap["Protein2"]
-    residue1 = columnmap["Residue1"]
-    residue2 = columnmap["Residue2"]
-    idscore = columnmap["IDScore"]
-    xluniqueid = columnmap["XLUniqueID"]
-
-    db = IMP.pmi.tools.get_db_from_csv('../data/XL_cliques_2copies.csv')
-
-    dist_min = 3.0
-    dist_max = 35.0
-    dr_weight = 10.0
-
-    for nxl, entry in enumerate(db):
-        #print nxl, entry
-
-        mol1 = entry[protein1]
-        res1 = int(entry[residue1])
-        mol2 = entry[protein2]
-        res2 = int(entry[residue2])
-        id_score = float(entry[idscore])
-        xlunique_id = int(entry[xluniqueid])
-
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr.add_to_model()
-        temp_label = mol1 + "_" + str(res1) + "-" + mol2 + "_" + str(res2)
-        dr.set_label(temp_label)
-        dr.set_weight(dr_weight)
-        outputobjects.append(dr)
-        print(dr.get_output())
-
-    print "\nDistance Restraints applied for XL cliques !!"
-    print "weight = ", dr_weight, "dist_min = ", dist_min, "dist_max = ", dist_max, "\n"
-    """
 
 
 #####################################################
@@ -1406,7 +1368,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = initial_nframes,
+                                    number_of_frames = initial_nframes*10,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",

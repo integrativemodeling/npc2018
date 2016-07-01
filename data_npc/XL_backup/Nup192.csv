@@ -1,1 +1,8 @@
-Protein1,Protein2,AbsPos1,AbsPos2,ld-Score,etc,source,distanceNup192,Nup192,164,43,1,intra,XL_intra_structures,18.70870089Nup192,Nup192,1241,870,1,intra,XL_intra_structures,20.60466214Nup192,Nup192,1283,1250,1,intra,XL_intra_structures,14.04424078Nup192,Nup192,1386,1425,1,intra,XL_intra_structures,11.25096138Nup192,Nup192,1425,1374,1,intra,XL_intra_structures,19.06940487Nup192,Nup192,1627,1642,1,intra,XL_intra_structures,19.87975908Nup192,Nup192,1642,1652,1,intra,XL_intra_structures,25.59604591
+Protein1,Protein2,AbsPos1,AbsPos2,ld-Score,etc,source,distance
+Nup192,Nup192,164,43,1,intra,XL_intra_structures,18.70870089
+Nup192,Nup192,1241,870,1,intra,XL_intra_structures,20.60466214
+Nup192,Nup192,1283,1250,1,intra,XL_intra_structures,14.04424078
+Nup192,Nup192,1386,1425,1,intra,XL_intra_structures,11.25096138
+Nup192,Nup192,1425,1374,1,intra,XL_intra_structures,19.06940487
+Nup192,Nup192,1627,1642,1,intra,XL_intra_structures,19.87975908
+Nup192,Nup192,1642,1652,1,intra,XL_intra_structures,25.59604591
