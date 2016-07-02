@@ -144,7 +144,6 @@ beadsize25 = 25
 beadsize50 = 50
 beadsize100 = 100
 em2d_weight = float(inputs.weight)
-initial_nframes = 50
 
 n82   = "../data_nup82/"
 f_n82 = "../data_nup82/protein_fasta."
@@ -162,12 +161,9 @@ n145c_fastafile= '../data_nup84_2016/protein_fasta.Nup145c.txt'
 seh1_fastafile = '../data_nup84_2016/protein_fasta.Seh1.txt'
 sec13_fastafile= '../data_nup84_2016/protein_fasta.Sec13.txt'
 
-#n84_pdb        = n82 + 'rmfs/B_8_1-95r.pdb'         # for GMM generation
-#n82_pdb        = n82 + 'rmfs/B_8_1-95r.pdb'         # for GMM generation
-#n96_pdb        = n96 + 'rmfs/cluster2r.pdb'         # for GMM generation
-n84_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
-n82_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'
-n96_pdb        = n96 + 'rmfs/Cluster2_noBEA.pdb'
+n84_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'    #n84_pdb        = n82 + 'rmfs/B_8_1-95r.pdb'    # for GMM generation
+n82_pdb        = n82 + 'rmfs/B_8_1-95_noBEA.pdb'    #n82_pdb        = n82 + 'rmfs/B_8_1-95r.pdb'    # for GMM generation
+n96_pdb        = n96 + 'rmfs/Cluster2_noBEA.pdb'    #n96_pdb        = n96 + 'rmfs/cluster2r.pdb'    # for GMM generation
 
 n157N_pdbfile  = npc + "Nup157_0_noBEA.pdb"         #n157N_pdbfile  = npc + "Nup157_4mhc_A_88_892ca.pdb"
 n157C_pdbfile  = npc + "Nup157_0_noBEA.pdb"         #n157C_pdbfile  = npc + "Nup157_3i5p_A_900_1390ca.pdb"
@@ -178,8 +174,7 @@ n192_pdbfile   = npc + "Nup192_4_noBEA.pdb"         #n192_pdbfile   = npc + "Nup
 
 n53_pdbfile    = npc + "Nup53_9_noBEA.pdb"          #n53_pdbfile    = npc + "Nup53_dimer_ca.pdb"
 n59_pdbfile    = npc + "Nup59_0_noBEA.pdb"          #n59_pdbfile    = npc + "Nup59_dimer_ca.pdb"
-#pom152_pdb     = npc + "Pom152r.pdb"               # for GMM generation
-pom152_pdb     = npc + "Pom152_noBEA.pdb"
+pom152_pdb     = npc + "Pom152_noBEA.pdb"           #pom152_pdb     = npc + "Pom152r.pdb"   # for GMM generation
 n100_pdbfile   = npc + "Nup100_3nf5_AB_816_958ca.pdb"
 n145N_pdbfile  = npc + "Nup145N_3kep_AB_459_605r_ca.pdb"
 
@@ -229,14 +224,14 @@ else:
 # Nup84 complex
 ##########################
 if (is_n84):
-    n84_rb = 84
+    n84_rb = 84;    n133_rb = 84
     domains.append(('Nup84',  "Nup84",    0.0,  n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup85',  "Nup85_1",  0.2,  n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup85',  "Nup85_2",  0.25, n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
     domains.append(('Nup120', "Nup120_1", 0.35, n120_fastafile,  "Nup120",  n84_pdb, "M",  (  1, 711,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup120', "Nup120_2", 0.4,  n120_fastafile,  "Nup120",  n84_pdb, "M",  (712,1037,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
-    domains.append(('Nup133', "Nup133_1", 0.5,  n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 480,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
-    domains.append(('Nup133', "Nup133_2", 0.55, n133_fastafile,  "Nup133",  n84_pdb, "N",  (481,1157,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
+    domains.append(('Nup133', "Nup133_1", 0.5,  n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 489,0),  gmm,  beadsize,  n133_rb,[n84_rb], 2,  " ",   " ",  None, False))
+    domains.append(('Nup133', "Nup133_2", 0.55, n133_fastafile,  "Nup133",  n84_pdb, "N",  (490,1157,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup145c',"Nup145c_1",0.65, n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),  gmm,  beadsize,  n84_rb, [n84_rb], 1,  " ",   " ",  None, False))
     domains.append(('Nup145c',"Nup145c_2",0.7,  n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Seh1',   "Seh1",     0.8,  seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
@@ -249,8 +244,8 @@ if (is_n84):
         domains.append(('Nup85@%d'%i,  "Nup85_2@%d"%i,  0.25,n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),  gmm_c,  beadsize,   None,   None,   2,  gmm_f+"Nup85_2.txt",   gmm_f+"Nup85_2.mrc",   None, False))
         domains.append(('Nup120@%d'%i, "Nup120_1@%d"%i, 0.35,n120_fastafile,  "Nup120",  n84_pdb, "M",  (  1, 711,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup120_1.txt",  gmm_f+"Nup120_1.mrc",  None, False))
         domains.append(('Nup120@%d'%i, "Nup120_2@%d"%i, 0.4, n120_fastafile,  "Nup120",  n84_pdb, "M",  (712,1037,0),  gmm_c,  beadsize,   None,   None,   2,  gmm_f+"Nup120_2.txt",  gmm_f+"Nup120_2.mrc",  None, False))
-        domains.append(('Nup133@%d'%i, "Nup133_1@%d"%i, 0.5, n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 480,0),  gmm_c,  beadsize,   None,   None,   2,  gmm_f+"Nup133_1.txt",  gmm_f+"Nup133_1.mrc",  None, False))
-        domains.append(('Nup133@%d'%i, "Nup133_2@%d"%i, 0.55,n133_fastafile,  "Nup133",  n84_pdb, "N",  (481,1157,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup133_2.txt",  gmm_f+"Nup133_2.mrc",  None, False))
+        domains.append(('Nup133@%d'%i, "Nup133_1@%d"%i, 0.5, n133_fastafile,  "Nup133",  n84_pdb, "N",  (  1, 489,0),  gmm_c,  beadsize,   None,   None,   2,  gmm_f+"Nup133_1.txt",  gmm_f+"Nup133_1.mrc",  None, False))
+        domains.append(('Nup133@%d'%i, "Nup133_2@%d"%i, 0.55,n133_fastafile,  "Nup133",  n84_pdb, "N",  (490,1157,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup133_2.txt",  gmm_f+"Nup133_2.mrc",  None, False))
         domains.append(('Nup145c@%d'%i,"Nup145c_1@%d"%i,0.65,n145c_fastafile, "Nup145c", n84_pdb, "O",  (  1, 125,0),  gmm_c,  beadsize,   None,   None,   1,  gmm_f+"Nup145c_1.txt", gmm_f+"Nup145c_1.mrc", None, False))
         domains.append(('Nup145c@%d'%i,"Nup145c_2@%d"%i,0.7, n145c_fastafile, "Nup145c", n84_pdb, "O",  (126, 712,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup145c_2.txt", gmm_f+"Nup145c_2.mrc", None, False))
         domains.append(('Seh1@%d'%i,   "Seh1@%d"%i,     0.8, seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),  gmm_c,  beadsize,   None,   None,   2,  gmm_f+"Seh1.txt",      gmm_f+"Seh1.mrc",      None, False))
@@ -548,7 +543,7 @@ print ("clone_list_unique = ", clone_list_unique)
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
 #exit(0)
-bm1.scale_bead_radii(100, 0.8)
+#bm1.scale_bead_radii(100, 0.8)
 
 
 #####################################################
@@ -606,6 +601,7 @@ else:
 # rigidify floppy bodies
 #####################################################
 rigid_tuples = []
+#for protein in ['Nup84', 'Nup85', 'Nup120', (1,480,'Nup133'),(490,1157,'Nup133'), 'Nup145c', 'Seh1', 'Sec13']:
 for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
     rigid_tuples.append(protein)
 for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
@@ -702,7 +698,7 @@ if (use_neighboring_spokes):
                                                                  resolution = res_ev)
     ev2.add_to_model()
     ev2.set_label('bipartite')
-    ev2.set_weight(0.1)
+    ev2.set_weight(0.3)
     outputobjects.append(ev2)
     print(ev2.get_output())
     print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
@@ -751,7 +747,7 @@ class CompositeRepresentation(object):
         copies = self.COPIES.get(protein, 1)
         return [self[protein]] + [self['%s.%d'] % i for i in range(1, copies)]
 
-if use_Composite:
+if (use_Composite):
     COMPOSITE = {
         "C1"  : ("Gle2", "Nup116", 1),
         "C2"  : ("Nup82", "Nsp1", 1),
@@ -909,13 +905,13 @@ if (use_Immuno_EM):
         "Nsp1.2"   : [155, 425],
         "Nsp1.3"   : [155, 425],
         "Nsp1.4"   : [155, 425],
-        #"Nup1"     : [200, 360],
+        #"Nup1"     : [200, 360],   # redundant with the FG nup restraint below
         "Nup100.1" : [230, 330],
         "Nup100.2" : [230, 330],
         "Nup116.1" : [200, 350],    #"Nup116.1" : [250, 350],
         "Nup116.2" : [200, 350],    #"Nup116.2" : [250, 350],
         "Nup120"   : [250, 450],    #"Nup120" : [250, 370],
-        "Nup133"   : [300, 520],    #"Nup133" : [300, 420],
+        "Nup133"   : [300, 540],    #"Nup133" : [300, 420],
         "Nup145c"  : [270, 520],    #"Nup145c" : [270, 470],
         "Nup145.1" : [175, 345],    #"Nup145.1" : [125, 395],
         "Nup145.2" : [175, 345],    #"Nup145.2" : [125, 395],
@@ -962,41 +958,41 @@ if (use_Immuno_EM):
         "Ndc1"     : [   0,  90],
         "Nic96.1"  : [  25, 175],
         "Nic96.2"  : [  25, 175],
-        "Nsp1.1"   : [   0, 150],      #"Nsp1.1" : [0, 120],
-        "Nsp1.2"   : [   0, 150],      #"Nsp1.2" : [0, 120],
-        "Nsp1.3"   : [   0, 150],      #"Nsp1.2" : [0, 120],
-        "Nsp1.4"   : [   0, 150],      #"Nsp1.2" : [0, 120],
+        "Nsp1.1"   : [ 120, 300],      #"Nsp1.1"   : [  0, 120],
+        "Nsp1.2"   : [ 120, 300],      #"Nsp1.2"   : [  0, 120],
+        "Nsp1.3"   : [   0, 150],      #"Nsp1.2"   : [  0, 120],
+        "Nsp1.4"   : [   0, 150],      #"Nsp1.2"   : [  0, 120],
         "Nup1"     : [-220,-140],
-        "Nup100.1" : [  40, 120],
-        "Nup100.2" : [  40, 120],
-        "Nup116.1" : [  70, 170],      #"Nup116.1" : [70, 150],
-        "Nup116.2" : [  70, 170],      #"Nup116.2" : [70, 150],
-        "Nup120"   : [  70, 150],
+        "Nup100.1" : [  40, 220],      #"Nup100.1" : [  40, 120],
+        "Nup100.2" : [  40, 220],      #"Nup100.2" : [  40, 120],
+        "Nup116.1" : [  70, 330],      #"Nup116.1" : [  70, 150],
+        "Nup116.2" : [  70, 330],      #"Nup116.2" : [  70, 150],
+        "Nup120"   : [  70, 260],      #"Nup120"   : [  70, 150],
         "Nup133"   : [ 100, 200],
-        "Nup145c"  : [  70, 180],      #"Nup145c" : [70, 150],
-        "Nup145.1" : [-170, -50],
-        "Nup145.2" : [-170, -50],
+        "Nup145c"  : [  70, 260],      #"Nup145c"  : [  70, 150],
+        "Nup145.1" : [-320, -50],      #"Nup145.1" : [-170, -50],
+        "Nup145.2" : [-320, -50],      #"Nup145.2" : [-170, -50],
         "Nup157"   : [   0,  95],
-        "Nup159.1" : [ 100, 240],      #"Nup159.1" : [120, 240],
-        "Nup159.2" : [ 100, 240],      #"Nup159.2" : [120, 240],
+        "Nup159.1" : [ 120, 300],      #"Nup159.1" :  [120, 240],
+        "Nup159.2" : [ 120, 300],      #"Nup159.2" :  [120, 240],
         "Nup170"   : [   0, 100],
         "Nup188"   : [  40, 100],
         "Nup192"   : [  20, 100],
         "Nup42"    : [  70, 150],
-        "Nup49.1"  : [   0, 100],      #"Nup49.1" : [40, 100],
-        "Nup49.2"  : [   0, 100],      #"Nup49.2" : [40, 100],
+        "Nup49.1"  : [  40, 100],
+        "Nup49.2"  : [  40, 100],
         "Nup53"    : [  20, 100],
         "Nup57.1"  : [   0,  80],
         "Nup57.2"  : [   0,  80],
         "Nup59"    : [  40, 120],
         "Nup60"    : [-200,-100],
-        "Nup82.1"  : [ 125, 295],      #"Nup82.1" : [145, 295],
-        "Nup82.2"  : [ 125, 295],      #"Nup82.2" : [145, 295],
-        "Nup84"    : [ 150, 190],      #"Nup84" : [150, 170],
-        "Nup85"    : [ 140, 220],      #"Nup85" : [140, 200],
+        "Nup82.1"  : [ 145, 300],
+        "Nup82.2"  : [ 145, 300],
+        "Nup84"    : [ 150, 220],      #"Nup84"    : [ 150, 170],
+        "Nup85"    : [ 140, 250],      #"Nup85"    : [ 140, 200],
         "Pom34"    : [   0,  65],
-        "Seh1"     : [  50, 170],
-        "Pom152"   : [   0,  35]       #"Pom152" : [0, 95]
+        "Seh1"     : [  50, 300],      #"Seh1"     : [  50, 170],
+        "Pom152"   : [   0,  35]       #"Pom152"   : [   0,  95]
     }
     print "\nZAxialPositionRestraint !!"
     zaxial_weight = 10.0
@@ -1019,21 +1015,21 @@ if (not is_FG):
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
     RADIAL = {
-        "Nup159.1" : [180, 240],
-        "Nup159.2" : [180, 240],
-        "Nsp1.1"   : [180, 220],
-        "Nsp1.2"   : [180, 220],
-        "Nup116.1" : [180, 240],
-        "Nup116.2" : [180, 240],
+        "Nup159.1" : [180, 300],
+        "Nup159.2" : [180, 300],
+        "Nsp1.1"   : [180, 230],
+        "Nsp1.2"   : [180, 230],
+        "Nup116.1" : [180, 300],
+        "Nup116.2" : [180, 300],
         "Nsp1.3"   : [180, 220],
         "Nup49.1"  : [180, 220],
         "Nup57.1"  : [180, 220],
         "Nsp1.4"   : [180, 220],
         "Nup49.2"  : [180, 220],
         "Nup57.2"  : [180, 220],
-        "Nup100.1" : [180, 240],
-        "Nup100.2" : [180, 240],
-        "Nup42"    : [180, 220],
+        "Nup100.1" : [180, 260],
+        "Nup100.2" : [180, 260],
+        "Nup42"    : [180, 300],
         "Nup145.1" : [180, 240],
         "Nup145.2" : [180, 240],
         "Nup1"     : [180, 300],
@@ -1059,10 +1055,12 @@ if (not is_FG):
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th = 45.0
-tor_R = 390.0 + 150.0
-tor_r = 150.0 - tor_th/2.0
+tor_R = 390.0 + 200.0
+#tor_R = 390.0 + 150.0
+tor_r = 200.0 - tor_th/2.0
+#tor_r = 150.0 - tor_th/2.0
 msl_sigma = 1.0
-msl_weight = 1.0
+msl_weight = 10.0
 
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
@@ -1100,46 +1098,6 @@ if (is_membrane):
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
-    """
-    perinuclear_restraints = []
-    if PERINUCLEAR:
-    # Perinuclear volume location
-      for i, beads in enumerate(T.get_beads("Pom152", 7)):
-        peri = IMP.npc.PerinuclearVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
-        for b in beads:
-          peri.add_particle(b)
-        peri.set_name('Perinuclear_Pom152_%d' % i)
-        all_restraints.add_restraint(peri)
-        perinuclear_restraints.append(peri)
-
-
-    pore_side_restraints = []
-    if PORE_SIDE:
-    # Pore-side volume location
-      for i, beads in enumerate(T.get_beads("Ndc1", 8)):
-        pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
-        for b in beads:
-          pore.add_particle(b)
-        pore.set_name('Pore_Side_Ndc1_%d' % i)
-        all_restraints.add_restraint(pore)
-        pore_side_restraints.append(pore)
-
-      for i, beads in enumerate(T.get_beads("Pom152", 8)):
-        pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
-        for b in beads:
-          pore.add_particle(b)
-        pore.set_name('Pore_Side_Pom152_%d' % i)
-        all_restraints.add_restraint(pore)
-        pore_side_restraints.append(pore)
-
-      for i, beads in enumerate(T.get_beads("Pom34", 8)):
-        pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
-        for b in beads:
-          pore.add_particle(b)
-        pore.set_name('Pore_Side_Pom34_%d' % i)
-        all_restraints.add_restraint(pore)
-        pore_side_restraints.append(pore)
-    """
 
 if (is_nucleoplasm):
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
@@ -1196,37 +1154,6 @@ if (is_inner_ring):
 
 #####################################################
 # Restraints setup
-# Distance_to_point restraints for orientation of the Nup84 complex
-#####################################################
-if (is_n84 and use_Distance_to_Point):
-    dpr_weight = 100.0
-    dpr_radius = 60.0
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(230,230,"Nup133"), anchor_point=IMP.algebra.Vector3D(433.8, 154.1, 170.0), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup133")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(320.2, -201.6, 190.0), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup85")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(538.1, -212.6, 130.0), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup120")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-    print "DistanceToPointRestraint !!\n"
-
-
-#####################################################
-# Restraints setup
 # Distance restraints
 #####################################################
 dist_min = 3.0
@@ -1237,10 +1164,22 @@ if (is_n84 and is_nucleoplasm):
     dist_max = 15.0
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
-    dr.set_label("Nup145n-Nup145c")
+    dr.set_label("Nup145n-Nup145c@11")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
+
+"""
+# Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure yet if it is real
+if (is_n84 and use_neighboring_spokes):
+    dist_max = 35.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup133-Nup120@2")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+"""
 
 # The Pom152 ring
 if (is_membrane):
@@ -1297,7 +1236,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = initial_nframes,
+                                    number_of_frames = 50,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1311,6 +1250,37 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre-XL_sampling) - ", rank
+
+
+#####################################################
+# Restraints setup
+# Distance_to_point restraints for orientation of the Nup84 complex
+#####################################################
+if (is_n84 and use_Distance_to_Point):
+    dpr_weight = 100.0
+    dpr_radius = 10.0
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(515.4, 105.4, 168.2), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup133")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(286.8, -174.4, 230.5), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup85")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(489.2, -251.3, 202.3), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup120")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+    print "DistanceToPointRestraint for the Nup84 complex !!\n"
 
 
 #####################################################
@@ -1335,7 +1305,7 @@ if (use_XL):
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
                                                         resolution = 1.0,
-                                                        inner_slope = 0.03,
+                                                        inner_slope = 0.05,
                                                         #inner_slope = 0.01,
                                                         filelabel = "wtDSS",
                                                         label = "wtDSS",
@@ -1368,7 +1338,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = initial_nframes*10,
+                                    number_of_frames = 1000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1400,7 +1370,8 @@ if (use_EM3D):
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/avg_monomer_final_sj2_ring_5p5rot.456.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.0000001,
+                                                    #slope=0.0000001,
+                                                    slope=0.00000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
     gem.set_weight(100.0)        # play with weight
@@ -1444,6 +1415,44 @@ exit(0)
 
 
 """
+perinuclear_restraints = []
+if PERINUCLEAR:
+# Perinuclear volume location
+  for i, beads in enumerate(T.get_beads("Pom152", 7)):
+    peri = IMP.npc.PerinuclearVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
+    for b in beads:
+      peri.add_particle(b)
+    peri.set_name('Perinuclear_Pom152_%d' % i)
+    all_restraints.add_restraint(peri)
+    perinuclear_restraints.append(peri)
+
+pore_side_restraints = []
+if PORE_SIDE:
+# Pore-side volume location
+  for i, beads in enumerate(T.get_beads("Ndc1", 8)):
+    pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
+    for b in beads:
+      pore.add_particle(b)
+    pore.set_name('Pore_Side_Ndc1_%d' % i)
+    all_restraints.add_restraint(pore)
+    pore_side_restraints.append(pore)
+
+  for i, beads in enumerate(T.get_beads("Pom152", 8)):
+    pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
+    for b in beads:
+      pore.add_particle(b)
+    pore.set_name('Pore_Side_Pom152_%d' % i)
+    all_restraints.add_restraint(pore)
+    pore_side_restraints.append(pore)
+
+  for i, beads in enumerate(T.get_beads("Pom34", 8)):
+    pore = IMP.npc.PoreSideVolumeLocationRestraint(m, tor_R, tor_r, tor_th, False, 0.2)
+    for b in beads:
+      pore.add_particle(b)
+    pore.set_name('Pore_Side_Pom34_%d' % i)
+    all_restraints.add_restraint(pore)
+    pore_side_restraints.append(pore)
+
 if RES_CONTACT:
   print 'ADDING PROTEIN CONTACT RESTRAINTS'
   for res1, res2 in [x.split('-') for x in CONTACT]:

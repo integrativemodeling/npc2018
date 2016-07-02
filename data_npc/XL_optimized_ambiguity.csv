@@ -397,7 +397,7 @@ Nup120@2,217,Nup133,239,1,170,inter Nup84 to contiguous Nup84 complex IMPORTANT 
 Nup120@2,431,Nup133,191,1,171,inter Nup84 to contiguous Nup84 complex IMPORTANT to include,,,,
 Nup120,735,Nup188,1052,1,172,regular ?,,,,
 Nup133@11,856,Mlp1,454,1,173,nuclear side only,,,,
-Nup133,590,Nup85,669,0.01,174,inter Nup84 to contiguous Nup84 complex IMPORTANT to include,,,,
+Nup133,590,Nup85@2,669,0.001,174,inter Nup84 to contiguous Nup84 complex IMPORTANT to include,,,,
 Nup145.1,258,Nic96.1@11,9,1,175,nuclear side only,,,,
 Nup145.1,258,Nic96.2@11,9,1,175,,,,,
 Nup145.2,258,Nic96.1@11,9,1,175,,,,,
