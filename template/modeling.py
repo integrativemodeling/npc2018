@@ -1085,6 +1085,121 @@ if (is_n84 and use_Distance_to_Point):
 
 
 #####################################################
+# Restraints setup - Membrane Localization + ALPS Motif
+#####################################################
+tor_th = 45.0
+tor_R = 390.0 + 200.0
+#tor_R = 390.0 + 150.0
+tor_r = 200.0 - tor_th/2.0
+#tor_r = 150.0 - tor_th/2.0
+msl_sigma = 1.0
+msl_weight = 1.0
+
+if (is_membrane):
+    print "\nMembraneSurfaceLocationRestraint !!"
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Pom152_101_200')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Ndc1')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Pom34')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup53')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup59')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+if (is_nucleoplasm):
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup1')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup60')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+if (is_n84):
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup133')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup120_1')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup120_2')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+if (is_inner_ring):
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup157", lower_bound=0, upper_bound=50, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 50, "Nup157_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup170", lower_bound=-50, upper_bound=0, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (-50, 0, "Nup170_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,338,'Nup157'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup157')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,352,'Nup170'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl.set_label('Nup170')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+
+#####################################################
 # Restraints setup
 # Distance restraints
 #####################################################
@@ -1182,107 +1297,6 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre-XL_sampling) - ", rank
-
-
-#####################################################
-# Restraints setup - Membrane Localization + ALPS Motif
-#####################################################
-tor_th = 45.0
-tor_R = 390.0 + 200.0
-#tor_R = 390.0 + 150.0
-tor_r = 200.0 - tor_th/2.0
-#tor_r = 150.0 - tor_th/2.0
-msl_sigma = 10.0
-msl_weight = 1.0
-
-if (is_membrane):
-    print "\nMembraneSurfaceLocationRestraint !!"
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Pom152_101_200')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Ndc1')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Pom34')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup53')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup59')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-if (is_nucleoplasm):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup1')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup60')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup133')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup120_1')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup120_2')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-if (is_inner_ring):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,338,'Nup157'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup157')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,352,'Nup170'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Nup170')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
 
 
 #####################################################
