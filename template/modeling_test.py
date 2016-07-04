@@ -1084,17 +1084,50 @@ if (is_n84 and use_Distance_to_Point):
     print(dpr.get_output())
     print "DistanceToPointRestraint for the Nup84 complex !!\n"
 
-"""
-# Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure yet if it is real
-if (is_n84 and use_neighboring_spokes):
-    dist_max = 35.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    """
+    # Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure yet if it is real
+    if (use_neighboring_spokes):
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
+        dr.add_to_model()
+        dr.set_label("Nup133-Nup120@2")
+        dr.set_weight(10.0)
+        outputobjects.append(dr)
+        print(dr.get_output())
+    """
+
+
+#####################################################
+# Restraints setup
+# Distance restraints
+#####################################################
+dist_min = 3.0
+dr_weight = 10.0
+
+# Nup145n - Nup145c
+if (is_n84 and is_nucleoplasm):
+    dist_max = 15.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
-    dr.set_label("Nup133-Nup120@2")
+    dr.set_label("Nup145n-Nup145c@11")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
-"""
+
+if (is_inner_ring):
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=50, upper_bound=100, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (50, 100, "Nup188_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=75, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 75, "Nup192_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
 
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
@@ -1243,39 +1276,6 @@ if (is_inner_ring):
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
-
-
-#####################################################
-# Restraints setup
-# Distance restraints
-#####################################################
-dist_min = 3.0
-dr_weight = 10.0
-
-# Nup145n - Nup145c
-if (is_n84 and is_nucleoplasm):
-    dist_max = 15.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup145n-Nup145c@11")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-
-if (is_inner_ring):
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=50, upper_bound=100, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (50, 100, "Nup188_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=75, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 75, "Nup192_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
 
 
 #####################################################
