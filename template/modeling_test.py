@@ -191,19 +191,20 @@ is_n82 = True
 is_nic96 = True
 is_inner_ring = True
 is_membrane = True
-is_cytoplasm = True
-is_nucleoplasm = True
-is_basket = True
+is_cytoplasm = False
+is_nucleoplasm = False
+is_basket = False
 is_FG = False
 
-use_neighboring_spokes = False
+use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
 use_shuffle = True
-use_Distance_to_Point = True
+use_ExcludedVolume = True
 use_Immuno_EM = True
 use_Composite = False
+use_Distance_to_Point = True
 use_XL = True
 use_EM3D = True
 
@@ -255,7 +256,7 @@ if (is_n84):
 # Nup82 complex
 ##########################
 if (is_n82):
-    n82_rb = 84
+    n82_rb = 82
     domains.append(("Dyn2.1",  "Dyn2.1",      0.48,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "A", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Dyn2.2",  "Dyn2.2",      0.65,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "B", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Nup82.1", "Nup82.1_1",   0.0,   f_n82+"Nup82.txt",  "Nup82",  n82_pdb,  "C", (   1, 452,0),  gmm,   beadsize,   n82_rb, [n82_rb], 2,  " ",   " ",  None, False))
@@ -652,56 +653,57 @@ sampleobjects.append(simo)
 # Restraints setup
 # Excluded Volume restraint for components in the main spoke
 #####################################################
-main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
-for entry in domains:
-    if '@11' in entry[0]:
-        main_spoke.append(entry[0])
-        main_spoke_hier_name.append(entry[1])
-    elif '@' in entry[0]:
-        other_spokes.append(entry[0])
-    else:
-        main_spoke.append(entry[0])
-        main_spoke_hier_name.append(entry[1])
-main_spoke_unique = sorted(list(set(main_spoke)))
-main_spoke_hier_name = sorted(main_spoke_hier_name)
-other_spokes_unique = sorted(list(set(other_spokes)))
-print ("main_spoke_hier_name = ", main_spoke_hier_name)
-print ("main_spoke_unique = ", main_spoke_unique)
-print ("other_spokes_unique = ", other_spokes_unique)
+if (use_ExcludedVolume):
+    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
+    for entry in domains:
+        if '@11' in entry[0]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif '@' in entry[0]:
+            other_spokes.append(entry[0])
+        else:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+    main_spoke_unique = sorted(list(set(main_spoke)))
+    main_spoke_hier_name = sorted(main_spoke_hier_name)
+    other_spokes_unique = sorted(list(set(other_spokes)))
+    print ("main_spoke_hier_name = ", main_spoke_hier_name)
+    print ("main_spoke_unique = ", main_spoke_unique)
+    print ("other_spokes_unique = ", other_spokes_unique)
 
-included_objects = [];  other_objects = []
-for entry in main_spoke_unique:
-    obj = simo.hier_dict[entry]
-    included_objects.append(obj)
-    #other_objects.append(obj)
-for entry in other_spokes_unique:
-    other_objects.append(simo.hier_dict[entry])
-print ("EV included_objects in the main spoke = ", included_objects)
-print ("EV other_objects = ", other_objects)
-print ("resolution for EV = ", res_ev)
+    included_objects = [];  other_objects = []
+    for entry in main_spoke_unique:
+        obj = simo.hier_dict[entry]
+        included_objects.append(obj)
+        #other_objects.append(obj)
+    for entry in other_spokes_unique:
+        other_objects.append(simo.hier_dict[entry])
+    print ("EV included_objects in the main spoke = ", included_objects)
+    print ("EV other_objects = ", other_objects)
+    print ("resolution for EV = ", res_ev)
 
-ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
-                                                             included_objects = included_objects,
-                                                             #other_objects = other_objects,
-                                                             resolution = res_ev)
-ev1.add_to_model()
-ev1.set_label('main_spoke')
-ev1.set_weight(0.1)
-outputobjects.append(ev1)
-print(ev1.get_output())
-print "ExcludedVolumeSphere1 for the main spoke !!\n"
-
-if (use_neighboring_spokes):
-    ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                  included_objects = included_objects,
-                                                                 other_objects = other_objects,
+                                                                 #other_objects = other_objects,
                                                                  resolution = res_ev)
-    ev2.add_to_model()
-    ev2.set_label('bipartite')
-    ev2.set_weight(0.3)
-    outputobjects.append(ev2)
-    print(ev2.get_output())
-    print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
+    ev1.add_to_model()
+    ev1.set_label('main_spoke')
+    ev1.set_weight(0.1)
+    outputobjects.append(ev1)
+    print(ev1.get_output())
+    print "ExcludedVolumeSphere1 for the main spoke !!\n"
+
+    if (use_neighboring_spokes):
+        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+                                                                     included_objects = included_objects,
+                                                                     other_objects = other_objects,
+                                                                     resolution = res_ev)
+        ev2.add_to_model()
+        ev2.set_label('bipartite')
+        ev2.set_weight(0.3)
+        outputobjects.append(ev2)
+        print(ev2.get_output())
+        print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 
 #####################################################
@@ -899,12 +901,12 @@ if (use_Immuno_EM):
         "Mlp1"     : [150, 550],
         #"Mlp2"     : [150, 550],
         "Ndc1"     : [280, 400],
-        "Nic96.1"  : [255, 525],
-        "Nic96.2"  : [255, 525],
+        "Nic96.1"  : [255, 350],    #"Nic96.1"  : [255, 525],
+        "Nic96.2"  : [255, 350],    #"Nic96.2"  : [255, 525],
         "Nsp1.1"   : [155, 425],
         "Nsp1.2"   : [155, 425],
-        "Nsp1.3"   : [155, 425],
-        "Nsp1.4"   : [155, 425],
+        "Nsp1.3"   : [200, 300],    #"Nsp1.3"   : [155, 425],
+        "Nsp1.4"   : [200, 300],    #"Nsp1.4"   : [155, 425],
         #"Nup1"     : [200, 360],   # redundant with the FG nup restraint below
         "Nup100.1" : [230, 330],
         "Nup100.2" : [230, 330],
@@ -913,12 +915,12 @@ if (use_Immuno_EM):
         "Nup120"   : [250, 450],    #"Nup120" : [250, 370],
         "Nup133"   : [300, 540],    #"Nup133" : [300, 420],
         "Nup145c"  : [270, 520],    #"Nup145c" : [270, 470],
-        "Nup145.1" : [175, 345],    #"Nup145.1" : [125, 395],
-        "Nup145.2" : [175, 345],    #"Nup145.2" : [125, 395],
+        "Nup145.1" : [125, 395],
+        "Nup145.2" : [125, 395],
         "Nup157"   : [190, 350],
         "Nup159.1" : [200, 430],    #"Nup159.1" : [250, 430],
         "Nup159.2" : [200, 430],    #"Nup159.2" : [250, 430],
-        "Nup170"   : [170, 330],
+        "Nup170"   : [200, 315],    #"Nup170"   : [170, 330],
         "Nup188"   : [200, 320],
         "Nup192"   : [200, 320],
         "Nup42"    : [220, 400],
@@ -950,49 +952,49 @@ if (use_Immuno_EM):
         print (xyr.get_output())
 
     ZAXIAL = {
-        "Gle1"     : [ 110, 190],      #"Gle1" : [120, 180],
+        "Gle1"     : [ 110, 190],       #"Gle1" : [120, 180],
         "Gle2.1"   : [  20, 120],
         "Gle2.2"   : [  20, 120],
         "Mlp1"     : [-400,-150],
         #"Mlp2"     : [-400,-150],
         "Ndc1"     : [   0,  90],
-        "Nic96.1"  : [  25, 175],
-        "Nic96.2"  : [  25, 175],
-        "Nsp1.1"   : [ 120, 300],      #"Nsp1.1"   : [  0, 120],
-        "Nsp1.2"   : [ 120, 300],      #"Nsp1.2"   : [  0, 120],
-        "Nsp1.3"   : [   0, 150],      #"Nsp1.2"   : [  0, 120],
-        "Nsp1.4"   : [   0, 150],      #"Nsp1.2"   : [  0, 120],
+        "Nic96.1"  : [  50, 100],       #"Nic96.1"  : [  25, 175],
+        "Nic96.2"  : [   0,  50],       #"Nic96.2"  : [  25, 175],
+        "Nsp1.1"   : [ 120, 300],       #"Nsp1.1"   : [   0, 120],
+        "Nsp1.2"   : [ 120, 300],       #"Nsp1.2"   : [   0, 120],
+        "Nsp1.3"   : [ -50,  50],       #"Nsp1.3"   : [   0, 120],
+        "Nsp1.4"   : [ -50,  50],       #"Nsp1.4"   : [   0, 120],
         "Nup1"     : [-220,-140],
-        "Nup100.1" : [  40, 220],      #"Nup100.1" : [  40, 120],
-        "Nup100.2" : [  40, 220],      #"Nup100.2" : [  40, 120],
-        "Nup116.1" : [  70, 330],      #"Nup116.1" : [  70, 150],
-        "Nup116.2" : [  70, 330],      #"Nup116.2" : [  70, 150],
-        "Nup120"   : [  70, 260],      #"Nup120"   : [  70, 150],
+        "Nup100.1" : [  40, 220],       #"Nup100.1" : [  40, 120],
+        "Nup100.2" : [  40, 220],       #"Nup100.2" : [  40, 120],
+        "Nup116.1" : [  70, 330],       #"Nup116.1" : [  70, 150],
+        "Nup116.2" : [  70, 330],       #"Nup116.2" : [  70, 150],
+        "Nup120"   : [  70, 260],       #"Nup120"   : [  70, 150],
         "Nup133"   : [ 100, 200],
-        "Nup145c"  : [  70, 260],      #"Nup145c"  : [  70, 150],
-        "Nup145.1" : [-320, -50],      #"Nup145.1" : [-170, -50],
-        "Nup145.2" : [-320, -50],      #"Nup145.2" : [-170, -50],
-        "Nup157"   : [   0,  95],
-        "Nup159.1" : [ 120, 300],      #"Nup159.1" :  [120, 240],
-        "Nup159.2" : [ 120, 300],      #"Nup159.2" :  [120, 240],
-        "Nup170"   : [   0, 100],
-        "Nup188"   : [  40, 100],
-        "Nup192"   : [  20, 100],
+        "Nup145c"  : [  70, 260],       #"Nup145c"  : [  70, 150],
+        "Nup145.1" : [-320, -50],       #"Nup145.1" : [-170, -50],
+        "Nup145.2" : [-320, -50],       #"Nup145.2" : [-170, -50],
+        "Nup157"   : [  55, 110],       #"Nup157"   : [   0,  95],
+        "Nup159.1" : [ 120, 300],       #"Nup159.1" :  [120, 240],
+        "Nup159.2" : [ 120, 300],       #"Nup159.2" :  [120, 240],
+        "Nup170"   : [   0,  55],       #"Nup170"   : [   0, 100],
+        "Nup188"   : [  50, 100],       #"Nup188"   : [  40, 100],
+        "Nup192"   : [   0,  50],       #"Nup192"   : [  20, 100],
         "Nup42"    : [  70, 150],
-        "Nup49.1"  : [  40, 100],
-        "Nup49.2"  : [  40, 100],
-        "Nup53"    : [  20, 100],
-        "Nup57.1"  : [   0,  80],
-        "Nup57.2"  : [   0,  80],
-        "Nup59"    : [  40, 120],
+        "Nup49.1"  : [ -50,  50],       #"Nup49.1"  : [  40, 100],
+        "Nup49.2"  : [ -50,  50],       #"Nup49.2"  : [  40, 100],
+        "Nup53"    : [   0, 100],       #"Nup53"    : [  20, 100],
+        "Nup57.1"  : [ -50,  50],       #"Nup57.1"  : [   0,  80],
+        "Nup57.2"  : [ -50,  50],       #"Nup57.2"  : [   0,  80],
+        "Nup59"    : [   0, 120],       #"Nup59"    : [  40, 120],
         "Nup60"    : [-200,-100],
-        "Nup82.1"  : [ 145, 300],
-        "Nup82.2"  : [ 145, 300],
-        "Nup84"    : [ 150, 220],      #"Nup84"    : [ 150, 170],
-        "Nup85"    : [ 140, 250],      #"Nup85"    : [ 140, 200],
+        "Nup82.1"  : [ 145, 300],       #"Nup82.1"  : [ 145, 295],
+        "Nup82.2"  : [ 145, 300],       #"Nup82.2"  : [ 145, 295],
+        "Nup84"    : [ 150, 220],       #"Nup84"    : [ 150, 170],
+        "Nup85"    : [ 140, 250],       #"Nup85"    : [ 140, 200],
         "Pom34"    : [   0,  65],
-        "Seh1"     : [  50, 300],      #"Seh1"     : [  50, 170],
-        "Pom152"   : [   0,  35]       #"Pom152"   : [   0,  95]
+        "Seh1"     : [  50, 300],       #"Seh1"     : [  50, 170],
+        "Pom152"   : [   0,  35]        #"Pom152"   : [   0,  95]
     }
     print "\nZAxialPositionRestraint !!"
     zaxial_weight = 10.0
@@ -1021,12 +1023,12 @@ if (not is_FG):
         "Nsp1.2"   : [180, 230],
         "Nup116.1" : [180, 300],
         "Nup116.2" : [180, 300],
-        "Nsp1.3"   : [180, 220],
-        "Nup49.1"  : [180, 220],
-        "Nup57.1"  : [180, 220],
-        "Nsp1.4"   : [180, 220],
-        "Nup49.2"  : [180, 220],
-        "Nup57.2"  : [180, 220],
+        "Nsp1.3"   : [180, 230],
+        "Nup49.1"  : [180, 230],
+        "Nup57.1"  : [180, 230],
+        "Nsp1.4"   : [180, 230],
+        "Nup49.2"  : [180, 230],
+        "Nup57.2"  : [180, 230],
         "Nup100.1" : [180, 260],
         "Nup100.2" : [180, 260],
         "Nup42"    : [180, 300],
@@ -1052,6 +1054,137 @@ if (not is_FG):
 
 
 #####################################################
+# Restraints setup
+# Distance_to_point restraints for orientation of the Nup84 complex
+#####################################################
+if (is_n84 and use_Distance_to_Point):
+    dpr_weight = 100.0
+    dpr_radius = 10.0
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(515.4, 105.4, 168.2), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup133")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(286.8, -174.4, 230.5), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup85")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(489.2, -251.3, 202.3), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nup120")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+    print "DistanceToPointRestraint for the Nup84 complex !!\n"
+
+
+#####################################################
+# Restraints setup
+# Distance restraints
+#####################################################
+dist_min = 3.0
+dr_weight = 10.0
+
+# Nup145n - Nup145c
+if (is_n84 and is_nucleoplasm):
+    dist_max = 15.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup145n-Nup145c@11")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+"""
+# Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure yet if it is real
+if (is_n84 and use_neighboring_spokes):
+    dist_max = 35.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup133-Nup120@2")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+"""
+
+# The Pom152 ring
+if (is_membrane):
+    dist_max = 30.0
+    if (use_neighboring_spokes):
+        # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
+        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr.add_to_model()
+        dr.set_label("Pom152-Pom152@12")
+        dr.set_weight(dr_weight)
+        outputobjects.append(dr)
+        print(dr.get_output())
+
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Pom152-Pom152@11")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=530, upper_bound=580, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (530, 580, "Pom152_859"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=0, upper_bound=25, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 25, "Pom152_859"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+
+#####################################################
+# 1st Metropolis Monte Carlo sampling with Replica Exchange
+#####################################################
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
+
+simo.optimize_floppy_bodies(300)
+print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
+
+XL_restraints = None
+mc1 = IMP.pmi.macros.ReplicaExchange0(m,
+                                    simo,
+                                    monte_carlo_sample_objects = sampleobjects,
+                                    output_objects = outputobjects,
+                                    crosslink_restraints = XL_restraints,
+                                    monte_carlo_temperature = 1.0,
+                                    replica_exchange_minimum_temperature = 1.0,
+                                    replica_exchange_maximum_temperature = 2.5,
+                                    number_of_best_scoring_models = 0,
+                                    monte_carlo_steps = 10,
+                                    number_of_frames = 100,
+                                    write_initial_rmf = True,
+                                    initial_rmf_name_suffix = "initial",
+                                    stat_file_name_suffix = "stat",
+                                    best_pdb_name_suffix = "model",
+                                    do_clean_first = True,
+                                    do_create_directories = True,
+                                    global_output_directory = "pre-XL_output",
+                                    rmf_dir = "rmfs/",
+                                    best_pdb_dir = "pdbs/",
+                                    replica_stat_file_suffix = "stat_replica")
+mc1.execute_macro()
+rex1 = mc1.get_replica_exchange_object()
+print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre-XL_sampling) - ", rank
+
+
+#####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th = 45.0
@@ -1059,8 +1192,8 @@ tor_R = 390.0 + 200.0
 #tor_R = 390.0 + 150.0
 tor_r = 200.0 - tor_th/2.0
 #tor_r = 150.0 - tor_th/2.0
-msl_sigma = 1.0
-msl_weight = 10.0
+msl_sigma = 10.0
+msl_weight = 1.0
 
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
@@ -1154,137 +1287,6 @@ if (is_inner_ring):
 
 #####################################################
 # Restraints setup
-# Distance restraints
-#####################################################
-dist_min = 3.0
-dr_weight = 10.0
-
-# Nup145n - Nup145c
-if (is_n84 and is_nucleoplasm):
-    dist_max = 15.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup145n-Nup145c@11")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-
-"""
-# Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure yet if it is real
-if (is_n84 and use_neighboring_spokes):
-    dist_max = 35.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup133-Nup120@2")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-"""
-
-# The Pom152 ring
-if (is_membrane):
-    dist_max = 30.0
-    if (use_neighboring_spokes):
-        # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr.add_to_model()
-        dr.set_label("Pom152-Pom152@12")
-        dr.set_weight(dr_weight)
-        outputobjects.append(dr)
-        print(dr.get_output())
-
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Pom152-Pom152@11")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=530, upper_bound=580, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (530, 580, "Pom152_859"))
-    xyr.set_weight(radial_weight)
-    xyr.add_to_model()
-    outputobjects.append(xyr)
-    print (xyr.get_output())
-
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=0, upper_bound=25, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 25, "Pom152_859"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-
-
-#####################################################
-# 1st Metropolis Monte Carlo sampling with Replica Exchange
-#####################################################
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
-
-simo.optimize_floppy_bodies(300)
-print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
-
-XL_restraints = None
-mc1 = IMP.pmi.macros.ReplicaExchange0(m,
-                                    simo,
-                                    monte_carlo_sample_objects = sampleobjects,
-                                    output_objects = outputobjects,
-                                    crosslink_restraints = XL_restraints,
-                                    monte_carlo_temperature = 1.0,
-                                    replica_exchange_minimum_temperature = 1.0,
-                                    replica_exchange_maximum_temperature = 2.5,
-                                    number_of_best_scoring_models = 0,
-                                    monte_carlo_steps = 10,
-                                    number_of_frames = 50,
-                                    write_initial_rmf = True,
-                                    initial_rmf_name_suffix = "initial",
-                                    stat_file_name_suffix = "stat",
-                                    best_pdb_name_suffix = "model",
-                                    do_clean_first = True,
-                                    do_create_directories = True,
-                                    global_output_directory = "pre-XL_output",
-                                    rmf_dir = "rmfs/",
-                                    best_pdb_dir = "pdbs/",
-                                    replica_stat_file_suffix = "stat_replica")
-mc1.execute_macro()
-rex1 = mc1.get_replica_exchange_object()
-print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre-XL_sampling) - ", rank
-
-
-#####################################################
-# Restraints setup
-# Distance_to_point restraints for orientation of the Nup84 complex
-#####################################################
-if (is_n84 and use_Distance_to_Point):
-    dpr_weight = 100.0
-    dpr_radius = 10.0
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(515.4, 105.4, 168.2), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup133")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(286.8, -174.4, 230.5), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup85")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(489.2, -251.3, 202.3), radius=dpr_radius, kappa=10.0)
-    dpr.set_label("Nup120")
-    dpr.set_weight(dpr_weight)
-    dpr.add_to_model()
-    outputobjects.append(dpr)
-    print(dpr.get_output())
-    print "DistanceToPointRestraint for the Nup84 complex !!\n"
-
-
-#####################################################
-# Restraints setup
 # Cross-link restraints using the whole NPC DSS XL data
 #####################################################
 if (use_XL):
@@ -1305,7 +1307,7 @@ if (use_XL):
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
                                                         resolution = 1.0,
-                                                        inner_slope = 0.05,
+                                                        inner_slope = 0.04,
                                                         #inner_slope = 0.01,
                                                         filelabel = "wtDSS",
                                                         label = "wtDSS",

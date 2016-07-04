@@ -61,7 +61,7 @@ echo "SGE_TASK_ID = $SGE_TASK_ID"
 echo "JOB_ID = $JOB_ID"
 echo "NSLOTS = $NSLOTS"
 
-# write hostname and starting time 
+# write hostname and starting time
 hostname
 date
 
