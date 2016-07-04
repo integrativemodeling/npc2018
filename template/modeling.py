@@ -1343,6 +1343,7 @@ if (use_XL):
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
+    xl1.set_weight(10.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1405,7 +1406,7 @@ if (use_EM3D):
                                                     slope=0.00000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(100.0)        # play with weight
+    gem.set_weight(100.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
