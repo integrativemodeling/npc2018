@@ -915,8 +915,8 @@ if (use_Immuno_EM):
         "Mlp1"     : [150, 550],
         #"Mlp2"     : [150, 550],
         "Ndc1"     : [280, 400],
-        "Nic96.1"  : [300, 360],    #"Nic96.1"  : [255, 525],
-        "Nic96.2"  : [300, 360],    #"Nic96.2"  : [255, 525],
+        "Nic96.1"  : [300, 350],    #"Nic96.1"  : [255, 525],
+        "Nic96.2"  : [300, 350],    #"Nic96.2"  : [255, 525],
         "Nsp1.1"   : [155, 425],
         "Nsp1.2"   : [155, 425],
         "Nsp1.3"   : [200, 300],    #"Nsp1.3"   : [155, 425],
@@ -973,7 +973,7 @@ if (use_Immuno_EM):
         #"Mlp2"     : [-400,-150],
         "Ndc1"     : [   0,  90],
         "Nic96.1"  : [  75, 125],       #"Nic96.1"  : [  25, 175],
-        "Nic96.2"  : [   0,  80],       #"Nic96.2"  : [  25, 175],
+        "Nic96.2"  : [   0,  90],       #"Nic96.2"  : [  25, 175],
         "Nsp1.1"   : [ 120, 300],       #"Nsp1.1"   : [   0, 120],
         "Nsp1.2"   : [ 120, 300],       #"Nsp1.2"   : [   0, 120],
         "Nsp1.3"   : [   0,  50],       #"Nsp1.3"   : [   0, 120],
@@ -1250,15 +1250,15 @@ if (is_nic96 and use_Distance_to_Point):
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=360, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 360, "Nic96.2_360"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 350, "Nic96.2_360"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=80, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 80, "Nic96.2_360"))
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=90, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 90, "Nic96.2_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
