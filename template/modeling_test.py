@@ -627,7 +627,7 @@ for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,4
     rigid_tuples.append(protein)
 for protein in [(1,56,'Nic96.2'),(205,839,'Nic96.2'), (637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
     rigid_tuples.append(protein)
-for protein in [(1,892,'Nup157'),(900,1391,'Nup157'), (98,992,'Nup170'),(1000,1502,'Nup170'), 'Nup188', 'Nup192']:
+for protein in [(88,892,'Nup157'),(900,1391,'Nup157'), (98,992,'Nup170'),(1000,1502,'Nup170'), 'Nup188', 'Nup192']:
     rigid_tuples.append(protein)
 for protein in [(201,410,'Nup53'), (251,402,'Nup59'), 'Mlp1', 'Mlp2']:
     rigid_tuples.append(protein)
@@ -1073,7 +1073,7 @@ if (not is_FG):
 # Distance_to_point restraints for orientation of the inner ring structures
 #####################################################
 dpr_weight = 100.0
-dpr_radius = 30.0
+dpr_radius = 50.0
 
 if (is_n84 and use_Distance_to_Point):
     dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.3, 271.6, 159.2), radius=dpr_radius, kappa=10.0)
@@ -1234,6 +1234,21 @@ if (is_inner_ring and use_Distance_to_Point):
     outputobjects.append(dpr)
     print(dpr.get_output())
     print "DistanceToPointRestraint for Nup170 !!\n"
+
+if (is_nic96 and use_Distance_to_Point):
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(360,360,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(288.3, 175.5, 109.8), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nic96.1_360")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
+
+    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(835,835,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(324.8, 54.7, 104.0), radius=dpr_radius, kappa=10.0)
+    dpr.set_label("Nic96.1_835")
+    dpr.set_weight(dpr_weight)
+    dpr.add_to_model()
+    outputobjects.append(dpr)
+    print(dpr.get_output())
 
 
 #####################################################
@@ -1524,7 +1539,7 @@ if (use_XL):
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(10.0)        # play with the weight
+    xl1.set_weight(5.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1587,7 +1602,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(100.0)        # play with the weight
+    gem.set_weight(500.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
