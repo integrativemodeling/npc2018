@@ -915,8 +915,8 @@ if (use_Immuno_EM):
         "Mlp1"     : [150, 550],
         #"Mlp2"     : [150, 550],
         "Ndc1"     : [280, 400],
-        "Nic96.1"  : [300, 420],    #"Nic96.1"  : [255, 525],
-        "Nic96.2"  : [300, 420],    #"Nic96.2"  : [255, 525],
+        "Nic96.1"  : [300, 360],    #"Nic96.1"  : [255, 525],
+        "Nic96.2"  : [300, 360],    #"Nic96.2"  : [255, 525],
         "Nsp1.1"   : [155, 425],
         "Nsp1.2"   : [155, 425],
         "Nsp1.3"   : [200, 300],    #"Nsp1.3"   : [155, 425],
@@ -972,8 +972,8 @@ if (use_Immuno_EM):
         "Mlp1"     : [-400,-150],
         #"Mlp2"     : [-400,-150],
         "Ndc1"     : [   0,  90],
-        "Nic96.1"  : [  75, 175],       #"Nic96.1"  : [  25, 175],
-        "Nic96.2"  : [  25, 125],       #"Nic96.2"  : [  25, 175],
+        "Nic96.1"  : [  75, 125],       #"Nic96.1"  : [  25, 175],
+        "Nic96.2"  : [   0,  80],       #"Nic96.2"  : [  25, 175],
         "Nsp1.1"   : [ 120, 300],       #"Nsp1.1"   : [   0, 120],
         "Nsp1.2"   : [ 120, 300],       #"Nsp1.2"   : [   0, 120],
         "Nsp1.3"   : [   0,  50],       #"Nsp1.3"   : [   0, 120],
@@ -992,7 +992,7 @@ if (use_Immuno_EM):
         "Nup159.1" : [ 120, 300],       #"Nup159.1" :  [120, 240],
         "Nup159.2" : [ 120, 300],       #"Nup159.2" :  [120, 240],
         "Nup170"   : [   0, 100],
-        "Nup188"   : [  60, 120],       #"Nup188"   : [  40, 100],
+        "Nup188"   : [  60, 110],       #"Nup188"   : [  40, 100],
         "Nup192"   : [   0,  60],       #"Nup192"   : [  20, 100],
         "Nup42"    : [  70, 150],
         "Nup49.1"  : [   0,  50],       #"Nup49.1"  : [  40, 100],
@@ -1037,12 +1037,12 @@ if (not is_FG):
         "Nsp1.2"   : [180, 230],
         "Nup116.1" : [180, 300],
         "Nup116.2" : [180, 300],
-        "Nsp1.3"   : [180, 230],
-        "Nup49.1"  : [180, 230],
-        "Nup57.1"  : [180, 230],
-        "Nsp1.4"   : [180, 230],
-        "Nup49.2"  : [180, 230],
-        "Nup57.2"  : [180, 230],
+        "Nsp1.3"   : [180, 225],
+        "Nup49.1"  : [180, 225],
+        "Nup57.1"  : [180, 225],
+        "Nsp1.4"   : [180, 225],
+        "Nup49.2"  : [180, 225],
+        "Nup57.2"  : [180, 225],
         "Nup100.1" : [180, 260],
         "Nup100.2" : [180, 260],
         "Nup42"    : [180, 300],
@@ -1250,15 +1250,15 @@ if (is_nic96 and use_Distance_to_Point):
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=420, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 420, "Nic96.2_360"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=360, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 360, "Nic96.2_360"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=125, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 125, "Nic96.2_360"))
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=80, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 80, "Nic96.2_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
