@@ -188,9 +188,9 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362ca.pdb"
 #####################################################
 is_n84 = False
 is_n82 = False
-is_nic96 = True
+is_nic96 = False
 is_inner_ring = True
-is_membrane = False
+is_membrane = True
 is_cytoplasm = False
 is_nucleoplasm = False
 is_basket = False
@@ -204,14 +204,14 @@ use_shuffle = True
 use_ExcludedVolume = True
 use_Immuno_EM = True
 use_Composite = False
-use_Distance_to_Point = True
+use_Distance_to_Point = False
 use_XL = True
 use_EM3D = True
 
 #####################################################
 # REPRESENTATION
 #####################################################
-# comp_name, hier_name, color, fasta_file, fasta_id, pdb_name, chain_id, res_range, read_em_files, bead_size, rb, super_rb, em_num_components, em_txt_file_name, em_mrc_file_name, chain_of_super_rb, keep_gaussian_flexible_beads
+# comp_name, hier_name, color, fasta_file, fasta_id, pdb_name, chain_id, res_range, read_em_files, bead_size, rb, super_rb, em_num_components, em_txt_file_name, em_mrc_file_name, chain_of_super_rb, keep_gaussian_on_flexible_beads
 domains = []
 if (use_EM3D):  gmm = True
 else:           gmm = None
@@ -316,7 +316,8 @@ if (is_n82):
 ##########################
 if (is_nic96):
     n96_rb = 196
-    domains.append(("Nic96.1",  "Nic96.1_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, [n96_rb], 2,  " ",   " ",  None))
+    domains.append(("Nic96.1",  "Nic96.1_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, [n96_rb], 2,  " ",   " ",  None, False))
+    #domains.append(("Nic96.1",  "Nic96.1_2",  0.25, f_n96+"Nic96.txt", "YFR002W", "BEADS",  " ",  (107,204,0),  None, beadsize25,  1097,   [n96_rb], 0,  None,  None, None))
     domains.append(("Nic96.1",  "Nic96.1_2",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    1097,   [n96_rb], 1,  " ",   " ",  None))
     domains.append(("Nic96.1",  "Nic96.1",    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    1096,   [n96_rb], 3,  " ",   " ",  None, False))
     if (is_FG):
@@ -332,7 +333,8 @@ if (is_nic96):
     domains.append(("Nup57.1",  "Nup57.1",    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm,  beadsize,    n96_rb, [n96_rb], 5,  " ",   " ",  None, False))
 
     n96_rb = 296
-    domains.append(("Nic96.2",  "Nic96.2_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, [n96_rb], 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
+    domains.append(("Nic96.2",  "Nic96.2_1",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm,  beadsize,    n96_rb, [n96_rb], 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None, False))
+    #domains.append(("Nic96.2",  "Nic96.2_2",  0.25, f_n96+"Nic96.txt", "YFR002W", "BEADS",  " ",  (107,204,0),  None, beadsize25,  2097,   [n96_rb], 0,  None,  None, None))
     domains.append(("Nic96.2",  "Nic96.2_2",  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm,  beadsize,    2097,   [n96_rb], 1,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
     domains.append(("Nic96.2",  "Nic96.2",    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm,  beadsize,    2096,   [n96_rb], 3,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None, False))
     if (is_FG):
@@ -350,7 +352,8 @@ if (is_nic96):
     for i in clones_range_A:
         if (i==11): gmm_c = gmm
         else:       gmm_c = None
-        domains.append(("Nic96.1@%d"%i,  "Nic96.1_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
+        domains.append(("Nic96.1@%d"%i,  "Nic96.1_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None, False))
+        #domains.append(("Nic96.1@%d"%i,  "Nic96.1_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", "BEADS",  " ",  (107,204,0),  None, beadsize25,  None, None, 0,  None,  None, None))
         domains.append(("Nic96.1@%d"%i,  "Nic96.1_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm_c,  beadsize,    None, None, 1,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
         domains.append(("Nic96.1@%d"%i,  "Nic96.1@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm_c,  beadsize,    None, None, 3,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None, False))
         if (is_FG):
@@ -365,7 +368,8 @@ if (is_nic96):
         domains.append(("Nup49.1@%d"%i,  "Nup49.1@%d"%i,    0.75, f_n96+"Nup49.txt", "YGL172W", n96_pdb,  "C",  (270,472,0),  gmm_c,  beadsize,    None, None, 4,  gmm_f+"Nup49.1.txt",   gmm_f+"Nup49.1.mrc",   None, False))
         domains.append(("Nup57.1@%d"%i,  "Nup57.1@%d"%i,    1.0,  f_n96+"Nup57.txt", "YGR119C", n96_pdb,  "D",  (287,541,0),  gmm_c,  beadsize,    None, None, 5,  gmm_f+"Nup57.1.txt",   gmm_f+"Nup57.1.mrc",   None, False))
 
-        domains.append(("Nic96.2@%d"%i,  "Nic96.2_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None))
+        domains.append(("Nic96.2@%d"%i,  "Nic96.2_1@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (  1,106,0),  gmm_c,  beadsize,    None, None, 2,  gmm_f+"Nic96.1_1.txt", gmm_f+"Nic96.1_1.mrc", None, False))
+        #domains.append(("Nic96.2@%d"%i,  "Nic96.2_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", "BEADS",  " ",  (107,204,0),  None, beadsize25,  None, None, 0,  None,  None, None))
         domains.append(("Nic96.2@%d"%i,  "Nic96.2_2@%d"%i,  0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (107,204,0),  gmm_c,  beadsize,    None, None, 1,  gmm_f+"Nic96.1_2.txt", gmm_f+"Nic96.1_2.mrc", None))
         domains.append(("Nic96.2@%d"%i,  "Nic96.2@%d"%i,    0.25, f_n96+"Nic96.txt", "YFR002W", n96_pdb,  "A",  (205,839,0),  gmm_c,  beadsize,    None, None, 3,  gmm_f+"Nic96.1.txt",   gmm_f+"Nic96.1.mrc",   None, False))
         if (is_FG):
@@ -477,22 +481,26 @@ if (is_nucleoplasm):
     if (is_FG):
         domains.append(("Nup145.1", "Nup145.1_10", 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 1145, [1145], 0,  None,  None, None))
         domains.append(("Nup145.2", "Nup145.2_10", 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, 2145, [2145], 0,  None,  None, None))
-        domains.append(("Nup1",     "Nup1_10",     0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (352,1076,0), None, beadsize100, 1,    [1] ,   0,  None,  None, None))
-        domains.append(("Nup60",    "Nup60_10",    0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, 60,   [60],   0,  None,  None, None))
+        domains.append(("Nup1",     "Nup1_10",     0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (352,1076,0), None, beadsize100, 1,    None,   0,  None,  None, None))
+        domains.append(("Nup60.1",  "Nup60.1_10",  0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, 60,   None,   0,  None,  None, None))
+        domains.append(("Nup60.2",  "Nup60.2_10",  0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, 60,   None,   0,  None,  None, None))
     domains.append(("Nup145.1", "Nup145.1",    0.7, f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"A", (201, 605,0), gmm,  beadsize25,  1145, [1145], 2,  " ",   " ",  None, False))
     domains.append(("Nup145.2", "Nup145.2",    0.75,f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"B", (201, 605,0), gmm,  beadsize25,  2145, [2145], 2,  " ",   " ",  None, False))
-    domains.append(("Nup1",     "Nup1",        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), gmm,  beadsize50,  1,    [1],    0,  None,  None, None))
-    domains.append(("Nup60",    "Nup60",       0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), gmm,  beadsize50,  60,   [60],   0,  None,  None, None))
+    domains.append(("Nup1",     "Nup1",        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), gmm,  beadsize50,  1,    None,   0,  None,  None, None))
+    domains.append(("Nup60.1",  "Nup60.1",     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), gmm,  beadsize50,  60,   None,   0,  None,  None, None))
+    domains.append(("Nup60.2",  "Nup60.2",     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), gmm,  beadsize50,  60,   None,   0,  None,  None, None))
     for i in clones_range_B:
         if (is_FG):
             domains.append(("Nup145.1@%d"%i, "Nup145.1_10@%d"%i, 0.7, f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
             domains.append(("Nup145.2@%d"%i, "Nup145.2_10@%d"%i, 0.75,f_npc+"Nup145.txt", "YGL092W", "BEADS",      " ", (  1, 200,0), None, beadsize100, None, None, 0,  None,  None, None))
             domains.append(("Nup1@%d"%i,     "Nup1_10@%d"%i,     0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (352,1076,0), None, beadsize100, None, None, 0,  None,  None, None))
-            domains.append(("Nup60@%d"%i,    "Nup60_10@%d"%i,    0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup60.1@%d"%i,  "Nup60.1_10@%d"%i,  0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
+            domains.append(("Nup60.2@%d"%i,  "Nup60.2_10@%d"%i,  0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (399, 539,0), None, beadsize100, None, None, 0,  None,  None, None))
         domains.append(("Nup145.1@%d"%i, "Nup145.1@%d"%i,    0.7, f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"A", (201, 605,0), None, beadsize25,  None, None, 2,  None,  None, None))
         domains.append(("Nup145.2@%d"%i, "Nup145.2@%d"%i,    0.75,f_npc+"Nup145.txt", "YGL092W", n145N_pdbfile,"B", (201, 605,0), None, beadsize25,  None, None, 2,  None,  None, None))
         domains.append(("Nup1@%d"%i,     "Nup1@%d"%i,        0.8, f_npc+"Nup1.txt",   "YOR098C", "BEADS",      " ", (  1, 351,0), None, beadsize50,  None, None, 0,  None,  None, None))
-        domains.append(("Nup60@%d"%i,    "Nup60@%d"%i,       0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), None, beadsize50,  None, None, 0,  None,  None, None))
+        domains.append(("Nup60.1@%d"%i,  "Nup60.1@%d"%i,     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), None, beadsize50,  None, None, 0,  None,  None, None))
+        domains.append(("Nup60.2@%d"%i,  "Nup60.2@%d"%i,     0.9, f_npc+"Nup60.txt",  "YAR002W", "BEADS",      " ", (  1, 398,0), None, beadsize50,  None, None, 0,  None,  None, None))
 
 ##########################
 # Basket proteins - Mlp1, Mlp2
@@ -592,7 +600,7 @@ if (use_neighboring_spokes):
         for protein in ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42', 'Gle1', 'Gle2.1', 'Gle2.2']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_nucleoplasm):
-        for protein in ['Nup145.1', 'Nup145.2', 'Nup60', 'Nup1']:
+        for protein in ['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2', 'Nup1']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_basket):
         for protein in ['Mlp1', 'Mlp2']:
@@ -646,7 +654,7 @@ for rt in rigid_tuples:
 #####################################################
 if (use_shuffle) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
-    simo.shuffle_configuration(bounding_box=((350, -100, 50), (1050, 250, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
+    simo.shuffle_configuration(bounding_box=((350, -150, 50), (1050, 200, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
 
 
 #####################################################
@@ -662,7 +670,7 @@ simo.set_rigid_bodies_max_trans(rbmaxtrans)
 outputobjects.append(simo)
 sampleobjects.append(simo)
 
-
+"""
 #####################################################
 # Restraints setup
 # Excluded Volume restraint for components in the main spoke
@@ -702,7 +710,7 @@ if (use_ExcludedVolume):
                                                                  resolution = res_ev)
     ev1.add_to_model()
     ev1.set_label('main_spoke')
-    ev1.set_weight(0.3)
+    ev1.set_weight(0.1)
     outputobjects.append(ev1)
     print(ev1.get_output())
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -714,11 +722,11 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(0.3)
+        ev2.set_weight(0.1)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
-
+"""
 
 #####################################################
 # Restraints setup
@@ -944,7 +952,8 @@ if (use_Immuno_EM):
         "Nup57.1"  : [200, 300],    #"Nup57.1"  : [ 80, 300],
         "Nup57.2"  : [200, 300],    #"Nup57.2"  : [ 80, 300],
         "Nup59"    : [250, 400],    #"Nup59"    : [250, 370],
-        #"Nup60"    : [240, 400],
+        #"Nup60.1"    : [240, 400],
+        #"Nup60.2"    : [240, 400],
         "Nup82.1"  : [175, 505],
         "Nup82.2"  : [175, 505],
         "Nup84"    : [290, 520],    #"Nup84"    : [290, 450],
@@ -1001,7 +1010,8 @@ if (use_Immuno_EM):
         "Nup57.1"  : [   0,  50],       #"Nup57.1"  : [   0,  80],
         "Nup57.2"  : [ -50,   0],       #"Nup57.2"  : [   0,  80],
         "Nup59"    : [   0, 120],       #"Nup59"    : [  40, 120],
-        "Nup60"    : [-200,-100],
+        "Nup60.1"  : [-200,-100],
+        "Nup60.2"  : [-200,-100],
         "Nup82.1"  : [ 145, 300],       #"Nup82.1"  : [ 145, 295],
         "Nup82.2"  : [ 145, 300],       #"Nup82.2"  : [ 145, 295],
         "Nup84"    : [ 150, 220],       #"Nup84"    : [ 150, 170],
@@ -1049,14 +1059,15 @@ if (not is_FG):
         "Nup145.1" : [180, 240],
         "Nup145.2" : [180, 240],
         "Nup1"     : [180, 300],
-        "Nup60"    : [180, 300],
+        "Nup60.1"  : [180, 300],
+        "Nup60.2"  : [180, 300],
     }
     print "\nFG_XYRadialPositionRestraint !!"
     radial_weight = 10.0
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
-        if (protein in ['Nup1', 'Nup60']):
+        if (protein in ['Nup1', 'Nup60.1', 'Nup60.2']):
             xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='C')
         else:
             xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='N')
@@ -1234,6 +1245,20 @@ if (is_inner_ring and use_Distance_to_Point):
     outputobjects.append(dpr)
     print(dpr.get_output())
     print "DistanceToPointRestraint for Nup170 !!\n"
+elif (is_inner_ring and not use_Distance_to_Point):
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=50, upper_bound=100, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (50, 100, "Nup188_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=75, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 75, "Nup192_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
 if (is_nic96 and use_Distance_to_Point):
     dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(360,360,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(288.3, 175.5, 109.8), radius=dpr_radius, kappa=10.0)
@@ -1282,8 +1307,18 @@ if (is_n84 and is_nucleoplasm):
     outputobjects.append(dr)
     print(dr.get_output())
 
+# Nup60 homo-dimer cross-link
+if (is_nucleoplasm):
+    dist_max = 20.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup60.1_151-Nup60.2_151")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
 if (is_inner_ring):
-    dist_max = 15.0
+    dist_max = 20.0
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup157N-C")
@@ -1313,22 +1348,6 @@ if (is_inner_ring):
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
-
-    # NOT necessary
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=50, upper_bound=100, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (50, 100, "Nup188_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-
-    # NOT necessary
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=75, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 75, "Nup192_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
     """
 
 
@@ -1425,8 +1444,15 @@ if (is_nucleoplasm):
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
-    msl.set_label('Nup60')
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl.set_label('Nup60.1')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.2'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl.set_label('Nup60.2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
@@ -1471,21 +1497,20 @@ if (is_inner_ring):
     outputobjects.append(msl)
     print (msl.get_output())
 
-    """
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (310,338,'Nup157'), lower_bound=-10, upper_bound=40, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (-10, 40, "Nup157_ALPS"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
+    if (not use_Distance_to_Point):
+        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (310,338,'Nup157'), lower_bound=-10, upper_bound=40, consider_radius=False, sigma=1.0, term='M')
+        zax.set_label('Lower_%d_Upper_%d_%s' % (-10, 40, "Nup157_ALPS"))
+        zax.set_weight(zaxial_weight)
+        zax.add_to_model()
+        outputobjects.append(zax)
+        print (zax.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (320,352,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup170_ALPS"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-    """
+        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (320,352,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
+        zax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup170_ALPS"))
+        zax.set_weight(zaxial_weight)
+        zax.add_to_model()
+        outputobjects.append(zax)
+        print (zax.get_output())
 
 
 #####################################################
@@ -1508,20 +1533,20 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 50,
+                                    number_of_frames = 100,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
                                     best_pdb_name_suffix = "model",
                                     do_clean_first = True,
                                     do_create_directories = True,
-                                    global_output_directory = "pre-XL_output",
+                                    global_output_directory = "1_pre_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica")
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
-print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre-XL_sampling) - ", rank
+print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
 
 
 #####################################################
@@ -1553,7 +1578,7 @@ if (use_XL):
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(5.0)        # play with the weight
+    xl1.set_weight(10.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1580,21 +1605,108 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 100,
+                                    number_of_frames = 250,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
                                     best_pdb_name_suffix = "model",
                                     do_clean_first = True,
                                     do_create_directories = True,
-                                    global_output_directory = "pre-EM3D_output",
+                                    global_output_directory = "2_XL_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex1)
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
-print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the pre-EM3D_sampling) - ", rank
+print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_sampling) - ", rank
+
+
+#####################################################
+# Restraints setup
+# Excluded Volume restraint for components in the main spoke
+#####################################################
+if (use_ExcludedVolume):
+    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
+    for entry in domains:
+        if '@11' in entry[0]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif '@' in entry[0]:
+            other_spokes.append(entry[0])
+        else:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+    main_spoke_unique = sorted(list(set(main_spoke)))
+    main_spoke_hier_name = sorted(main_spoke_hier_name)
+    other_spokes_unique = sorted(list(set(other_spokes)))
+    print ("main_spoke_hier_name = ", main_spoke_hier_name)
+    print ("main_spoke_unique = ", main_spoke_unique)
+    print ("other_spokes_unique = ", other_spokes_unique)
+
+    included_objects = [];  other_objects = []
+    for entry in main_spoke_unique:
+        obj = simo.hier_dict[entry]
+        included_objects.append(obj)
+        #other_objects.append(obj)
+    for entry in other_spokes_unique:
+        other_objects.append(simo.hier_dict[entry])
+    print ("EV included_objects in the main spoke = ", included_objects)
+    print ("EV other_objects = ", other_objects)
+    print ("resolution for EV = ", res_ev)
+
+    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+                                                                 included_objects = included_objects,
+                                                                 #other_objects = other_objects,
+                                                                 resolution = res_ev)
+    ev1.add_to_model()
+    ev1.set_label('main_spoke')
+    ev1.set_weight(0.3)
+    outputobjects.append(ev1)
+    print(ev1.get_output())
+    print "ExcludedVolumeSphere1 for the main spoke !!\n"
+
+    if (use_neighboring_spokes):
+        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+                                                                     included_objects = included_objects,
+                                                                     other_objects = other_objects,
+                                                                     resolution = res_ev)
+        ev2.add_to_model()
+        ev2.set_label('bipartite')
+        ev2.set_weight(0.3)
+        outputobjects.append(ev2)
+        print(ev2.get_output())
+        print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
+
+
+#####################################################
+# 3rd Metropolis Monte Carlo sampling with Replica Exchange
+#####################################################
+mc3 = IMP.pmi.macros.ReplicaExchange0(m,
+                                    simo,
+                                    monte_carlo_sample_objects = sampleobjects,
+                                    output_objects = outputobjects,
+                                    crosslink_restraints = XL_restraints,
+                                    monte_carlo_temperature = 1.0,
+                                    replica_exchange_minimum_temperature = 1.0,
+                                    replica_exchange_maximum_temperature = 2.5,
+                                    number_of_best_scoring_models = 0,
+                                    monte_carlo_steps = 10,
+                                    number_of_frames = 250,
+                                    write_initial_rmf = True,
+                                    initial_rmf_name_suffix = "initial",
+                                    stat_file_name_suffix = "stat",
+                                    best_pdb_name_suffix = "model",
+                                    do_clean_first = True,
+                                    do_create_directories = True,
+                                    global_output_directory = "3_EV_output",
+                                    rmf_dir = "rmfs/",
+                                    best_pdb_dir = "pdbs/",
+                                    replica_stat_file_suffix = "stat_replica",
+                                    replica_exchange_object = rex2)
+mc3.execute_macro()
+rex3 = mc3.get_replica_exchange_object()
+print "\nEVAL 6 : ", sf.evaluate(False), " (after performing the EV_sampling) - ", rank
 
 
 #####################################################
@@ -1610,9 +1722,9 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted90.gmm.500.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted90.gmm.300.txt',
                                                     target_mass_scale=mass,
-                                                    #slope=0.00000001,
+                                                    #slope=0.0000003,
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
@@ -1621,13 +1733,13 @@ if (use_EM3D):
     outputobjects.append(gem)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
+    print "\nEVAL 7 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 
 
 #####################################################
-# 3rd Metropolis Monte Carlo sampling with Replica Exchange
+# 4th Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc3 = IMP.pmi.macros.ReplicaExchange0(m,
+mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1648,11 +1760,10 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex2)
-mc3.execute_macro()
-print "\nEVAL 7 : ", sf.evaluate(False), " (final evaluation) - ", rank
+                                    replica_exchange_object = rex3)
+mc4.execute_macro()
+print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
 exit(0)
-
 
 
 

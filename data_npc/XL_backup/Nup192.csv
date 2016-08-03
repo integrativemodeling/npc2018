@@ -9,3 +9,8 @@ Nup192,Nup192,1642,1652,1,intra,XL_intra_structures,25.59604591
 Nup192,Nup192,567,578,1,320,intra,19.31794259
 Nup192,Nup192,1634,1649,1,324,intra,26.45932694
 Nup192,Nup192,1642,1649,1,325,intra,16.66545728
+,,,,,,,
+,,,,,,,
+Nup192,1374,Ndc1,1,1,312,allow full ambiguity,
+Nup192,1627,Pom152,720,1,333,allow full ambiguity,
+Pom34,278,Nup192,892,1,505,duplicate of 334,
