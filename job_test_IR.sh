@@ -23,8 +23,8 @@
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-NSLOTS=4    ## Should be an "EVEN number" or 1
-#NSLOTS=1    ## Should be an "EVEN number" or 1
+#NSLOTS=4    ## Should be an "EVEN number" or 1
+NSLOTS=1    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=4
 #'
 # load MPI modules
@@ -44,7 +44,7 @@ EM2D_WEIGHT=10000.0
 
 # Parameters
 if [ -z $1 ]; then
-    REPEAT="2000"
+    REPEAT="5000"
 else
     REPEAT="$1"
 fi

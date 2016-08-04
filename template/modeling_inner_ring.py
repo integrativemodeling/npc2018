@@ -188,15 +188,15 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362ca.pdb"
 #####################################################
 is_n84 = False
 is_n82 = False
-is_nic96 = True
+is_nic96 = False
 is_inner_ring = True
-is_membrane = True
+is_membrane = False
 is_cytoplasm = False
 is_nucleoplasm = False
 is_basket = False
 is_FG = False
 
-use_neighboring_spokes = True
+use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
@@ -1000,7 +1000,7 @@ if (use_Immuno_EM):
         #"Mlp2"     : [-400,-150],
         "Ndc1"     : [   0,  90],
         "Nic96.1"  : [  75, 125],       #"Nic96.1"  : [  25, 175],
-        "Nic96.2"  : [   0,  90],       #"Nic96.2"  : [  25, 175],
+        "Nic96.2"  : [ -10,  50],       #"Nic96.2"  : [  25, 175],
         "Nsp1.1"   : [ 120, 300],       #"Nsp1.1"   : [   0, 120],
         "Nsp1.2"   : [ 120, 300],       #"Nsp1.2"   : [   0, 120],
         "Nsp1.3"   : [   0,  50],       #"Nsp1.3"   : [   0, 120],
@@ -1039,6 +1039,7 @@ if (use_Immuno_EM):
         "Pom152"   : [   0,  40]        #"Pom152"   : [   0,  95]
     }
     print "\nZAxialPositionRestraint !!"
+    yaxial_weight = 10.0
     zaxial_weight = 10.0
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
@@ -1265,15 +1266,29 @@ if (is_inner_ring and use_Distance_to_Point):
     print "DistanceToPointRestraint for Nup170 !!\n"
 
 if (is_inner_ring):
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=50, upper_bound=100, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (50, 100, "Nup188_N"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup188", lower_bound=220, upper_bound=330, consider_radius=False, sigma=1.0, term='N')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (220, 330, "Nup188_N"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=60, upper_bound=120, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (60, 120, "Nup188_N"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=75, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 75, "Nup192_N"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup192", lower_bound=220, upper_bound=330, consider_radius=False, sigma=1.0, term='N')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (220, 330, "Nup192_N"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=85, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 85, "Nup192_N"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
@@ -1316,8 +1331,8 @@ if (is_nic96):
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=90, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (0, 90, "Nic96.2_360"))
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=25, upper_bound=90, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 90, "Nic96.2_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
@@ -1363,6 +1378,22 @@ if (is_inner_ring):
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup170N-C")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    # end-to-end distance of Nup157 (~193.65 angstrom)
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(227,227,"Nup157"), (1385,1385,"Nup157"), distancemin=170, distancemax=220, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup157_end-to-end")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    # end-to-end distance of Nup170 (~192.93 angstrom)
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(237,237,"Nup170"), (1491,1491,"Nup170"), distancemin=170, distancemax=220, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup170_end-to-end")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
@@ -1535,6 +1566,21 @@ if (is_inner_ring):
     outputobjects.append(msl)
     print (msl.get_output())
 
+    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
+    yax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup157_ALPS"))
+    yax.set_weight(yaxial_weight)
+    yax.add_to_model()
+    outputobjects.append(yax)
+    print (yax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-15, upper_bound=35, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (-15, 35, "Nup157_ALPS"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,344,'Nup170'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup170')
     msl.set_weight(msl_weight)
@@ -1542,20 +1588,19 @@ if (is_inner_ring):
     outputobjects.append(msl)
     print (msl.get_output())
 
-    if (not use_Distance_to_Point):
-        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (310,338,'Nup157'), lower_bound=-10, upper_bound=40, consider_radius=False, sigma=1.0, term='M')
-        zax.set_label('Lower_%d_Upper_%d_%s' % (-10, 40, "Nup157_ALPS"))
-        zax.set_weight(zaxial_weight)
-        zax.add_to_model()
-        outputobjects.append(zax)
-        print (zax.get_output())
+    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-170, upper_bound=-120, consider_radius=False, sigma=1.0, term='M')
+    yax.set_label('Lower_%d_Upper_%d_%s' % (-170, -120, "Nup170_ALPS"))
+    yax.set_weight(yaxial_weight)
+    yax.add_to_model()
+    outputobjects.append(yax)
+    print (yax.get_output())
 
-        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (320,352,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
-        zax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup170_ALPS"))
-        zax.set_weight(zaxial_weight)
-        zax.add_to_model()
-        outputobjects.append(zax)
-        print (zax.get_output())
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup170_ALPS"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
 
 #####################################################
@@ -1650,7 +1695,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 250,
+                                    number_of_frames = 300,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1737,7 +1782,7 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 250,
+                                    number_of_frames = 200,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
