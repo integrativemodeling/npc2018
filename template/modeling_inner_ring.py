@@ -688,63 +688,6 @@ simo.set_rigid_bodies_max_trans(rbmaxtrans)
 outputobjects.append(simo)
 sampleobjects.append(simo)
 
-"""
-#####################################################
-# Restraints setup
-# Excluded Volume restraint for components in the main spoke
-#####################################################
-if (use_ExcludedVolume):
-    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
-    for entry in domains:
-        if '@11' in entry[0]:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-        elif '@' in entry[0]:
-            other_spokes.append(entry[0])
-        else:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-    main_spoke_unique = sorted(list(set(main_spoke)))
-    main_spoke_hier_name = sorted(main_spoke_hier_name)
-    other_spokes_unique = sorted(list(set(other_spokes)))
-    print ("main_spoke_hier_name = ", main_spoke_hier_name)
-    print ("main_spoke_unique = ", main_spoke_unique)
-    print ("other_spokes_unique = ", other_spokes_unique)
-
-    included_objects = [];  other_objects = []
-    for entry in main_spoke_unique:
-        obj = simo.hier_dict[entry]
-        included_objects.append(obj)
-        #other_objects.append(obj)
-    for entry in other_spokes_unique:
-        other_objects.append(simo.hier_dict[entry])
-    print ("EV included_objects in the main spoke = ", included_objects)
-    print ("EV other_objects = ", other_objects)
-    print ("resolution for EV = ", res_ev)
-
-    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
-                                                                 included_objects = included_objects,
-                                                                 #other_objects = other_objects,
-                                                                 resolution = res_ev)
-    ev1.add_to_model()
-    ev1.set_label('main_spoke')
-    ev1.set_weight(0.1)
-    outputobjects.append(ev1)
-    print(ev1.get_output())
-    print "ExcludedVolumeSphere1 for the main spoke !!\n"
-
-    if (use_neighboring_spokes):
-        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
-                                                                     included_objects = included_objects,
-                                                                     other_objects = other_objects,
-                                                                     resolution = res_ev)
-        ev2.add_to_model()
-        ev2.set_label('bipartite')
-        ev2.set_weight(0.1)
-        outputobjects.append(ev2)
-        print(ev2.get_output())
-        print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
-"""
 
 #####################################################
 # Restraints setup
@@ -961,8 +904,8 @@ if (use_Immuno_EM):
         "Nup159.1" : [200, 430],    #"Nup159.1" : [250, 430],
         "Nup159.2" : [200, 430],    #"Nup159.2" : [250, 430],
         "Nup170"   : [280, 350],    #"Nup170"   : [170, 330],
-        "Nup188"   : [240, 330],    #"Nup188"   : [200, 320],
-        "Nup192"   : [240, 330],    #"Nup192"   : [200, 320],
+        "Nup188"   : [240, 320],    #"Nup188"   : [200, 320],
+        "Nup192"   : [240, 335],    #"Nup192"   : [200, 320],
         "Nup42"    : [220, 400],
         "Nup49.1"  : [200, 300],
         "Nup49.2"  : [200, 300],
@@ -999,7 +942,7 @@ if (use_Immuno_EM):
         "Mlp1"     : [-400,-150],
         #"Mlp2"     : [-400,-150],
         "Ndc1"     : [   0,  90],
-        "Nic96.1"  : [  75, 125],       #"Nic96.1"  : [  25, 175],
+        "Nic96.1"  : [  70, 130],       #"Nic96.1"  : [  25, 175],
         "Nic96.2"  : [ -10,  50],       #"Nic96.2"  : [  25, 175],
         "Nsp1.1"   : [ 120, 300],       #"Nsp1.1"   : [   0, 120],
         "Nsp1.2"   : [ 120, 300],       #"Nsp1.2"   : [   0, 120],
@@ -1019,8 +962,8 @@ if (use_Immuno_EM):
         "Nup159.1" : [ 120, 300],       #"Nup159.1" :  [120, 240],
         "Nup159.2" : [ 120, 300],       #"Nup159.2" :  [120, 240],
         "Nup170"   : [   0, 100],
-        "Nup188"   : [  60, 110],       #"Nup188"   : [  40, 100],
-        "Nup192"   : [   0,  60],       #"Nup192"   : [  20, 100],
+        "Nup188"   : [  60, 120],       #"Nup188"   : [  40, 100],
+        "Nup192"   : [  10,  70],       #"Nup192"   : [  20, 100],
         "Nup42"    : [  70, 150],
         "Nup49.1"  : [   0,  50],       #"Nup49.1"  : [  40, 100],
         "Nup49.2"  : [ -50,   0],       #"Nup49.2"  : [  40, 100],
@@ -1265,35 +1208,6 @@ if (is_inner_ring and use_Distance_to_Point):
     print(dpr.get_output())
     print "DistanceToPointRestraint for Nup170 !!\n"
 
-if (is_inner_ring):
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup188", lower_bound=220, upper_bound=330, consider_radius=False, sigma=1.0, term='N')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (220, 330, "Nup188_N"))
-    xyr.set_weight(radial_weight)
-    xyr.add_to_model()
-    outputobjects.append(xyr)
-    print (xyr.get_output())
-
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=60, upper_bound=120, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (60, 120, "Nup188_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup192", lower_bound=220, upper_bound=330, consider_radius=False, sigma=1.0, term='N')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (220, 330, "Nup192_N"))
-    xyr.set_weight(radial_weight)
-    xyr.add_to_model()
-    outputobjects.append(xyr)
-    print (xyr.get_output())
-
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=25, upper_bound=85, consider_radius=False, sigma=1.0, term='N')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 85, "Nup192_N"))
-    zax.set_weight(zaxial_weight)
-    zax.add_to_model()
-    outputobjects.append(zax)
-    print (zax.get_output())
-
 if (is_nic96 and use_Distance_to_Point):
     dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(360,360,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(288.3, 175.5, 109.8), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nic96.1_360")
@@ -1309,30 +1223,31 @@ if (is_nic96 and use_Distance_to_Point):
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-if (is_nic96):
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=300, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 350, "Nic96.1_360"))
-    xyr.set_weight(radial_weight)
-    xyr.add_to_model()
-    outputobjects.append(xyr)
-    print (xyr.get_output())
-
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=75, upper_bound=125, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (75, 125, "Nic96.1_360"))
+if (is_inner_ring):
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup188", lower_bound=65, upper_bound=125, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (65, 125, "Nup188_N"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 350, "Nic96.2_360"))
-    xyr.set_weight(radial_weight)
-    xyr.add_to_model()
-    outputobjects.append(xyr)
-    print (xyr.get_output())
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nup192", lower_bound=60, upper_bound=120, consider_radius=False, sigma=1.0, term='N')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (60, 120, "Nup192_N"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=25, upper_bound=90, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 90, "Nic96.2_360"))
+if (is_nic96):
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=80, upper_bound=140, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (80, 140, "Nic96.1_360"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=30, upper_bound=90, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (30, 90, "Nic96.2_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
@@ -1695,7 +1610,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 300,
+                                    number_of_frames = 500,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1768,6 +1683,36 @@ if (use_ExcludedVolume):
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
+if (is_nic96):
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=300, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 350, "Nic96.1_360"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=300, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (300, 350, "Nic96.2_360"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+if (is_inner_ring):
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup188", lower_bound=240, upper_bound=320, consider_radius=False, sigma=1.0, term='N')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (240, 320, "Nup188_N"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, "Nup192", lower_bound=240, upper_bound=335, consider_radius=False, sigma=1.0, term='N')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (240, 335, "Nup192_N"))
+    xyr.set_weight(radial_weight)
+    xyr.add_to_model()
+    outputobjects.append(xyr)
+    print (xyr.get_output())
+
 
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
@@ -1782,7 +1727,7 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 200,
+                                    number_of_frames = 400,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
