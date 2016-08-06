@@ -580,7 +580,7 @@ print ("clone_list_unique = ", clone_list_unique)
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
 #exit(0)
-bm1.scale_bead_radii(100, 0.8)
+bm1.scale_bead_radii(100, 0.7)
 
 
 #####################################################
@@ -1666,7 +1666,7 @@ if (use_ExcludedVolume):
                                                                  resolution = res_ev)
     ev1.add_to_model()
     ev1.set_label('main_spoke')
-    ev1.set_weight(0.3)
+    ev1.set_weight(0.25)
     outputobjects.append(ev1)
     print(ev1.get_output())
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -1678,21 +1678,21 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(0.3)
+        ev2.set_weight(0.25)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 if (is_inner_ring):
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 350, "Nup188_477"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 340, "Nup188_477"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
-    xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 350, "Nup192_303"))
+    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
+    xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 340, "Nup192_303"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
