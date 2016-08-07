@@ -1757,7 +1757,7 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.400.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.500.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.00000025,
                                                     #slope=0.0000001,
