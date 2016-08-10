@@ -196,7 +196,7 @@ is_nucleoplasm = False
 is_basket = False
 is_FG = False
 
-use_neighboring_spokes = True
+use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
@@ -958,7 +958,7 @@ if (use_Immuno_EM):
         "Nup145c"  : [  70, 260],       #"Nup145c"  : [  70, 150],
         "Nup145.1" : [-320, -50],       #"Nup145.1" : [-170, -50],
         "Nup145.2" : [-320, -50],       #"Nup145.2" : [-170, -50],
-        "Nup157"   : [   0, 165],       #"Nup157"   : [   0,  95],
+        "Nup157"   : [  40, 165],       #"Nup157"   : [   0,  95],
         "Nup159.1" : [ 120, 300],       #"Nup159.1" :  [120, 240],
         "Nup159.2" : [ 120, 300],       #"Nup159.2" :  [120, 240],
         "Nup170"   : [   0, 100],
@@ -1520,7 +1520,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     crosslink_restraints = XL_restraints,
                                     monte_carlo_temperature = 1.0,
                                     replica_exchange_minimum_temperature = 1.0,
-                                    replica_exchange_maximum_temperature = 5.0,
+                                    replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
                                     number_of_frames = 100,
@@ -1602,7 +1602,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     crosslink_restraints = XL_restraints,
                                     monte_carlo_temperature = 1.0,
                                     replica_exchange_minimum_temperature = 1.0,
-                                    replica_exchange_maximum_temperature = 5.0,
+                                    replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
                                     number_of_frames = 500,
@@ -1719,7 +1719,7 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     crosslink_restraints = XL_restraints,
                                     monte_carlo_temperature = 1.0,
                                     replica_exchange_minimum_temperature = 1.0,
-                                    replica_exchange_maximum_temperature = 5.0,
+                                    replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
                                     number_of_frames = 500,
@@ -1776,7 +1776,7 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     crosslink_restraints = XL_restraints,
                                     monte_carlo_temperature = 1.0,
                                     replica_exchange_minimum_temperature = 1.0,
-                                    replica_exchange_maximum_temperature = 5.0,
+                                    replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
                                     number_of_frames = int(inputs.nrepeats),
