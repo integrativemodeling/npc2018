@@ -1659,11 +1659,11 @@ if (use_sampling_boundary):
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.15.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.005,
+                                                    slope=0.01,
                                                     #slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(5.0)        # play with the weight
+    sbr.set_weight(2.0)        # play with the weight
     sbr.set_label("Sampling_Boundary")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
@@ -1753,11 +1753,11 @@ if (use_EM3D):
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.60.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.0000005,
-                                                    #slope=0.0000001,
+                                                    #slope=0.0000005,
+                                                    slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(2000.0)        # play with the weight
+    gem.set_weight(10000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
