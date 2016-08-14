@@ -1659,11 +1659,11 @@ if (use_sampling_boundary):
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.15.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.01,
+                                                    slope=0.005,
                                                     #slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(10.0)        # play with the weight
+    sbr.set_weight(5.0)        # play with the weight
     sbr.set_label("Sampling_Boundary")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
@@ -1757,7 +1757,7 @@ if (use_EM3D):
                                                     #slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(1000.0)        # play with the weight
+    gem.set_weight(2000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
@@ -1778,7 +1778,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 2000,
+                                    number_of_frames = 5000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
