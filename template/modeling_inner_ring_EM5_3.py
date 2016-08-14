@@ -205,7 +205,7 @@ use_ExcludedVolume = True
 use_Immuno_EM = False
 use_Composite = False
 use_Distance_to_Point = False
-use_end_to_end_157_170 = False
+use_end_to_end_157_170 = True
 use_sampling_boundary = True
 use_XL = True
 use_EM3D = True
@@ -1552,7 +1552,7 @@ if (use_XL):
 
     xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
                                                         '../data_npc/XL_optimized_ambiguity.csv',
-                                                        length = 26.0,
+                                                        length = 25.0,
                                                         slope = 0.00,
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
@@ -1564,7 +1564,7 @@ if (use_XL):
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(10.0)        # play with the weight
+    xl1.set_weight(20.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1778,7 +1778,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 5000,
+                                    number_of_frames = 10000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1852,7 +1852,6 @@ if (use_ExcludedVolume):
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 
-"""
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
@@ -1866,23 +1865,28 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 2000,
+                                    number_of_frames = int(inputs.nrepeats),
+                                    #number_of_frames = 2000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
                                     best_pdb_name_suffix = "model",
                                     do_clean_first = True,
                                     do_create_directories = True,
-                                    global_output_directory = "3_EV_output",
+                                    global_output_directory = inputs.folder_output,
+                                    #global_output_directory = "3_EV_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex2)
 mc3.execute_macro()
-rex3 = mc3.get_replica_exchange_object()
-print "\nEVAL 6 : ", sf.evaluate(False), " (after performing the EV_sampling) - ", rank
+print "\nEVAL 6 : ", sf.evaluate(False), " (final evaluation) - ", rank
+exit(0)
+#rex3 = mc3.get_replica_exchange_object()
+#print "\nEVAL 6 : ", sf.evaluate(False), " (after performing the EV_sampling) - ", rank
 
 
+"""
 #####################################################
 # Restraints setup
 # EM 3D restraint using GMM
@@ -1925,7 +1929,6 @@ if (use_EM3D):
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print "\nEVAL 7 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
-"""
 
 
 #####################################################
@@ -1957,7 +1960,7 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
 mc4.execute_macro()
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
 exit(0)
-
+"""
 
 
 """
