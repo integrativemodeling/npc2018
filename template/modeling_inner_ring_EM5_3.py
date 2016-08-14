@@ -1537,6 +1537,59 @@ if (is_inner_ring):
 
 #####################################################
 # Restraints setup
+# Cross-link restraints using the whole NPC DSS XL data
+#####################################################
+if (use_XL):
+    columnmap = {}
+    columnmap["Protein1"] = "Protein 1"
+    columnmap["Protein2"] = "Protein 2"
+    columnmap["Residue1"] = "Residue 1"
+    columnmap["Residue2"] = "Residue 2"
+    columnmap["IDScore"] = "p value"
+    columnmap["XLUniqueID"] = "XLUniqueID"
+    ids_map = IMP.pmi.tools.map()
+    ids_map.set_map_element(1.0, 1.0)
+
+    xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+                                                        '../data_npc/XL_optimized_ambiguity.csv',
+                                                        length = 26.0,
+                                                        slope = 0.00,
+                                                        columnmapping = columnmap,
+                                                        ids_map = ids_map,
+                                                        resolution = 1.0,
+                                                        #inner_slope = 0.02,
+                                                        inner_slope = 0.01,
+                                                        filelabel = "wtDSS",
+                                                        label = "wtDSS",
+                                                        attributes_for_label = ["XLUniqueID"],
+                                                        csvfile = True)
+    xl1.add_to_model()
+    xl1.set_weight(10.0)        # play with the weight
+    sampleobjects.append(xl1)
+    outputobjects.append(xl1)
+    xl1.set_psi_is_sampled(False)
+    psi2 = xl1.get_psi(1.0)[0]
+    psi2.set_scale(0.05)
+
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    print "\nEVAL 0 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank
+    XL_restraints = [xl1]
+else:
+    XL_restraints = None
+
+if (is_inner_ring and use_end_to_end_157_170):
+    # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
+    dist_max = 30.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup157C-Nup170C")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+
+#####################################################
+# Restraints setup
 # Distance restraints for XL cliques involving the membrane nups
 #####################################################
 if (is_inner_ring and is_membrane):
@@ -1601,16 +1654,16 @@ if (use_sampling_boundary):
     print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
 
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
-    mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
+    mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.10.txt',
+                                                    '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.15.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.005,
+                                                    slope=0.01,
                                                     #slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(5.0)        # play with the weight
+    sbr.set_weight(10.0)        # play with the weight
     sbr.set_label("Sampling_Boundary")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
@@ -1657,55 +1710,59 @@ print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre_sampling) -
 
 #####################################################
 # Restraints setup
-# Cross-link restraints using the whole NPC DSS XL data
+# EM 3D restraint using GMM
 #####################################################
-if (use_XL):
-    columnmap = {}
-    columnmap["Protein1"] = "Protein 1"
-    columnmap["Protein2"] = "Protein 2"
-    columnmap["Residue1"] = "Residue 1"
-    columnmap["Residue2"] = "Residue 2"
-    columnmap["IDScore"] = "p value"
-    columnmap["XLUniqueID"] = "XLUniqueID"
-    ids_map = IMP.pmi.tools.map()
-    ids_map.set_map_element(1.0, 1.0)
+if (use_EM3D):
+    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
+    for entry in domains:
+        if 'Nup170n@11' in entry[1]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif 'Nup170c@11' in entry[1]:
+            other_spokes.append(entry[0])
+        elif 'Nup170n' in entry[1]:
+            other_spokes.append(entry[0])
+        elif 'Nup170c' in entry[1]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif '@' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Ndc1' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Pom34' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Pom152' in entry[0]:
+            other_spokes.append(entry[0])
+        else:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+    main_spoke_unique = sorted(list(set(main_spoke)))
+    main_spoke_hier_name = sorted(main_spoke_hier_name)
+    other_spokes_unique = sorted(list(set(other_spokes)))
+    print ("main_spoke_hier_name = ", main_spoke_hier_name)
+    print ("main_spoke_unique = ", main_spoke_unique)
+    print ("other_spokes_unique = ", other_spokes_unique)
 
-    xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
-                                                        '../data_npc/XL_optimized_ambiguity.csv',
-                                                        length = 26.0,
-                                                        slope = 0.00,
-                                                        columnmapping = columnmap,
-                                                        ids_map = ids_map,
-                                                        resolution = 1.0,
-                                                        #inner_slope = 0.02,
-                                                        inner_slope = 0.01,
-                                                        filelabel = "wtDSS",
-                                                        label = "wtDSS",
-                                                        attributes_for_label = ["XLUniqueID"],
-                                                        csvfile = True)
-    xl1.add_to_model()
-    xl1.set_weight(10.0)        # play with the weight
-    sampleobjects.append(xl1)
-    outputobjects.append(xl1)
-    xl1.set_psi_is_sampled(False)
-    psi2 = xl1.get_psi(1.0)[0]
-    psi2.set_scale(0.05)
+    #resdensities = bm1.get_density_hierarchies([t[1] for t in domains])
+    resdensities = bm1.get_density_hierarchies(main_spoke_hier_name)
+    print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
+
+    mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
+    mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
+    print ("Total mass for the EM 3D restraint = ", mass)
+    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.60.txt',
+                                                    target_mass_scale=mass,
+                                                    slope=0.0000005,
+                                                    #slope=0.0000001,
+                                                    target_radii_scale=3.0)
+    gem.add_to_model()
+    gem.set_weight(1000.0)        # play with the weight
+    #gem.center_model_on_target_density(simo)
+    outputobjects.append(gem)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank
-    XL_restraints = [xl1]
-else:
-    XL_restraints = None
-
-if (is_inner_ring and use_end_to_end_157_170):
-    # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
-    dist_max = 30.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup157C-Nup170C")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
+    print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 
 
 #####################################################
@@ -1728,14 +1785,14 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     best_pdb_name_suffix = "model",
                                     do_clean_first = True,
                                     do_create_directories = True,
-                                    global_output_directory = "2_XL_output",
+                                    global_output_directory = "2_XL_EM_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex1)
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
-print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_sampling) - ", rank
+print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
 
 
 #####################################################
@@ -1777,7 +1834,7 @@ if (use_ExcludedVolume):
                                                                  resolution = res_ev)
     ev1.add_to_model()
     ev1.set_label('main_spoke')
-    ev1.set_weight(0.5)
+    ev1.set_weight(0.3)
     outputobjects.append(ev1)
     print(ev1.get_output())
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -1789,12 +1846,13 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(0.5)
+        ev2.set_weight(0.3)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
 
+"""
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
@@ -1867,6 +1925,7 @@ if (use_EM3D):
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print "\nEVAL 7 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
+"""
 
 
 #####################################################
@@ -1893,7 +1952,8 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex3)
+                                    replica_exchange_object = rex2)
+                                    #replica_exchange_object = rex3)
 mc4.execute_macro()
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
 exit(0)

@@ -18,20 +18,25 @@ for i in np.arange(0, dmap.get_header().get_nz(), step_size):
             #x = k - 149.5
             x = (k + 28.5) * voxel_size
             z = (i - 29.5) * voxel_size
-            #if ( (x < 0) or (x*x + y*y < 35*35) ):
+            if ( (y > -30) and (x*x + y*y < 245*245) ):
+                dmap.set_value(x,y,z, 0.0)
+
+            if ( (y < -80) and (x*x + y*y < 245*245) ):
+                dmap.set_value(x,y,z, 0.0)
+
             if ( (z < 0) or (abs(y/x) > 0.65) ):
                 dmap.set_value(x,y,z, 0.0)
 
-            if ( ( x < 280 ) and ( y > 90 ) ):
+            if ( (x < 280) and (y > 90) ):
                 dmap.set_value(x,y,z, 0.0)
 
-            if ( ( x < 280 ) and ( y < -130 ) ):
+            if ( (x < 280) and (y < -130) ):
                 dmap.set_value(x,y,z, 0.0)
 
-            if ( ( x > 280 ) and ( y < -90 ) ):
+            if ( (x > 280) and (y < -90) ):
                 dmap.set_value(x,y,z, 0.0)
 
-            if ( ( x > 390 ) ):
+            if ( (x > 390) ):
                 dmap.set_value(x,y,z, 0.0)
 
             """
