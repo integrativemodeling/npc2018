@@ -196,7 +196,7 @@ is_nucleoplasm = False
 is_basket = False
 is_FG = False
 
-use_neighboring_spokes = True
+use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
