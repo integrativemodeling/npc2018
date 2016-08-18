@@ -128,11 +128,11 @@ else:
 print "rank = ", rank
 
 # rigid body movement params
-rbmaxtrans = 4.00
-rbmaxrot = 0.04
+rbmaxtrans = 3.00
+rbmaxrot = 0.03
 
 # flexible bead movement
-fbmaxtrans = 4.00
+fbmaxtrans = 3.00
 outputobjects = []
 sampleobjects = []
 
@@ -206,7 +206,7 @@ use_Immuno_EM = False
 use_Composite = False
 use_Distance_to_Point = False
 use_end_to_end_157_170 = False
-use_sampling_boundary = False
+use_sampling_boundary = True
 use_XL = True
 use_EM3D = True
 
@@ -590,6 +590,7 @@ print ("clone_list_unique = ", clone_list_unique)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=False, skip_gaussian_in_representation=False)
+#exit(0)
 bm1.scale_bead_radii(100, 0.6)
 
 
@@ -1562,14 +1563,14 @@ if (use_XL):
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
                                                         resolution = 1.0,
-                                                        inner_slope = 0.1,
-                                                        #inner_slope = 0.01,
+                                                        #inner_slope = 0.02,
+                                                        inner_slope = 0.01,
                                                         filelabel = "wtDSS",
                                                         label = "wtDSS",
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(1.0)        # play with the weight
+    xl1.set_weight(20.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1679,62 +1680,6 @@ if (use_sampling_boundary):
 
 #####################################################
 # Restraints setup
-# EM 3D restraint using GMM
-#####################################################
-if (use_EM3D):
-    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
-    for entry in domains:
-        if 'Nup170n@11' in entry[1]:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-        elif 'Nup170c@11' in entry[1]:
-            other_spokes.append(entry[0])
-        elif 'Nup170n' in entry[1]:
-            other_spokes.append(entry[0])
-        elif 'Nup170c' in entry[1]:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-        elif '@' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Ndc1' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Pom34' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Pom152' in entry[0]:
-            other_spokes.append(entry[0])
-        else:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-    main_spoke_unique = sorted(list(set(main_spoke)))
-    main_spoke_hier_name = sorted(main_spoke_hier_name)
-    other_spokes_unique = sorted(list(set(other_spokes)))
-    print ("main_spoke_hier_name = ", main_spoke_hier_name)
-    print ("main_spoke_unique = ", main_spoke_unique)
-    print ("other_spokes_unique = ", other_spokes_unique)
-
-    #resdensities = bm1.get_density_hierarchies([t[1] for t in domains])
-    resdensities = bm1.get_density_hierarchies(main_spoke_hier_name)
-    print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
-
-    mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
-    mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
-    print ("Total mass for the EM 3D restraint = ", mass)
-    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.60.txt',
-                                                    target_mass_scale=mass,
-                                                    #slope=0.0000005,
-                                                    slope=0.0000001,
-                                                    target_radii_scale=3.0)
-    gem.add_to_model()
-    gem.set_weight(10000.0)        # play with the weight
-    #gem.center_model_on_target_density(simo)
-    outputobjects.append(gem)
-
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
-
-
-#####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
@@ -1754,7 +1699,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 5000,
+                                    number_of_frames = 500,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1770,7 +1715,6 @@ rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
 
 
-"""
 #####################################################
 # Restraints setup
 # EM 3D restraint using GMM
@@ -1820,7 +1764,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(10000.0)        # play with the weight
+    gem.set_weight(20000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
@@ -1856,8 +1800,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
 print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
-exit(0)
-"""
+
 
 #####################################################
 # Restraints setup
@@ -1917,7 +1860,6 @@ if (use_ExcludedVolume):
 
 
 """
-
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
@@ -2017,8 +1959,7 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex1)
-                                    #replica_exchange_object = rex2)
+                                    replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
