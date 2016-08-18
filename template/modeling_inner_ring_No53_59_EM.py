@@ -196,7 +196,7 @@ is_nucleoplasm = False
 is_basket = False
 is_FG = False
 
-use_neighboring_spokes = True
+use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
@@ -1639,6 +1639,10 @@ if (use_sampling_boundary):
             other_spokes.append(entry[0])
         elif 'Pom152' in entry[0]:
             other_spokes.append(entry[0])
+        elif 'Nup53' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Nup59' in entry[0]:
+            other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1733,6 +1737,10 @@ if (use_EM3D):
             other_spokes.append(entry[0])
         elif 'Pom152' in entry[0]:
             other_spokes.append(entry[0])
+        elif 'Nup53' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Nup59' in entry[0]:
+            other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1778,7 +1786,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 10000,
+                                    number_of_frames = 3000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",

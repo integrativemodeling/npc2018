@@ -200,13 +200,13 @@ use_neighboring_spokes = False
 #Stopwatch_None_delta_seconds  20~25 (1 spoke) / 60-70 sec (3 spokes)
 #Stopwatch_None_delta_seconds  22~27 (1 spoke) / 65-75 sec (3 spokes) with XL
 #Stopwatch_None_delta_seconds  42~47 (1 spoke) / 90~100 sec (3 spokes) with XL + EM
-use_shuffle = True
+use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
 use_Composite = False
 use_Distance_to_Point = False
 use_end_to_end_157_170 = False
-use_sampling_boundary = True
+use_sampling_boundary = False
 use_XL = True
 use_EM3D = True
 
@@ -535,7 +535,7 @@ if (is_basket):
 bm1 = IMP.pmi.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
-if (True):
+if (False):
     if (is_n82):
         n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2']
         for d in list(n82):
@@ -576,6 +576,12 @@ if (True):
         Mlps=['Mlp1', 'Mlp2']
         for d in list(Mlps):
             bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
+else:
+    main_spoke = [entry[0] for entry in domains]
+    main_spoke_unique = sorted(list(set(main_spoke)))
+    print ("main_spoke_unique = ", main_spoke_unique)
+    for entry in main_spoke_unique:
+        bm1.set_rmf_file(entry, inputs.rmf_input, 0)
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -583,8 +589,7 @@ clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, sequence_connectivity_resolution=1.0,
-                skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
-#exit(0)
+                skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=False, skip_gaussian_in_representation=False)
 bm1.scale_bead_radii(100, 0.6)
 
 
@@ -1557,14 +1562,14 @@ if (use_XL):
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
                                                         resolution = 1.0,
-                                                        #inner_slope = 0.02,
-                                                        inner_slope = 0.01,
+                                                        inner_slope = 0.1,
+                                                        #inner_slope = 0.01,
                                                         filelabel = "wtDSS",
                                                         label = "wtDSS",
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(20.0)        # play with the weight
+    xl1.set_weight(1.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -1673,13 +1678,70 @@ if (use_sampling_boundary):
 
 
 #####################################################
+# Restraints setup
+# EM 3D restraint using GMM
+#####################################################
+if (use_EM3D):
+    main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
+    for entry in domains:
+        if 'Nup170n@11' in entry[1]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif 'Nup170c@11' in entry[1]:
+            other_spokes.append(entry[0])
+        elif 'Nup170n' in entry[1]:
+            other_spokes.append(entry[0])
+        elif 'Nup170c' in entry[1]:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif '@' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Ndc1' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Pom34' in entry[0]:
+            other_spokes.append(entry[0])
+        elif 'Pom152' in entry[0]:
+            other_spokes.append(entry[0])
+        else:
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+    main_spoke_unique = sorted(list(set(main_spoke)))
+    main_spoke_hier_name = sorted(main_spoke_hier_name)
+    other_spokes_unique = sorted(list(set(other_spokes)))
+    print ("main_spoke_hier_name = ", main_spoke_hier_name)
+    print ("main_spoke_unique = ", main_spoke_unique)
+    print ("other_spokes_unique = ", other_spokes_unique)
+
+    #resdensities = bm1.get_density_hierarchies([t[1] for t in domains])
+    resdensities = bm1.get_density_hierarchies(main_spoke_hier_name)
+    print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
+
+    mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
+    mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
+    print ("Total mass for the EM 3D restraint = ", mass)
+    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.60.txt',
+                                                    target_mass_scale=mass,
+                                                    #slope=0.0000005,
+                                                    slope=0.0000001,
+                                                    target_radii_scale=3.0)
+    gem.add_to_model()
+    gem.set_weight(10000.0)        # play with the weight
+    #gem.center_model_on_target_density(simo)
+    outputobjects.append(gem)
+
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
+
+
+#####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
-simo.optimize_floppy_bodies(300)
-print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
+#simo.optimize_floppy_bodies(300)
+#print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
 
 #XL_restraints = None
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
@@ -1692,7 +1754,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 500,
+                                    number_of_frames = 5000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1708,6 +1770,7 @@ rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
 
 
+"""
 #####################################################
 # Restraints setup
 # EM 3D restraint using GMM
@@ -1778,7 +1841,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 10000,
+                                    number_of_frames = 3000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1793,7 +1856,8 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
 print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
-
+exit(0)
+"""
 
 #####################################################
 # Restraints setup
@@ -1853,6 +1917,7 @@ if (use_ExcludedVolume):
 
 
 """
+
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
@@ -1952,7 +2017,8 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
                                     replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex2)
+                                    replica_exchange_object = rex1)
+                                    #replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank

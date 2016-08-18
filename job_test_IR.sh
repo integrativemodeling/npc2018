@@ -19,13 +19,13 @@
 #$ -pe ompi 6
 ##$ -t 1
 #$ -t 1-20                        #-- specify the number of tasks
-#$ -N n82_n84
+#$ -N npc_IR
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-#NSLOTS=4    ## Should be an "EVEN number" or 1
+#NSLOTS=6    ## Should be an "EVEN number" or 1
 NSLOTS=1    ## Should be an "EVEN number" or 1
-SGE_TASK_ID=4
+SGE_TASK_ID=1
 #'
 # load MPI modules
 #module load openmpi-1.6-nodlopen
@@ -33,10 +33,10 @@ SGE_TASK_ID=4
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=modeling_inner_ring.py
+MODELING_SCRIPT=modeling_inner_ring_refinement.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
-RMF_FILE=../data_nup82/rmfs/B_8_1-95.rmf3
+RMF_FILE=../data_npc/Inner_ring_rmfs/1IR_409_0.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0
@@ -81,6 +81,7 @@ if [ ! -d $DIR ]; then
     #cp -pr template/representation_nup82.py $DIR
     #cp -pr template/crosslinking_nup82.py $DIR
 fi
+sleep 1
 cd $DIR
 
 PWD=$(pwd)
