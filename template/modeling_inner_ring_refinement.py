@@ -1003,6 +1003,22 @@ if (use_Immuno_EM):
         outputobjects.append(zax)
         print (zax.get_output())
 
+if (True):
+    print "\nZAxialPositionRestraint !!"
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nic96.1", lower_bound=25, upper_bound=175, consider_radius=False, sigma=1.0)
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 175, "Nic96.1"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, "Nic96.2", lower_bound=25, upper_bound=175, consider_radius=False, sigma=1.0)
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 175, "Nic96.2"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
 
 #####################################################
 # Restraints setup - FG nups restraints
@@ -1678,15 +1694,15 @@ if (use_sampling_boundary):
     print "\nEVAL 0 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank
 
 
+"""
 #####################################################
-# Restraints setup
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
-#simo.optimize_floppy_bodies(300)
-#print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
+simo.optimize_floppy_bodies(300)
+print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
 
 #XL_restraints = None
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
@@ -1713,6 +1729,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 3 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
+"""
 
 
 #####################################################
@@ -1785,7 +1802,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 3000,
+                                    number_of_frames = 5000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1795,8 +1812,9 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = "2_XL_EM_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
-                                    replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex1)
+                                    replica_stat_file_suffix = "stat_replica")
+                                    #replica_stat_file_suffix = "stat_replica",
+                                    #replica_exchange_object = rex1)
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
 print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
