@@ -1843,7 +1843,7 @@ if (use_ExcludedVolume):
                                                                  resolution = res_ev)
     ev1.add_to_model()
     ev1.set_label('main_spoke')
-    ev1.set_weight(0.5)
+    ev1.set_weight(1.0)
     outputobjects.append(ev1)
     print(ev1.get_output())
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -1855,7 +1855,7 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(0.5)
+        ev2.set_weight(1.0)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"

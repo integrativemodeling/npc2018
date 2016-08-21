@@ -1003,6 +1003,22 @@ if (use_Immuno_EM):
         outputobjects.append(zax)
         print (zax.get_output())
 
+if (True):
+    print "\nZAxialPositionRestraint !!"
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (835,835,"Nic96.1"), lower_bound=25, upper_bound=175, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 175, "Nic96.1_835"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (835,835,"Nic96.2"), lower_bound=25, upper_bound=175, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (25, 175, "Nic96.2_835"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
 
 #####################################################
 # Restraints setup - FG nups restraints
