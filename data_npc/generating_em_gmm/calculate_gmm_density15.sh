@@ -21,7 +21,8 @@
 #$ -N GMM200
 #########################################
 
-mapname=SJ_SamplingBoundary
+#mapname=SJ_SamplingBoundary
+mapname=SJ_Pom152
 #ngaussians=1
 voxelsize=6
 THRESHOLD=0.0012
