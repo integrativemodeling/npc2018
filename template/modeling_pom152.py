@@ -583,10 +583,10 @@ clone_list = [entry[0] for entry in domains if '@' in entry[0]]
 clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
-bm1.build_model(data_structure = domains, sequence_connectivity_scale=0.1, sequence_connectivity_resolution=1.0,
+bm1.build_model(data_structure = domains, sequence_connectivity_scale=0.05, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
 #exit(0)
-#bm1.scale_bead_radii(100, 0.6)
+bm1.scale_bead_radii(100, 0.6)
 
 
 #####################################################
@@ -1414,19 +1414,19 @@ if (is_membrane):
     print(dr.get_output())
 
     if (use_neighboring_spokes):
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
+        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.add_to_model()
-        dr.set_label("Pom152-Pom152@12")
+        #dr.set_label("Pom152-Pom152@12")
+        dr.set_label("Pom152-Pom152@13")
         dr.set_weight(dr_weight)
         outputobjects.append(dr)
         print(dr.get_output())
 
-    # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152@3"), (351,351,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
-    #dr.set_label("Pom152@3-Pom152@12")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
@@ -1438,8 +1438,11 @@ if (is_membrane):
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=180, upper_bound=205, consider_radius=False, sigma=1.0, term='M')
-    yax.set_label('Lower_%d_Upper_%d_%s' % (180, 205, "Pom152_859"))
+    # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
+    #yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=180, upper_bound=205, consider_radius=False, sigma=1.0, term='M')
+    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=-205, upper_bound=-180, consider_radius=False, sigma=1.0, term='M')
+    #yax.set_label('Lower_%d_Upper_%d_%s' % (180, 205, "Pom152_859"))
+    yax.set_label('Lower_%d_Upper_%d_%s' % (-205, -180, "Pom152_859"))
     yax.set_weight(yaxial_weight)
     yax.add_to_model()
     outputobjects.append(yax)
@@ -1744,7 +1747,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 500,
+                                    number_of_frames = 200,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1817,7 +1820,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 2.5,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 5000,
+                                    number_of_frames = 3000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
