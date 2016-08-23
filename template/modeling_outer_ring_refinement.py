@@ -259,7 +259,7 @@ if (is_n84):
 # Nup82 complex
 ##########################
 if (is_n82):
-    n82_rb = 84
+    n82_rb = 82
     domains.append(("Dyn2.1",  "Dyn2.1",      0.48,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "A", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Dyn2.2",  "Dyn2.2",      0.65,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "B", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Nup82.1", "Nup82.1_1",   0.0,   f_n82+"Nup82.txt",  "Nup82",  n82_pdb,  "C", (   1, 452,0),  gmm,   beadsize,   n82_rb, [n82_rb], 2,  " ",   " ",  None, False))
@@ -588,7 +588,7 @@ clone_list = [entry[0] for entry in domains if '@' in entry[0]]
 clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
-bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
+bm1.build_model(data_structure = domains, sequence_connectivity_scale=1.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=False, skip_gaussian_in_representation=False)
 #exit(0)
 #bm1.scale_bead_radii(100, 0.6)
@@ -1815,6 +1815,7 @@ if (use_EM3D):
     print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 
 
+"""
 #####################################################
 # 2nd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
@@ -1844,6 +1845,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
 print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
+"""
 
 
 #####################################################
@@ -2029,8 +2031,8 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = inputs.folder_output,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
-                                    replica_stat_file_suffix = "stat_replica",
-                                    replica_exchange_object = rex2)
+                                    replica_stat_file_suffix = "stat_replica")
+                                    #replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
