@@ -50,6 +50,6 @@ for i in np.arange(0, dmap.get_header().get_nz(), step_size):
             else:
                 dmap.set_value(k,j,i, 0.0)
             """
-#dmap2 = dmap.get_cropped(0.00001)
+dmap2 = dmap.get_cropped(0.00001)
 #IMP.em.write_map(dmap2, "SJ_Modified_Map.mrc")
-IMP.em.write_map(dmap, "SJ_Pom152.mrc")
+IMP.em.write_map(dmap2, "SJ_Pom152_raw.mrc")

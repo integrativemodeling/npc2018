@@ -23,6 +23,7 @@
 
 #mapname=SJ_SamplingBoundary
 mapname=SJ_Pom152
+#mapname=SJ_outer_ring
 #ngaussians=1
 voxelsize=6
 THRESHOLD=0.0012
