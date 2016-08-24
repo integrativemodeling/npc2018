@@ -57,9 +57,12 @@ for i in np.arange(0, dmap2.get_header().get_nz(), step_size):
             if ( (y < -30) and (x*x + y*y < 360*360) and (z < 0) ):
                 dmap2.set_value(x,y,z, 0.0)
 
-            if ( (abs(z) < 140) and (x*x + y*y < 390*390) ):
+            if ( (z > 0) and (z < 125) and (x*x + y*y < 465*465) ):
+                dmap2.set_value(x,y,z, 0.0)
+
+            if ( (z < 0) and (z > -130) ):
                 dmap2.set_value(x,y,z, 0.0)
 
 dmap3 = dmap2.get_cropped(0.00001)
 #IMP.em.write_map(dmap2, "SJ_Modified_Map.mrc")
-IMP.em.write_map(dmap3, "SJ_outer_ring_raw.mrc")
+IMP.em.write_map(dmap3, "SJ_outer_ring_raw2.mrc")

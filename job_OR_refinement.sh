@@ -23,7 +23,7 @@
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-NSLOTS=4   ## Should be an "EVEN number" or 1
+NSLOTS=6   ## Should be an "EVEN number" or 1
 #NSLOTS=1    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=84
 #'

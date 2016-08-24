@@ -259,7 +259,7 @@ if (is_n84):
 # Nup82 complex
 ##########################
 if (is_n82):
-    n82_rb = 82
+    n82_rb = 84
     domains.append(("Dyn2.1",  "Dyn2.1",      0.48,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "A", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Dyn2.2",  "Dyn2.2",      0.65,  f_n82+"Dyn2.txt",   "Dyn2",   n82_pdb,  "B", (   1,  92,0),  gmm,   beadsize,   n82_rb, [n82_rb], 1,  " ",   " ",  None, False))
     domains.append(("Nup82.1", "Nup82.1_1",   0.0,   f_n82+"Nup82.txt",  "Nup82",  n82_pdb,  "C", (   1, 452,0),  gmm,   beadsize,   n82_rb, [n82_rb], 2,  " ",   " ",  None, False))
@@ -1718,7 +1718,7 @@ if (use_sampling_boundary):
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_outer_ring.gmm.50.txt',
+                                                    '../data_npc/em_gmm_model/SJ_outer_ring2.gmm.50.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.01,
                                                     #slope=0.0000001,
@@ -1801,7 +1801,7 @@ if (use_EM3D):
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the EM 3D restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_outer_ring.gmm.200.txt',
+                                                    '../data_npc/em_gmm_model/SJ_outer_ring2.gmm.200.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,

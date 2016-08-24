@@ -49,4 +49,4 @@ for i in np.arange(0, dmap.get_header().get_nz(), step_size):
             """
 #dmap2 = dmap.get_cropped(0.00001)
 #IMP.em.write_map(dmap2, "SJ_Modified_Map.mrc")
-IMP.em.write_map(dmap, "SJ_SamplingBoundary.mrc")
+IMP.em.write_map(dmap, "SJ_SamplingBoundary_raw.mrc")
