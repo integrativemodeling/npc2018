@@ -943,6 +943,8 @@ if (use_Immuno_EM):
         print (xyr.get_output())
     """
     ZAXIAL = {
+        "Dyn2.1"   : [ 130, 400],
+        "Dyn2.2"   : [ 130, 400],
         "Gle1"     : [ 120, 180],       #(Table S2 and Table S7 are different)
         "Gle2.1"   : [  20, 120],
         "Gle2.2"   : [  20, 120],
@@ -951,8 +953,8 @@ if (use_Immuno_EM):
         "Ndc1"     : [ -10,  70],       #"Ndc1"     : [   0,  90],  (Table S2 and Table S7 are different)
         "Nic96.1"  : [  25, 175],
         "Nic96.2"  : [  25, 175],
-        "Nsp1.1"   : [  10, 400],       #"Nsp1.1"   : [   0, 120],
-        "Nsp1.2"   : [  10, 400],       #"Nsp1.2"   : [   0, 120],
+        "Nsp1.1"   : [ 130, 400],       #"Nsp1.1"   : [   0, 120],
+        "Nsp1.2"   : [ 130, 400],       #"Nsp1.2"   : [   0, 120],
         "Nsp1.3"   : [   0, 120],
         "Nsp1.4"   : [   0, 120],
         "Nup1"     : [-220,-140],
@@ -960,14 +962,14 @@ if (use_Immuno_EM):
         "Nup100.2" : [  40, 220],       #"Nup100.2" : [  40, 120],
         "Nup116.1" : [  70, 330],       #"Nup116.1" : [  70, 150],
         "Nup116.2" : [  70, 330],       #"Nup116.2" : [  70, 150],
-        "Nup120"   : [  10, 400],       #"Nup120"   : [  70, 150],
-        "Nup133"   : [  10, 400],       #"Nup133"   : [ 100, 200],
-        "Nup145c"  : [  10, 400],       #"Nup145c"  : [  70, 150],
+        "Nup120"   : [  65, 400],       #"Nup120"   : [  70, 150],
+        "Nup133"   : [  65, 400],       #"Nup133"   : [ 100, 200],
+        "Nup145c"  : [  65, 400],       #"Nup145c"  : [  70, 150],
         "Nup145.1" : [-320, -50],       #"Nup145.1" : [-170, -50],
         "Nup145.2" : [-320, -50],       #"Nup145.2" : [-170, -50],
         "Nup157"   : [  40, 165],       #"Nup157"   : [   0,  95],  (Table S2 and Table S7 are different)
-        "Nup159.1" : [  10, 400],       #"Nup159.1" :  [120, 240],
-        "Nup159.2" : [  10, 400],       #"Nup159.2" :  [120, 240],
+        "Nup159.1" : [ 130, 400],       #"Nup159.1" :  [120, 240],
+        "Nup159.2" : [ 130, 400],       #"Nup159.2" :  [120, 240],
         "Nup170"   : [   0,  75],       #"Nup170"   : [   0, 100],  (Table S2 and Table S7 are different)
         "Nup188"   : [  40, 100],
         "Nup192"   : [  20, 100],
@@ -980,12 +982,12 @@ if (use_Immuno_EM):
         "Nup59"    : [  40, 120],
         "Nup60.1"  : [-200,-100],
         "Nup60.2"  : [-200,-100],
-        "Nup82.1"  : [  10, 400],       #"Nup82.1"  : [ 145, 295],
-        "Nup82.2"  : [  10, 400],       #"Nup82.2"  : [ 145, 295],
-        "Nup84"    : [  10, 400],       #"Nup84"    : [ 150, 170],
-        "Nup85"    : [  10, 400],       #"Nup85"    : [ 140, 200],
+        "Nup82.1"  : [ 130, 400],       #"Nup82.1"  : [ 145, 295],
+        "Nup82.2"  : [ 130, 400],       #"Nup82.2"  : [ 145, 295],
+        "Nup84"    : [  65, 400],       #"Nup84"    : [ 150, 170],
+        "Nup85"    : [  65, 400],       #"Nup85"    : [ 140, 200],
         "Pom34"    : [ -10,  50],       #"Pom34"    : [   0,  65],  (Table S2 and Table S7 are different)
-        "Seh1"     : [  10, 400],       #"Seh1"     : [  50, 170],
+        "Seh1"     : [  65, 400],       #"Seh1"     : [  50, 170],
         "Pom152"   : [   5,  60]        #"Pom152"   : [   0,  95]   (Table S2 and Table S7 are different)
     }
     print "\nZAxialPositionRestraint !!"
@@ -1710,7 +1712,7 @@ if (use_sampling_boundary):
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_outer_ring.gmm.50.txt',
+                                                    '../data_npc/em_gmm_model/SJ_outer_ring2.gmm.50.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.01,
                                                     #slope=0.0000001,
@@ -1791,7 +1793,7 @@ if (use_EM3D):
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the EM 3D restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_outer_ring.gmm.200.txt',
+                                                    '../data_npc/em_gmm_model/SJ_outer_ring2.gmm.200.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
