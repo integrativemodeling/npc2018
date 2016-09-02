@@ -23,7 +23,7 @@
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-#NSLOTS=2    ## Should be an "EVEN number" or 1
+#NSLOTS=6    ## Should be an "EVEN number" or 1
 NSLOTS=1    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=1
 #'
@@ -81,6 +81,7 @@ if [ ! -d $DIR ]; then
     #cp -pr template/representation_nup82.py $DIR
     #cp -pr template/crosslinking_nup82.py $DIR
 fi
+sleep 1
 cd $DIR
 
 PWD=$(pwd)

@@ -577,7 +577,8 @@ if (False):
         for d in list(Mlps):
             bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
 else:
-    main_spoke = [entry[0] for entry in domains]
+    #main_spoke = [entry[0] for entry in domains]
+    main_spoke = [entry[0] for entry in domains if not '@' in entry[0]]
     main_spoke_unique = sorted(list(set(main_spoke)))
     print ("main_spoke_unique = ", main_spoke_unique)
     for entry in main_spoke_unique:
