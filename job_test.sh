@@ -33,7 +33,7 @@ SGE_TASK_ID=1
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=modeling.py
+MODELING_SCRIPT=1_modeling_wholeNPC.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
 RMF_FILE=../data_nup82/rmfs/B_8_1-95.rmf3
