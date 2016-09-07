@@ -1599,7 +1599,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(1000.0)        # play with the weight
+    gem.set_weight(10000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
@@ -1620,7 +1620,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 3000,
+                                    number_of_frames = 1000,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1678,7 +1678,7 @@ if (use_ExcludedVolume):
                                                                  resolution = res_ev)
     ev1.add_to_model()
     ev1.set_label('main_spoke')
-    ev1.set_weight(0.3)
+    ev1.set_weight(1.0)
     outputobjects.append(ev1)
     print(ev1.get_output())
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
@@ -1690,7 +1690,7 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(0.3)
+        ev2.set_weight(10.0)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"

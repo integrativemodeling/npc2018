@@ -21,13 +21,16 @@
 #$ -N GMM200
 #########################################
 
-mapname=SJ_SamplingBoundary
+#mapname=SJ_SamplingBoundary
 #mapname=SJ_Pom152
-#mapname=SJ_outer_ring
+#mapname=SJ_outer_ring2
+mapname=SJ_outer_ring_newEM
 #ngaussians=1
 voxelsize=6
-THRESHOLD=0.0012
-NUM_ITER=5000
+#THRESHOLD=0.0012
+THRESHOLD=0.0034
+#NUM_ITER=5000
+NUM_ITER=10000
 NUM_SAMPLES=10000000
 
 # write hostname and starting time

@@ -33,10 +33,10 @@ SGE_TASK_ID=1
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=1_modeling_wholeNPC.py
+MODELING_SCRIPT=2_modeling_wholeNPC_EV.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
-RMF_FILE=../data_nup82/rmfs/B_8_1-95.rmf3
+RMF_FILE=../data_npc/WholeNPC_rmfs/106_27_1130.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0
