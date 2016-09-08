@@ -2004,10 +2004,10 @@ if (use_EM3D):
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 10.0
-tor_R       = 390.0 + 90.0
-tor_r       = 90.0 - tor_th/2.0
-tor_r_ALPS  = 90.0 - tor_th_ALPS/2.0
+tor_th_ALPS = 25
+tor_R       = 390.0 + 10.0 + 120.0
+tor_r       = 120.0 - tor_th/2.0
+tor_r_ALPS  = 120.0 - tor_th_ALPS/2.0
 msl_sigma   = 1.0
 msl_weight  = 1000.0
 
