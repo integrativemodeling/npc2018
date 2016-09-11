@@ -231,7 +231,8 @@ else:
 # Nup84 complex
 ##########################
 if (is_n84):
-    n84_rb = 84;    n133_rb = 133;  n120_rb = 120;  n120c_rb = 121;    n85_rb = 85
+    #n84_rb = 84;    n133_rb = 133;  n120_rb = 120;  n120c_rb = 121;    n85_rb = 85
+    n84_rb = 84;    n133_rb = 133;  n120_rb = 120;  n120c_rb = 84;    n85_rb = 84
     domains.append(('Nup84',  "Nup84",    0.0,  n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),  gmm,  beadsize,  n84_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup85',  "Nup85_1",  0.2,  n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),  gmm,  beadsize,  n85_rb, [n84_rb], 3,  " ",   " ",  None, False))
     domains.append(('Nup85',  "Nup85_2",  0.25, n85_fastafile,   "Nup85",   n84_pdb, "L",  (493, 744,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
@@ -2004,10 +2005,10 @@ if (use_EM3D):
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 25
-tor_R       = 390.0 + 10.0 + 120.0
-tor_r       = 120.0 - tor_th/2.0
-tor_r_ALPS  = 120.0 - tor_th_ALPS/2.0
+tor_th_ALPS = 20
+tor_R       = 390.0 + 130.0
+tor_r       = 130.0 - tor_th/2.0
+tor_r_ALPS  = 130.0 - tor_th_ALPS/2.0
 msl_sigma   = 1.0
 msl_weight  = 1000.0
 
