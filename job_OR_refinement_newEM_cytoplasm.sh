@@ -23,8 +23,8 @@
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-NSLOTS=6   ## Should be an "EVEN number" or 1
-#NSLOTS=1    ## Should be an "EVEN number" or 1
+#NSLOTS=8   ## Should be an "EVEN number" or 1
+NSLOTS=1    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=84
 #'
 # load MPI modules
@@ -35,12 +35,14 @@ SGE_TASK_ID=84
 export IMP=setup_environment.sh
 #MODELING_SCRIPT=modeling_outer_ring_refinement.py
 #MODELING_SCRIPT=modeling_outer_ring_refinement82.py
-MODELING_SCRIPT=modeling_outer_ring_refinement82_n133n120.py
+#MODELING_SCRIPT=modeling_outer_ring_refinement82_n133n120.py
+MODELING_SCRIPT=modeling_outer_ring_refinement82_n133n120_newEM_cytoplasm.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
 #RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_0.rmf3
 #RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_refine1.rmf3
-RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_refine2.rmf3
+#RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_refine2.rmf3
+RMF_FILE=../data_npc/Outer_ring_rmfs/OR_833_0_best.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0
