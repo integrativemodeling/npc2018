@@ -1674,7 +1674,6 @@ else:
     XL_restraints = None
 
 if (is_n84 and use_neighboring_spokes):
-    # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
     dist_max = 30.0
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(217,217,"Nup120@2"), (239,239,"Nup133"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()

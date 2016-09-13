@@ -202,7 +202,7 @@ is_FG = False
 use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
 #Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
-#Stopwatch_None_delta_seconds  ~30   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM + EV
+#Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
 use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
@@ -529,47 +529,56 @@ if (is_basket):
 bm1 = IMP.pmi.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
-#if (True):
-if (False):
+if (True):
     if (is_n84):
         n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
         for d in list(n84):
-            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_833_0_best.rmf3", 0)
-            #bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_846_0_best_newEM_cytoplasm.rmf3", 0)
+        n84=['Nup84@11', 'Nup85@11', 'Nup120@11', 'Nup133@11', 'Nup145c@11', 'Seh1@11', 'Sec13@11']
+        for d in list(n84):
+            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_861_0_SCS2_newEM_nucleoplasm.rmf3", 0)
 
     if (is_n82):
-        n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2']
+        n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
         for d in list(n82):
-            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_833_0_best.rmf3", 0)
-            #if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
-            #else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
+            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_846_0_best_newEM_cytoplasm.rmf3", 0)
 
     if (is_nic96):
         nic96=['Nic96.1', 'Nsp1.3', 'Nup49.1', 'Nup57.1', 'Nic96.2', 'Nsp1.4', 'Nup49.2', 'Nup57.2']
         for d in list(nic96):
-            bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/Nic96complex_initial.rmf3", 0)
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+            #bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/Nic96complex_initial.rmf3", 0)
 
     if (is_inner_ring):
         inner_ring=['Nup157', 'Nup170', 'Nup188', 'Nup192']
         for d in list(inner_ring):
-            bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/IR_865_0_final.rmf3", 0)
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+            #bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/IR_865_0_final.rmf3", 0)
 
     if (is_membrane):
-        inner_ring=['Nup53', 'Nup59', 'Ndc1', 'Pom34']
-        for d in list(inner_ring):
-            bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/IR_865_0_final.rmf3", 0)
-        bm1.set_rmf_file('Pom152', "../data_npc/Pom152_rmfs/Pom152_0_final.rmf3", 0)
-    """
+        membrane=['Nup53', 'Nup59', 'Ndc1', 'Pom34', 'Pom152']
+        for d in list(membrane):
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+            #bm1.set_rmf_file(d, "../data_npc/Inner_ring_rmfs/IR_865_0_final.rmf3", 0)
+        #bm1.set_rmf_file('Pom152', "../data_npc/Pom152_rmfs/Pom152_0_final.rmf3", 0)
+
     if (is_cytoplasm):
-        n116=['Nup116.1', 'Nup116.2']
-        for d in list(n116):
-            if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
-            else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
-    """
+        cytoplasm=['Nup100.1', 'Nup100.2', 'Nup42', 'Gle1']
+        for d in list(cytoplasm):
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+            #if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
+            #else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
+
+    if (is_nucleoplasm):
+        nucleoplasm=['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2', 'Nup1']
+        for d in list(nucleoplasm):
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+
     if (is_basket):
         Mlps=['Mlp1', 'Mlp2']
         for d in list(Mlps):
-            bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
+            bm1.set_rmf_file(d, inputs.rmf_input, 0)
+            #bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
 else:
     main_spoke = [entry[0] for entry in domains if not '@' in entry[0]]
     main_spoke_unique = sorted(list(set(main_spoke)))
@@ -593,12 +602,12 @@ bm1.scale_bead_radii(100, 0.6)
 # apply the rotational symmetry
 #####################################################
 if (use_neighboring_spokes):
+    """
     if (is_n84):
         for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
             #simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
             #simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
-    """
     if (is_n82):
         for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
@@ -653,7 +662,7 @@ for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13'
 for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
     rigid_tuples.append(protein)
 #for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
-for protein in ['Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2']:
+for protein in ['Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
     rigid_tuples.append(protein)
 #for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
 for protein in [(637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
@@ -1441,6 +1450,24 @@ if (use_XL):
 else:
     XL_restraints = None
 
+"""
+if (is_n84 and use_neighboring_spokes):
+    dist_max = 30.0
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(217,217,"Nup120@2"), (239,239,"Nup133"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup120_217-Nup133_239")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(431,431,"Nup120@2"), (191,191,"Nup133"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup120_431-Nup133_191")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+"""
+
 
 #####################################################
 # Restraints setup
@@ -1594,13 +1621,13 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted90.gmm.400.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.gmm.1250.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(10000.0)        # play with the weight
+    gem.set_weight(5000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
