@@ -1627,7 +1627,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(5000.0)        # play with the weight
+    gem.set_weight(10000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
