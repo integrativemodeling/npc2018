@@ -6,7 +6,7 @@ import numpy as np
 
 #dmap = IMP.em.read_map(sys.argv[1])
 dmap = IMP.em.read_map("./SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.mrc")
-dmap2 = IMP.em.read_map("./SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.mrc")
+dmap2 = IMP.em.read_map("./SJ_outer_ring_newEM.mrc")
 step_size = 1.0
 voxel_size = 5.3
 threshold = 0.0035
@@ -34,10 +34,10 @@ for i in np.arange(0, dmap2.get_header().get_nz(), step_size):
     z = (i - 55.5) * voxel_size
     for j in np.arange(0, dmap2.get_header().get_ny(), step_size):
         #y = j - 149.5
-        y = (j - 64.5) * voxel_size
+        y = (j - 61.5) * voxel_size
         for k in np.arange(0, dmap2.get_header().get_nx(), step_size):
             #x = k - 149.5
-            x = (k + 26.5) * voxel_size
+            x = (k + 37.5) * voxel_size
 
             if ( z > -70 and z < 50 ):
                 dmap2.set_value(x,y,z, 0.0)
@@ -74,4 +74,4 @@ for i in np.arange(0, dmap2.get_header().get_nz(), step_size):
 
 dmap3 = dmap2.get_cropped(0.00001)
 #IMP.em.write_map(dmap2, "SJ_Modified_Map.mrc")
-IMP.em.write_map(dmap3, "SJ_outer_ring_newEM_raw.mrc")
+IMP.em.write_map(dmap3, "SJ_outer_ring_newEM2.mrc")

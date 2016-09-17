@@ -222,7 +222,7 @@ else:           gmm = None
 if (use_neighboring_spokes):
     #clones_range_A = range(2,4)+range(11,14)
     #clones_range_B = range(2,4)
-    clones_range_A = range(2,3)
+    clones_range_A = range(2,3)+range(11,12)
     clones_range_B = range(2,3)
 else:
     clones_range_A = range(11,12)
@@ -594,7 +594,7 @@ clone_list = [entry[0] for entry in domains if '@' in entry[0]]
 clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
-bm1.build_model(data_structure = domains, sequence_connectivity_scale=1.0, sequence_connectivity_resolution=1.0,
+bm1.build_model(data_structure = domains, sequence_connectivity_scale=2.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=False, skip_gaussian_in_representation=False)
 #exit(0)
 #bm1.scale_bead_radii(100, 0.6)
@@ -606,7 +606,7 @@ bm1.build_model(data_structure = domains, sequence_connectivity_scale=1.0, seque
 if (use_neighboring_spokes):
     if (is_n84):
         for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
-            #simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
+            simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
             #simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,3)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
             #simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
@@ -1027,6 +1027,13 @@ if (use_Immuno_EM):
         zax.add_to_model()
         outputobjects.append(zax)
         print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (1155,1155,"Nup133"), lower_bound=130, upper_bound=400, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (130, 400, "Nup133_1155"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
 
 #####################################################
@@ -2005,10 +2012,10 @@ if (use_EM3D):
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 20
-tor_R       = 390.0 + 130.0
-tor_r       = 130.0 - tor_th/2.0
-tor_r_ALPS  = 130.0 - tor_th_ALPS/2.0
+tor_th_ALPS = 20.0
+tor_R       = 390.0 + 150.0
+tor_r       = 150.0 - tor_th/2.0
+tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
 msl_sigma   = 1.0
 msl_weight  = 1000.0
 
