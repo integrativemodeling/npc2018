@@ -602,13 +602,11 @@ if (use_neighboring_spokes):
     if (is_n84):
         for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
-            #simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
-            #simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
-    """
+            simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
+            simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_n82):
         for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
-    """
     if (is_nic96):
         for protein in ['Nic96.1', 'Nic96.2', 'Nsp1.3', 'Nsp1.4', 'Nup49.1', 'Nup49.2', 'Nup57.1', 'Nup57.2']:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
@@ -625,7 +623,6 @@ if (use_neighboring_spokes):
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
             simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_cytoplasm):
-        #for protein in ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42', 'Gle1', 'Gle2.1', 'Gle2.2']:
         for protein in ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42', 'Gle1']:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_nucleoplasm):
@@ -654,7 +651,7 @@ else:
 #####################################################
 rigid_tuples = []
 #for protein in ['Nup84', 'Nup85', (1,711,'Nup120'),(715,1037,'Nup120'), (1,480,'Nup133'),(490,1157,'Nup133'), 'Nup145c', 'Seh1', 'Sec13']:
-for protein in ['Nup84', 'Nup85', (715,1037,'Nup120'), (490,1157,'Nup133'), 'Nup145c', 'Seh1', 'Sec13']:
+for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
     rigid_tuples.append(protein)
 for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
     rigid_tuples.append(protein)
@@ -1381,6 +1378,7 @@ if (is_inner_ring):
 # ALPS Motifs
 if (is_n84):
     tor_th_ALPS = 20.0
+    tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup133')
     msl.set_weight(msl_weight)
@@ -1600,6 +1598,8 @@ if (use_EM3D):
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
             other_spokes.append(entry[0])
+        elif 'Dyn2' in entry[0]:
+            other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1624,7 +1624,6 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    #gem.set_weight(10000.0)        # play with the weight
     gem.set_weight(1000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
