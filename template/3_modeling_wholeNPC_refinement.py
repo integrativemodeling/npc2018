@@ -245,7 +245,7 @@ if (is_n84):
     domains.append(('Seh1',   "Seh1",     0.8,  seh1_fastafile,  "Seh1",    n84_pdb, "P",  (  1, 349,0),  gmm,  beadsize,  n85_rb, [n84_rb], 2,  " ",   " ",  None, False))
     domains.append(('Sec13',  "Sec13",    0.95, sec13_fastafile, "Sec13",   n84_pdb, "Q",  (  1, 297,0),  gmm,  beadsize,  n84_rb, [n84_rb], 2,  " ",   " ",  None, False))
     for i in clones_range_A:
-        if (i==11): gmm_c = None    #gmm_c = gmm
+        if (i==11): gmm_c = gmm
         else:       gmm_c = None
         domains.append(('Nup84@%d'%i,  "Nup84@%d"%i,    0.0, n84_fastafile,   "Nup84",   n84_pdb, "K",  (  1, 726,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup84.txt",     gmm_f+"Nup84.mrc",     None, False))
         domains.append(('Nup85@%d'%i,  "Nup85_1@%d"%i,  0.2, n85_fastafile,   "Nup85",   n84_pdb, "L",  (  1, 492,0),  gmm_c,  beadsize,   None,   None,   3,  gmm_f+"Nup85_1.txt",   gmm_f+"Nup85_1.mrc",   None, False))
@@ -1596,7 +1596,10 @@ print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the pre_sampling) -
 if (use_EM3D):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
-        if '@11' in entry[0]:
+        # ignore GMMs of the Nup84 complex in nucleoplasm
+        if ('Nup84@11' or 'Nup85@11' or 'Nup120@11' or 'Nup133@11' or 'Nup145c@11' or 'Seh1@11' or 'Sec13@11') in entry[0]:
+            other_spokes.append(entry[0])
+        elif '@11' in entry[0]:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
