@@ -1728,6 +1728,8 @@ if (use_sampling_boundary):
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
             other_spokes.append(entry[0])
+        #elif 'Dyn2' in entry[0]:
+        #    other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1811,6 +1813,8 @@ if (use_EM3D):
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
             other_spokes.append(entry[0])
+        #elif 'Dyn2' in entry[0]:
+        #    other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1882,10 +1886,13 @@ print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the XL_EM_sampling)
 if (use_ExcludedVolume):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
+        """
         if '@11' in entry[0]:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
+        """
+        if '@' in entry[0]:
             other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
@@ -2012,34 +2019,70 @@ if (use_EM3D):
 # Restraints setup - Membrane Localization + ALPS Motif
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 20.0
+tor_th_ALPS = 10.0
 tor_R       = 390.0 + 150.0
 tor_r       = 150.0 - tor_th/2.0
 tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
 msl_sigma   = 1.0
 msl_weight  = 1000.0
 
+# ALPS Motifs
 if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup133')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    """
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
+    """
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
+
+
+#####################################################
+# Restraints setup - Membrane Exclusion
+#####################################################
+tor_th      = 150.0
+tor_R       = 390.0 + 150.0
+tor_r       = 150.0 - tor_th/2.0
+mex_sigma   = 1.0
+mex_weight  = 10.0
+if (is_n84):
+    nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+    nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+
+    N84COMPLEX = [
+        [   1,  192, "Nup120"],
+        #[ 153,  192, "Nup120"],
+        [ 223, 1037, "Nup120"],   #[ 311, 1037, "Nup120"],
+        [   1,  249, "Nup133"],
+        [ 278, 1157, "Nup133"],
+        [   1,  726, "Nup84"],
+        [   1,  712, "Nup145c"],
+    ]
+    print "\nMembraneExclusionRestraint for the Nup84 complex !!"
+    for z in N84COMPLEX:
+        if (z[2] not in nup_list_unique):
+            continue
+        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
+        mex.set_weight(mex_weight)
+        mex.add_to_model()
+        outputobjects.append(mex)
+        print (mex.get_output())
 
 
 #####################################################

@@ -655,9 +655,11 @@ for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
 #for protein in ['Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
 for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
     rigid_tuples.append(protein)
-for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
+#for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
+for protein in [(637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
     rigid_tuples.append(protein)
-for protein in [(1,56,'Nic96.2'),(205,839,'Nic96.2'), (637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
+#for protein in [(1,56,'Nic96.2'),(205,839,'Nic96.2'), (637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
+for protein in [(637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
     rigid_tuples.append(protein)
 #for protein in ['Nup157', 'Nup170', 'Nup188', 'Nup192']:
 for protein in [(88,892,'Nup157'),(900,1391,'Nup157'), (98,992,'Nup170'),(1000,1502,'Nup170'), 'Nup188', 'Nup192']:
@@ -1151,40 +1153,40 @@ tor_R       = 390.0 + 150.0
 tor_r       = 150.0 - tor_th/2.0
 tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
 msl_sigma   = 1.0
-msl_weight  = 1.0
+msl_weight  = 1000.0
 
 # Transmembrane domains
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
-    msl.set_label('Pom152_101_200')
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Pom152_111_194')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Ndc1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Pom34')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup53')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup59')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1306,21 +1308,21 @@ if (is_membrane):
 
 # ALPS Motifs
 if (is_nucleoplasm):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup60.1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.2'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.2'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup60.2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1329,7 +1331,7 @@ if (is_nucleoplasm):
 
 # ALPS Motifs
 if (is_inner_ring):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,334,'Nup157'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,334,'Nup157'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup157')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1351,7 +1353,7 @@ if (is_inner_ring):
     print (zax.get_output())
 
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,344,'Nup170'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,344,'Nup170'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup170')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1373,35 +1375,63 @@ if (is_inner_ring):
     print (zax.get_output())
 
 # ALPS Motifs
-tor_th      = 45.0
-tor_th_ALPS = 20.0
-tor_R       = 390.0 + 150.0
-tor_r       = 150.0 - tor_th/2.0
-tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
-msl_sigma   = 1.0
-msl_weight  = 1.0
-
 if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup133')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    """
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
+    """
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
+
+
+#####################################################
+# Restraints setup - Membrane Exclusion
+# TODO: other membrane nups
+#####################################################
+tor_th      = 150.0
+tor_R       = 390.0 + 150.0
+tor_r       = 150.0 - tor_th/2.0
+mex_sigma   = 1.0
+mex_weight  = 10.0
+if (is_n84):
+    nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+    nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+
+    N84COMPLEX = [
+        [   1,  192, "Nup120"],     #[   1,  132, "Nup120"],
+        #[ 153,  192, "Nup120"],
+        [ 223, 1037, "Nup120"],     #[ 311, 1037, "Nup120"],
+        [   1,  249, "Nup133"],
+        [ 278, 1157, "Nup133"],
+        [   1,  726, "Nup84"],
+        [   1,  712, "Nup145c"],
+    ]
+    print "\nMembraneExclusionRestraint for the Nup84 complex !!"
+    for z in N84COMPLEX:
+        if (z[2] not in nup_list_unique):
+            continue
+        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
+        mex.set_weight(mex_weight)
+        mex.add_to_model()
+        outputobjects.append(mex)
+        print (mex.get_output())
 
 
 #####################################################
@@ -1630,7 +1660,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(1000.0)        # play with the weight
+    gem.set_weight(5000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
