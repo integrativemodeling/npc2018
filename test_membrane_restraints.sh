@@ -23,9 +23,9 @@
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-NSLOTS=8   ## Should be an "EVEN number" or 1
+NSLOTS=1   ## Should be an "EVEN number" or 1
 #NSLOTS=1    ## Should be an "EVEN number" or 1
-SGE_TASK_ID=84
+SGE_TASK_ID=9999
 #'
 # load MPI modules
 #module load openmpi-1.6-nodlopen
@@ -36,7 +36,7 @@ export IMP=setup_environment.sh
 #MODELING_SCRIPT=modeling_outer_ring_refinement.py
 #MODELING_SCRIPT=modeling_outer_ring_refinement82.py
 #MODELING_SCRIPT=modeling_outer_ring_refinement82_n133n120.py
-MODELING_SCRIPT=modeling_outer_ring_refinement82_n133n120_newEM_cytoplasm.py
+MODELING_SCRIPT=test_membrane_restraints.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
 #RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_0.rmf3
@@ -50,7 +50,7 @@ EM2D_WEIGHT=10000.0
 
 # Parameters
 if [ -z $1 ]; then
-    REPEAT="5000"
+    REPEAT="100"
 else
     REPEAT="$1"
 fi

@@ -1730,8 +1730,8 @@ if (use_sampling_boundary):
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
             other_spokes.append(entry[0])
-        #elif 'Dyn2' in entry[0]:
-        #    other_spokes.append(entry[0])
+        elif 'Dyn2' in entry[0]:
+            other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -1815,8 +1815,8 @@ if (use_EM3D):
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
             other_spokes.append(entry[0])
-        #elif 'Dyn2' in entry[0]:
-        #    other_spokes.append(entry[0])
+        elif 'Dyn2' in entry[0]:
+            other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
@@ -2060,9 +2060,10 @@ if (is_n84):
 #####################################################
 tor_th      = 150.0 - tor_th_ALPS
 tor_R       = 390.0 + 150.0
-tor_r       = 150.0 - tor_th_ALPS - tor_th/2.0
+tor_r       = tor_th/2.0
 mex_sigma   = 0.2
 mex_weight  = 1000.0
+
 if (is_n84):
     nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list

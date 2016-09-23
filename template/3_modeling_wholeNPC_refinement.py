@@ -1146,9 +1146,10 @@ if (is_inner_ring):
 
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
+# Campelo et al, PLOS CompBio, 2014 (PMC3983069)
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 5.0
+tor_th_ALPS = 12.0
 tor_R       = 390.0 + 150.0
 tor_r       = 150.0 - tor_th/2.0
 tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
@@ -1402,36 +1403,45 @@ if (is_n84):
 
 #####################################################
 # Restraints setup - Membrane Exclusion
-# TODO: other membrane nups
 #####################################################
-tor_th      = 150.0
+tor_th      = 150.0 - tor_th_ALPS
 tor_R       = 390.0 + 150.0
-tor_r       = 150.0 - tor_th/2.0
-mex_sigma   = 1.0
-mex_weight  = 10.0
-if (is_n84):
-    nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
-    nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+tor_r       = tor_th/2.0
+mex_sigma   = 0.2
+mex_weight  = 1000.0
 
-    N84COMPLEX = [
-        [   1,  192, "Nup120"],     #[   1,  132, "Nup120"],
-        #[ 153,  192, "Nup120"],
-        [ 223, 1037, "Nup120"],     #[ 311, 1037, "Nup120"],
-        [   1,  249, "Nup133"],
-        [ 278, 1157, "Nup133"],
-        [   1,  726, "Nup84"],
-        [   1,  712, "Nup145c"],
-    ]
-    print "\nMembraneExclusionRestraint for the Nup84 complex !!"
-    for z in N84COMPLEX:
-        if (z[2] not in nup_list_unique):
-            continue
+nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+
+MEX_LIST = [
+    [1, 110, "Pom152"],
+    [248, 655, "Ndc1"],
+    [151, 299, "Pom34"],
+    [248, 475, "Nup53"],
+    [266, 528, "Nup59"],
+    [0, 0, "Nup1"],
+    [0, 0, "Nup60.1"],
+    [0, 0, "Nup60.2"],
+    [1, 892, "Nup157"],
+    [1, 992, "Nup170"],
+    [0, 0, "Nup133"],
+    [0, 0, "Nup120"],
+    [0, 0, "Nup84"],
+    [0, 0, "Nup145c"],
+]
+print "\nMembraneExclusionRestraint !!"
+for z in MEX_LIST:
+    if (z[2] not in nup_list_unique):
+        continue
+    if (z[0] > 0):
         mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
-        mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
-        mex.set_weight(mex_weight)
-        mex.add_to_model()
-        outputobjects.append(mex)
-        print (mex.get_output())
+    else:
+        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, z[2], tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+    mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
+    mex.set_weight(mex_weight)
+    mex.add_to_model()
+    outputobjects.append(mex)
+    print (mex.get_output())
 
 
 #####################################################
