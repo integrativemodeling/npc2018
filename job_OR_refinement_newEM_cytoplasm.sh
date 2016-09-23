@@ -43,6 +43,7 @@ XL_FILE=XL.csv
 #RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_refine1.rmf3
 #RMF_FILE=../data_npc/Outer_ring_rmfs/OuterRing_refine2.rmf3
 RMF_FILE=../data_npc/Outer_ring_rmfs/OR_833_0_best.rmf3
+#RMF_FILE=../prefilter/84kmeans_5_1/all_models.4/0.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0

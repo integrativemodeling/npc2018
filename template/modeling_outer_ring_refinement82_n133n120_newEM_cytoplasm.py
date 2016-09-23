@@ -539,7 +539,7 @@ if (is_basket):
 bm1 = IMP.pmi.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
-if (True):
+if (False):
     if (is_n84):
         n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
         for d in list(n84):
@@ -594,7 +594,7 @@ clone_list = [entry[0] for entry in domains if '@' in entry[0]]
 clone_list_unique = sorted(list(set(clone_list)))   # Make a unique list
 print ("clone_list_unique = ", clone_list_unique)
 
-bm1.build_model(data_structure = domains, sequence_connectivity_scale=1.0, sequence_connectivity_resolution=1.0,
+bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, sequence_connectivity_resolution=1.0,
                 skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=False, skip_gaussian_in_representation=False)
 #exit(0)
 #bm1.scale_bead_radii(100, 0.6)
@@ -1028,12 +1028,14 @@ if (use_Immuno_EM):
         outputobjects.append(zax)
         print (zax.get_output())
 
+    """
     zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (1155,1155,"Nup133"), lower_bound=130, upper_bound=400, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (130, 400, "Nup133_1155"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
+    """
 
 
 #####################################################
@@ -2017,9 +2019,10 @@ if (use_EM3D):
 
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
+# Campelo et al, PLOS CompBio, 2014 (PMC3983069)
 #####################################################
 tor_th      = 45.0
-tor_th_ALPS = 10.0
+tor_th_ALPS = 12.0
 tor_R       = 390.0 + 150.0
 tor_r       = 150.0 - tor_th/2.0
 tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
@@ -2055,29 +2058,29 @@ if (is_n84):
 #####################################################
 # Restraints setup - Membrane Exclusion
 #####################################################
-tor_th      = 150.0
+tor_th      = 150.0 - tor_th_ALPS
 tor_R       = 390.0 + 150.0
-tor_r       = 150.0 - tor_th/2.0
-mex_sigma   = 1.0
-mex_weight  = 10.0
+tor_r       = 150.0 - tor_th_ALPS - tor_th/2.0
+mex_sigma   = 0.2
+mex_weight  = 1000.0
 if (is_n84):
     nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
-    N84COMPLEX = [
-        [   1,  192, "Nup120"],
-        #[ 153,  192, "Nup120"],
-        [ 223, 1037, "Nup120"],   #[ 311, 1037, "Nup120"],
-        [   1,  249, "Nup133"],
-        [ 278, 1157, "Nup133"],
-        [   1,  726, "Nup84"],
-        [   1,  712, "Nup145c"],
+    MEX_LIST = [
+        [0, 0, "Nup120"],
+        [0, 0, "Nup133"],
+        [0, 0, "Nup84"],
+        [0, 0, "Nup145c"],
     ]
     print "\nMembraneExclusionRestraint for the Nup84 complex !!"
-    for z in N84COMPLEX:
+    for z in MEX_LIST:
         if (z[2] not in nup_list_unique):
             continue
-        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        if (z[0] > 0):
+            mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        else:
+            mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, z[2], tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
         mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
         mex.set_weight(mex_weight)
         mex.add_to_model()
