@@ -225,7 +225,7 @@ if (use_neighboring_spokes):
     clones_range_A = range(2,4)+range(11,14)
     clones_range_B = range(2,4)
 else:
-    clones_range_A = range(0, 20)
+    clones_range_A = range(0, 50)
     clones_range_B = []
 
 ##########################
@@ -255,7 +255,7 @@ bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, seque
 if (use_shuffle) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
     #simo.shuffle_configuration(bounding_box=((350, -150, 50), (1050, 200, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
-    simo.shuffle_configuration(bounding_box=((350, -300, -300), (1050, 300, 300)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
+    simo.shuffle_configuration(bounding_box=((350, -300, -300), (650, 300, 300)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
 
 
 #####################################################

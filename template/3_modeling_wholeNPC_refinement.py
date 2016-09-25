@@ -529,7 +529,8 @@ if (True):
     if (is_n84):
         n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
         for d in list(n84):
-            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_842_newEM.rmf3", 0)
+            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_8484_newEM_NE.rmf3", 0)
+            #bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_842_newEM.rmf3", 0)
 
     if (is_n82):
         n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
@@ -654,6 +655,7 @@ for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
     rigid_tuples.append(protein)
 #for protein in ['Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
 for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
+#TODO: for protein in [(XXXX,1460,'Nup159.1'),(XXXX,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
     rigid_tuples.append(protein)
 #for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
 for protein in [(637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
@@ -666,7 +668,7 @@ for protein in [(88,892,'Nup157'),(900,1391,'Nup157'), (98,992,'Nup170'),(1000,1
     rigid_tuples.append(protein)
 #for protein in [(201,410,'Nup53'), (251,402,'Nup59'), 'Mlp1', 'Mlp2']:
 #for protein in [(248,475,'Nup53'), (266,528,'Nup59'), 'Ndc1', 'Pom34', (379,1337,'Pom152'), 'Mlp1', 'Mlp2']:
-for protein in [(248,410,'Nup53'), (266,402,'Nup59'), (379,1337,'Pom152'), 'Mlp1', 'Mlp2']:
+for protein in [(248,410,'Nup53'), (266,402,'Nup59'), (379,1337,'Pom152')]:
     rigid_tuples.append(protein)
 # Remove flexible movers for all clones
 for protein in clone_list_unique:
@@ -1417,8 +1419,8 @@ MEX_LIST = [
     [1, 110, "Pom152"],
     [248, 655, "Ndc1"],
     [151, 299, "Pom34"],
-    [248, 475, "Nup53"],
-    [266, 528, "Nup59"],
+    [0, 0, "Nup53"],
+    [0, 0, "Nup59"],
     [0, 0, "Nup1"],
     [0, 0, "Nup60.1"],
     [0, 0, "Nup60.2"],
@@ -1428,6 +1430,10 @@ MEX_LIST = [
     [0, 0, "Nup120"],
     [0, 0, "Nup84"],
     [0, 0, "Nup145c"],
+    [0, 0, "Nup145.1"],
+    [0, 0, "Nup145.2"],
+    [0, 0, "Mlp1"],
+    [0, 0, "Mlp2"],
 ]
 print "\nMembraneExclusionRestraint !!"
 for z in MEX_LIST:
