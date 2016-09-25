@@ -1030,8 +1030,8 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
         "Nup1"     : [-400,   0],
         "Nup60.1"  : [-400,   0],
         "Nup60.2"  : [-400,   0],
-        "Mlp1"     : [-400,-200],
-        "Mlp2"     : [-400,-200]
+        "Mlp1"     : [-400,-150],
+        "Mlp2"     : [-400,-150]
     }
     print "\nZAxialPositionRestraints for Cytoplasm / Nucleoplasm / Basket !!"
     for protein, z in ZAXIAL.iteritems():
