@@ -203,6 +203,7 @@ use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
 #Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
 #Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
+#Stopwatch_None_delta_seconds  ~120   (3 spokes for all, ~8.0G memory) with XL + EM + EV
 use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
@@ -210,7 +211,7 @@ use_Composite = False
 use_Distance_to_Point = False
 use_end_to_end_157_170 = False
 use_FG_anchor = False
-use_sampling_boundary = False
+use_sampling_boundary = True
 use_XL = True
 use_EM3D = True
 
@@ -529,8 +530,7 @@ if (True):
     if (is_n84):
         n84=['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']
         for d in list(n84):
-            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_8484_newEM_NE.rmf3", 0)
-            #bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_842_newEM.rmf3", 0)
+            bm1.set_rmf_file(d, "../data_npc/Outer_ring_rmfs/OR_84844_newEM_NE.rmf3", 0)
 
     if (is_n82):
         n82=['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', 'Nup116.1', 'Nup116.2']
@@ -649,13 +649,14 @@ else:
 #####################################################
 rigid_tuples = []
 #for protein in ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1', 'Sec13']:
-for protein in ['Nup84', 'Nup85', (715,1037,'Nup120'), (490,1157,'Nup133'), 'Nup145c', 'Seh1', 'Sec13']:
+#for protein in ['Nup84', 'Nup85', (715,1037,'Nup120'), (490,1157,'Nup133'), 'Nup145c', 'Seh1', 'Sec13']:
+for protein in ['Nup84', (715,1037,'Nup120'), (490,1157,'Nup133')]:
     rigid_tuples.append(protein)
 for protein in ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2']:
     rigid_tuples.append(protein)
 #for protein in ['Nup159.1', 'Nup159.2', 'Nsp1.1', 'Nsp1.2', (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
-for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
-#TODO: for protein in [(XXXX,1460,'Nup159.1'),(XXXX,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
+#for protein in [(1117,1460,'Nup159.1'),(1117,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
+for protein in [(1211,1460,'Nup159.1'),(1211,1460,'Nup159.2'), (637,823,'Nsp1.1'),(637,823,'Nsp1.2'), (966,1113,'Nup116.1'),(966,1113,'Nup116.2')]:
     rigid_tuples.append(protein)
 #for protein in [(1,56,'Nic96.1'),(205,839,'Nic96.1'), (637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
 for protein in [(637,823,'Nsp1.3'), (270,472,'Nup49.1'), (287,541,'Nup57.1')]:
@@ -666,9 +667,8 @@ for protein in [(637,823,'Nsp1.4'), (270,472,'Nup49.2'), (287,541,'Nup57.2')]:
 #for protein in ['Nup157', 'Nup170', 'Nup188', 'Nup192']:
 for protein in [(88,892,'Nup157'),(900,1391,'Nup157'), (98,992,'Nup170'),(1000,1502,'Nup170'), 'Nup188', 'Nup192']:
     rigid_tuples.append(protein)
-#for protein in [(201,410,'Nup53'), (251,402,'Nup59'), 'Mlp1', 'Mlp2']:
 #for protein in [(248,475,'Nup53'), (266,528,'Nup59'), 'Ndc1', 'Pom34', (379,1337,'Pom152'), 'Mlp1', 'Mlp2']:
-for protein in [(248,410,'Nup53'), (266,402,'Nup59'), (379,1337,'Pom152')]:
+for protein in [(248,360,'Nup53'), (266,402,'Nup59'), (379,1337,'Pom152'), 'Mlp1', 'Mlp2']:
     rigid_tuples.append(protein)
 # Remove flexible movers for all clones
 for protein in clone_list_unique:
@@ -1030,8 +1030,8 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
         "Nup1"     : [-400,   0],
         "Nup60.1"  : [-400,   0],
         "Nup60.2"  : [-400,   0],
-        "Mlp1"     : [-400,-150],
-        "Mlp2"     : [-400,-150]
+        "Mlp1"     : [-400,-200],
+        "Mlp2"     : [-400,-200]
     }
     print "\nZAxialPositionRestraints for Cytoplasm / Nucleoplasm / Basket !!"
     for protein, z in ZAXIAL.iteritems():
@@ -1492,24 +1492,6 @@ if (use_XL):
 else:
     XL_restraints = None
 
-"""
-if (is_n84 and use_neighboring_spokes):
-    dist_max = 30.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(217,217,"Nup120@2"), (239,239,"Nup133"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup120_217-Nup133_239")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(431,431,"Nup120@2"), (191,191,"Nup133"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup120_431-Nup133_191")
-    dr.set_weight(dr_weight)
-    outputobjects.append(dr)
-    print(dr.get_output())
-"""
-
 
 #####################################################
 # Restraints setup
@@ -1547,27 +1529,19 @@ if (is_inner_ring and is_membrane):
 if (use_sampling_boundary):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
-        if 'Nup170n@11' in entry[1]:
+        if '@' in entry[0]:
+            other_spokes.append(entry[0])
+        elif ('Nup84' in entry[0]) or ('Nup85' in entry[0]) or ('Nup120' in entry[0]) or ('Nup133' in entry[0]):
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
-        elif 'Nup170c@11' in entry[1]:
-            other_spokes.append(entry[0])
-        elif 'Nup170n' in entry[1]:
-            other_spokes.append(entry[0])
-        elif 'Nup170c' in entry[1]:
+        elif ('Nup145c' in entry[0]) or ('Seh1' in entry[0]) or ('Sec13' in entry[0]):
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
-        elif '@' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Ndc1' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Pom34' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Pom152' in entry[0]:
-            other_spokes.append(entry[0])
+        elif ('Nup82' in entry[0]) or ('Nup159' in entry[0]) or ('Nsp1.1' in entry[0]) or ('Nsp1.2' in entry[0]):
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
         else:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
+            other_spokes.append(entry[0])
     main_spoke_unique = sorted(list(set(main_spoke)))
     main_spoke_hier_name = sorted(main_spoke_hier_name)
     other_spokes_unique = sorted(list(set(other_spokes)))
@@ -1582,21 +1556,22 @@ if (use_sampling_boundary):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     #mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
-    print ("Total mass for the Sampling Boundary EM restraint = ", mass)
+    print ("Total mass for the Sampling Boundary EM restraint for the outer-ring = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.15.txt',
+                                                    '../data_npc/em_gmm_model/SJ_outer_ring_newEM.gmm.250.txt',
                                                     target_mass_scale=mass,
-                                                    slope=0.01,
-                                                    #slope=0.0000001,
+                                                    #slope=0.01,
+                                                    slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(2.0)        # play with the weight
-    sbr.set_label("Sampling_Boundary")
+    sbr.set_weight(5000.0)        # play with the weight
+    sbr.set_label("Sampling_Boundary_outer-ring")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print "\nEVAL 2 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank
+
 
 """
 #####################################################
@@ -1643,14 +1618,26 @@ if (use_EM3D):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
         # ignore GMMs of the Nup84 complex in nucleoplasm
-        if ('Nup84@11' or 'Nup85@11' or 'Nup120@11' or 'Nup133@11' or 'Nup145c@11' or 'Seh1@11' or 'Sec13@11') in entry[0]:
+        if ( ('Nup84' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup85' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup120' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup133' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup145c' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Seh1' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Sec13' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif 'Dyn2' in entry[0]:
             other_spokes.append(entry[0])
         elif '@11' in entry[0]:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
         elif '@' in entry[0]:
-            other_spokes.append(entry[0])
-        elif 'Dyn2' in entry[0]:
             other_spokes.append(entry[0])
         else:
             main_spoke.append(entry[0])
@@ -1676,7 +1663,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(5000.0)        # play with the weight
+    gem.set_weight(2500.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
@@ -1723,12 +1710,6 @@ print "\nEVAL 7 : ", sf.evaluate(False), " (after performing the XL_EM_sampling)
 if (use_ExcludedVolume):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
-        """
-        if '@11' in entry[0]:
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-        elif '@' in entry[0]:
-        """
         if '@' in entry[0]:
             other_spokes.append(entry[0])
         else:
