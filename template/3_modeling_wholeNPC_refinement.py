@@ -203,7 +203,7 @@ use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
 #Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
 #Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
-#Stopwatch_None_delta_seconds  ~120   (3 spokes for all, ~8.0G memory) with XL + EM + EV
+#Stopwatch_None_delta_seconds  ~150   (3 spokes for all, ~8.0G memory) with XL + EM + EV
 use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
@@ -1393,10 +1393,17 @@ if (is_n84):
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
-    """
 
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_2')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+    """
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Nup120_135-152_197-216')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
