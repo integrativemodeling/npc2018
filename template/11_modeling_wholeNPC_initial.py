@@ -1156,22 +1156,6 @@ if (is_inner_ring):
     outputobjects.append(zax)
     print (zax.get_output())
 
-# ALPS Motifs
-if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup133')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup120_135-152_197-216')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
 
 #####################################################
 # Restraints setup - Membrane Exclusion
@@ -1391,6 +1375,7 @@ rex1 = mc1.get_replica_exchange_object()
 print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
 #exit(0)
 
+
 #####################################################
 # Restraints setup
 # EM 3D restraint using GMM
@@ -1450,6 +1435,35 @@ if (use_EM3D):
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print "\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
+
+
+#####################################################
+# Restraints setup - Membrane Localization + ALPS Motif
+# Campelo et al, PLOS CompBio, 2014 (PMC3983069)
+#####################################################
+tor_th      = 45.0
+tor_th_ALPS = 12.0
+tor_R       = 390.0 + 150.0
+tor_r       = 150.0 - tor_th/2.0
+tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
+msl_sigma   = 1.0
+msl_weight  = 10.0
+
+# ALPS Motifs of the Nup84 complex
+if (is_n84):
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Nup133')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Nup120_135-152_197-216')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
 
 
 #####################################################
