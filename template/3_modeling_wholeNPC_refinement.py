@@ -207,11 +207,9 @@ use_neighboring_spokes = True
 use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
-use_Composite = False
-use_Distance_to_Point = False
-use_end_to_end_157_170 = False
 use_FG_anchor = False
 use_sampling_boundary = True
+use_MembraneExclusion = True
 use_XL = True
 use_EM3D = True
 
@@ -686,7 +684,7 @@ for rt in rigid_tuples:
 if (use_shuffle) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
     #simo.shuffle_configuration(bounding_box=((350, -150, 50), (1050, 200, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
-    simo.shuffle_configuration(bounding_box=((150, -150, 0), (550, 150, 350)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
+    simo.shuffle_configuration(bounding_box=((150, -150, 0), (750, 150, 350)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
 
 
 #####################################################
@@ -704,183 +702,6 @@ sampleobjects.append(simo)
 
 
 #####################################################
-# Restraints setup
-# Composite restraint (Proximity / Contact)
-#####################################################
-class CompositeRepresentation(object):
-    """Simple representation for composites. For speed, each protein
-       is represented with a single sphere that covers the 10 residue
-       beads used for excluded volume. This is very approximate but
-       that should be fine for composites. This should dramatically
-       reduce the number of distances the composite restraint needs
-       to calculate at each evaluation.
-
-       The class acts like a dictionary where the keys are protein
-       names and the values are the one-bead-per-protein particles,
-       which are calculated on demand."""
-
-    # All proteins that have multiple copies in the primary spoke
-    # (proteins not explicitly listed here have only a single copy)
-    COPIES = { 'Gle2': 3, 'Nic96': 3, 'Nsp1': 5, 'Nup100': 3,
-               'Nup116': 3, 'Nup145': 3, 'Nup159': 3, 'Nup49': 3,
-               'Nup57': 3, 'Nup82': 3, 'Dyn2': 3}
-
-    def __init__(self, simo):
-        self.simo = simo
-        self.protein_beads = {}
-
-    def __getitem__(self, protein):
-        if protein not in self.protein_beads:
-            # Make a single particle that covers the entire protein
-            low_res = IMP.pmi.tools.select(self.simo, resolution=res_ev,
-                                           name=protein)
-            p = IMP.Particle(self.simo.m, "Sphere covering " + protein)
-            c = IMP.core.Cover.setup_particle(p, low_res)
-            self.protein_beads[protein] = c
-        return self.protein_beads[protein]
-
-    def get_all_copies(self, protein):
-        """Return a list of particles for all copies of the given protein
-           (e.g. r.get_all_copies('Gle2') should be equivalent to
-           [r['Gle2'], r['Gle2.1'], r['Gle2.2']]"""
-        copies = self.COPIES.get(protein, 1)
-        return [self[protein]] + [self['%s.%d'] % i for i in range(1, copies)]
-
-if (use_Composite):
-    COMPOSITE = {
-        "C1"  : ("Gle2", "Nup116", 1),
-        "C2"  : ("Nup82", "Nsp1", 1),
-        "C3"  : ("Nsp1", "Nup57", 1),
-        "C4"  : ("Nup188", "Nic96", 1),
-        "C5"  : ("Nsp1", "Nic96", 1),
-        "C6"  : ("Nup192", "Nic96", 1),
-        "C7"  : ("Seh1", "Nup85", 1),
-        "C8"  : ("Nup49", "Nup57", 1),
-        "C9"  : ("Gle1", "Nup42", 1),
-        "C10" : ("Nup42", "Gle1", 1),
-        "C11" : ("Nsp1", "Nup49", 1),
-        "C12" : ("Pom152", "Pom34", 1),
-        "C13" : ("Nup53", "Nup170", 1),
-        "C14" : ("Nup84", "Nup145C", 1),
-        "C15" : ("Nup85", "Seh1", 1),
-        "C16" : ("Nup57", "Nsp1", 1),
-        "C17" : ("Nup116", "Gle2", 1),
-        "C18" : ("Nup57", "Nup49", 1),
-        "C19" : ("Nup82", "Nsp1", "Nup159", 2),
-        "C20" : ("Nup84", "Nup145C", "Sec13", 2),
-        "C21" : ("Nup192", "Nup60", "Pom152", 3),
-        "C22" : ("Nup170", "Ndc1", "Pom152", 3),
-        "C24" : ("Nup82", "Nsp1", "Nup159", 3),
-        "C25" : ("Nup170", "Nup192", "Nup59", 2),
-        "C26" : ("Nup84", "Nup145C", "Sec13", 1),
-        "C27" : ("Nup82", "Nup116", "Gle2", 1),
-        "C28" : ("Nsp1", "Nup57", "Nup49", "Nic96", 1),
-        "C30" : ("Nup145C", "Nup84", "Sec13", "Nup133", 2),
-        "C31" : ("Nup82", "Nsp1", "Nup159", 1),
-        "C32" : ("Nup82", "Nsp1", "Nup116", "Nup159", 2),
-        "C33" : ("Nup84", "Nup145C", "Nup120", "Nup85", 1),
-        "C34" : ("Nsp1", "Nup82", "Nup159", "Nup116", "Nup82", 3),
-        "C35" : ("Nup53", "Nup170", "Pom152", "Nic96", "Nup145C", 2),
-        "C36" : ("Nup159", "Nup82", "Nsp1", "Gle2", "Nup116", 2),
-        "C37" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nup157", 2),
-        "C38" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup192", "Pom152", 1),
-        "C39" : ("Nup84", "Nup145C", "Nup85", "Nup120", "Nup133", 1),
-        "C40" : ("Pom152", "Nup192", "Nup170", "Ndc1", "Nup59", 3),
-        "C41" : ("Pom34", "Pom152", "Nup170", "Ndc1", "Nup157", 2),
-        "C42" : ("Seh1", "Nup120", "Nup145N", "Nup170", "Nup53", 3),
-        "C43" : ("Nup42", "Gle1", "Nup82", "Nup100", "Nup116", "Nup159", 3),
-        "C44" : ("Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120", 1),
-        "C46" : ("Gle2", "Nup116", "Nup82", "Nsp1", "Nup159", "Nup84", 2),
-        "C47" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup192", "Pom152", 1),
-        "C48" : ("Nup49", "Nup57", "Nsp1", "Nic96", "Nup192", "Pom152", 2),
-        "C49" : ("Pom152", "Nup192", "Nup170", "Nup157", "Nup188", "Nup1", 3),
-        "C50" : ("Nup57", "Nsp1", "Nup49", "Nic96", "Nup82", "Nup159", 1),
-        "C51" : ("Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120", 1),
-        "C52" : ("Nsp1", "Nup188", "Nup192", "Pom152", "Nup157", "Nup60", 3),
-        "C53" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13", "Nup133", 1),
-        "C55" : ("Nup53", "Nup170", "Nup157", "Nup192", "Nup188", "Nup145N",
-                 "Pom152", 3),
-        "C56" : ("Nup159", "Nup82", "Nsp1", "Nup188", "Nup192", "Nup170", "Pom152", 1),
-        "C57" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13", "Nup133", 1),
-        "C58" : ("Nup49", "Nsp1", "Nup57", "Nic96", "Nup82", "Nup192", "Nup159", 2),
-        "C59" : ("Nup57", "Nsp1", "Nic96", "Nup192", "Pom152", "Nup82", "Nup84",
-                 "Nup116", 3),
-        "C60" : ("Nup145N", "Nup120", "Seh1", "Nup85", "Nup84", "Sec13", "Nup145C",
-                 "Nup133", 3),
-        "C61" : ("Nup159", "Nup82", "Nsp1", "Nup188", "Nup192", "Nup170", "Pom152", 1),
-        "C62" : ("Nup57", "Nup49", "Nic96", "Nup170", "Nup157", "Nup59", "Pom152",
-                 "Ndc1", 3),
-        "C63" : ("Nup133", "Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120",
-                 "Nup145N", "Nup157", 1),
-        "C64" : ("Nup116", "Nup82", "Nsp1", "Nic96", "Nup192", "Pom152", "Nup170",
-                 "Nup157", 3),
-        "C65" : ("Nup57", "Nup49", "Nsp1", "Nic96", "Nup116", "Nup133", "Nup192",
-                 "Nup170", "Nup157", 2),
-        "C66" : ("Nup133", "Nup145C", "Nup84", "Sec13", "Nup85", "Seh1", "Nup120",
-                 "Nup145N", "Nup157", 2),
-        "C67" : ("Gle2", "Nup116", "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188",
-                 "Nup192", "Pom152", "Nup170", 1),
-        "C68" : ("Sec13", "Nup84", "Nup145C", "Nup133", "Nup116", "Nup82", "Nup85",
-                 "Seh1", "Nup120", "Nup145N", 2),
-        "C69" : ("Nup53", "Nup170", "Nup192", "Nic96", "Nup188", "Nsp1", "Nup82",
-                 "Nup159", "Nup116", "Nup84", 3),
-        "C70" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nic96", "Nup188", "Nsp1",
-                 "Nup82", "Nup159", "Nup84", 2),
-        "C71" : ("Nup145N", "Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Sec13",
-                 "Nup133", "Nic96", "Nup157", "Pom152", 3),
-        "C72" : ("Pom152", "Nup192", "Nup170", "Ndc1", "Nup53", "Nic96", "Nup188",
-                 "Nsp1", "Nup82", "Nup159", "Nup84", 2),
-        "C73" : ("Gle2", "Nup116", "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188",
-                 "Nup192", "Nup170", "Pom152", "Nup157", 3),
-        "C74" : ("Nup133", "Nup84", "Nup82", "Nup116", "Nup159", "Nsp1", "Nic96",
-                 "Nup188", "Nup192", "Nup170", "Nup53", "Nup157", 2),
-        "C75" : ("Nup120", "Nup145C", "Nup84", "Nup82", "Nup159", "Nsp1", "Nup188",
-                 "Nup1", "Nup192", "Pom152", "Nup170", "Nup157", 3),
-        "C76" : ("Pom34", "Pom152", "Nup192", "Nup170", "Nup53", "Nup59", "Nup157",
-                 "Nic96", "Nup188", "Nsp1", "Nup82", "Gle2", "Nup159", 2),
-        "C77" : ("Nup100", "Nup188", "Nic96", "Nup192", "Nup170", "Nup53", "Nup59",
-                 "Nsp1", "Nup57", "Nup82", "Nup84", "Nup116", "Nup159", "Gle1",
-                 "Nup42", 3),
-        "C78" : ("Nup133", "Nup145C", "Nup120", "Nup84", "Nup82", "Nup116",
-                 "Nup159", "Nsp1", "Nic96", "Nup188", "Nup100", "Nup192", "Pom152",
-                 "Nup170", "Nup59", 2),
-        "C79" : ("Nup120", "Seh1", "Nup85", "Nup84", "Nup145C", "Nup133", "Sec13",
-                 "Nup82", "Nup159", "Nsp1", "Nic96", "Nup188", "Nup192",
-                 "Nup170", "Pom152", 1),
-        "C80" : ("Nup120", "Seh1", "Nup85", "Nup84", "Sec13", "Nup145C", "Nup133",
-                 "Nic96", "Nsp1", "Nup57", "Nup188", "Nup192", "Pom152",
-                 "Nup170", "Nup157", "Nup53", 1),
-        "C81" : ("Nup42", "Gle1", "Nup82", "Nup116", "Gle2", "Nup159", "Nup84",
-                 "Nup133", "Nup120", "Nup145N", "Nsp1", "Nup57", "Nic96", "Nup188",
-                 "Nup192", "Nup170", "Nup157", "Pom152", "Pom34", 1),
-        "C82" : ("Nup133", "Nup84", "Nup82", "Gle1", "Nup42", "Nup159", "Nup116",
-                 "Gle2", "Nsp1", "Nup57", "Nic96", "Nup188", "Nup100", "Nup192",
-                 "Pom152", "Pom34", "Nup170", "Nup59", "Nup157", "Nup53", 1) }
-    cr = CompositeRepresentation(simo)
-    # Score distance between protein pairs considering that one protein might
-    # not be in the primary spoke (i.e. rotated +/- 45 degrees)
-    axis = IMP.algebra.Vector3D(0,0,1)
-    rot = IMP.algebra.get_rotation_about_axis(axis, math.pi / 2.)
-    transforms = [IMP.algebra.Transformation3D(r, IMP.algebra.Vector3D(0,0,0))
-                  for r in rot, rot.get_inverse()]
-    # Penalize configurations where spheres are not in contact
-    penalty = 1.
-    uf = IMP.core.HarmonicUpperBound(0., penalty)
-    ps = IMP.npc.MinimumSphereDistancePairScore(uf, transforms)
-
-    for c, res in COMPOSITE.items():
-        rsr = IMP.npc.CompositeRestraint(simo.m, ps)
-        rsr.set_name("CompositeRestraint " + c)
-        # Speed up evaluation by immediately discarding subtrees with
-        # high scores
-        rsr.set_maximum_score(penalty * 5.)
-        for protein in res[:-1]:
-            rsr.add_type(cr.get_all_copies(protein))
-        # Add restraint to the PMI scoring function
-        IMP.pmi.tools.add_restraint_to_model(simo.m, rsr)
-
-
-#####################################################
 # Restraints setup - Immuno-EM
 # Supplementary Table 7. Upper and lower bounds on R-radial restraints of C-terminal bead of nups
 # NupType : (min R value, max R value) (in Angstrom)
@@ -893,50 +714,30 @@ if (use_Immuno_EM):
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
     RADIAL = {
-        "Gle1"     : [200, 320],
-        #"Gle2.1"   : [150, 330],
-        #"Gle2.2"   : [150, 330],
-        "Mlp1"     : [150, 550],    # no immuno-EM identified for MLPs
-        #"Mlp2"     : [150, 550],
-        "Ndc1"     : [280, 410],    #"Ndc1"     : [280, 400],   (Table S2 and Table S7 are different)
-        "Nic96.1"  : [255, 350],    #"Nic96.1"  : [255, 525],
-        "Nic96.2"  : [255, 350],    #"Nic96.2"  : [255, 525],
-        "Nsp1.1"   : [155, 425],
-        "Nsp1.2"   : [155, 425],
-        "Nsp1.3"   : [155, 425],
-        "Nsp1.4"   : [155, 425],
-        "Nup1"     : [200, 360],    # redundant with the FG nup restraint below
-        "Nup100.1" : [230, 330],
-        "Nup100.2" : [230, 330],
-        "Nup116.1" : [200, 350],    #"Nup116.1" : [250, 350],
-        "Nup116.2" : [200, 350],    #"Nup116.2" : [250, 350],
-        "Nup120"   : [250, 450],    #"Nup120"   : [250, 370],   (Table S2 and Table S7 are different)
-        "Nup133"   : [300, 540],    #"Nup133"   : [300, 420],
-        "Nup145c"  : [270, 520],    #"Nup145c"  : [270, 470],
-        "Nup145.1" : [125, 395],
-        "Nup145.2" : [125, 395],
-        "Nup157"   : [190, 350],
-        "Nup159.1" : [200, 430],    #"Nup159.1" : [250, 430],
-        "Nup159.2" : [200, 430],    #"Nup159.2" : [250, 430],
-        "Nup170"   : [170, 330],
-        "Nup188"   : [200, 320],    #(Table S2 and Table S7 are different)
-        "Nup192"   : [200, 320],
-        "Nup42"    : [220, 400],
-        "Nup49.1"  : [200, 300],
-        "Nup49.2"  : [200, 300],
-        "Nup53"    : [280, 410],    #"Nup53"    : [280, 380],
-        "Nup57.1"  : [ 80, 300],
-        "Nup57.2"  : [ 80, 300],
-        "Nup59"    : [250, 410],    #"Nup59"    : [250, 370],
-        "Nup60.1"  : [240, 400],
-        "Nup60.2"  : [240, 400],
-        "Nup82.1"  : [175, 505],
-        "Nup82.2"  : [175, 505],
-        "Nup84"    : [290, 520],    #"Nup84"    : [290, 450],
-        "Nup85"    : [300, 520],    #"Nup85"    : [300, 420],
-        "Pom34"    : [280, 410],    #"Pom34"    : [280, 380],
-        "Seh1"     : [250, 370],
-        "Pom152"   : [470, 630]     #"Pom152"   : [370, 630]     #(Table S2 and Table S7 are different)
+        "Ndc1"     : [106, 448],
+        "Nic96.1"  : [  0, 633],
+        "Nic96.2"  : [  0, 633],
+        "Nup120"   : [190, 550],
+        "Nup133"   : [190, 550],
+        "Nup145c"  : [190, 550],
+        "Nup157"   : [106, 448],
+        "Nup159.1" : [ 43, 637],
+        "Nup159.2" : [ 43, 637],
+        "Nup170"   : [106, 448],
+        "Nup188"   : [152, 368],
+        "Nup192"   : [152, 368],
+        "Nup49.1"  : [  0, 633],
+        "Nup49.2"  : [  0, 633],
+        "Nup53"    : [106, 448],
+        "Nup57.1"  : [  0, 633],
+        "Nup57.2"  : [  0, 633],
+        "Nup59"    : [106, 448],
+        "Nup82.1"  : [ 43, 637],
+        "Nup82.2"  : [ 43, 637],
+        "Nup84"    : [190, 550],
+        "Nup85"    : [190, 550],
+        "Pom34"    : [106, 448],
+        "Pom152"   : [266, 734]
     }
     print "\nXYRadialPositionRestraint !!"
     for protein, r in RADIAL.iteritems():
@@ -950,52 +751,30 @@ if (use_Immuno_EM):
         print (xyr.get_output())
 
     ZAXIAL = {
-        #"Dyn2.1"   : [ 130, 400],
-        #"Dyn2.2"   : [ 130, 400],
-        "Gle1"     : [ 120, 180],       #(Table S2 and Table S7 are different)
-        #"Gle2.1"   : [  20, 120],
-        #"Gle2.2"   : [  20, 120],
-        "Mlp1"     : [-400,-150],       # no immuno-EM identified for MLPs
-        #"Mlp2"     : [-400,-150],
-        "Ndc1"     : [ -10,  70],       #"Ndc1"     : [   0,  90],  (Table S2 and Table S7 are different)
-        "Nic96.1"  : [  25, 175],
-        "Nic96.2"  : [  25, 175],
-        "Nsp1.1"   : [ 130, 400],       #"Nsp1.1"   : [   0, 120],
-        "Nsp1.2"   : [ 130, 400],       #"Nsp1.2"   : [   0, 120],
-        "Nsp1.3"   : [   0, 120],
-        "Nsp1.4"   : [   0, 120],
-        "Nup1"     : [-220,-140],
-        "Nup100.1" : [  40, 220],       #"Nup100.1" : [  40, 120],
-        "Nup100.2" : [  40, 220],       #"Nup100.2" : [  40, 120],
-        "Nup116.1" : [  70, 330],       #"Nup116.1" : [  70, 150],
-        "Nup116.2" : [  70, 330],       #"Nup116.2" : [  70, 150],
-        "Nup120"   : [  65, 400],       #"Nup120"   : [  70, 150],
-        "Nup133"   : [ 185, 400],       #"Nup133"   : [ 100, 200],
-        "Nup145c"  : [  65, 400],       #"Nup145c"  : [  70, 150],
-        "Nup145.1" : [-320, -50],       #"Nup145.1" : [-170, -50],
-        "Nup145.2" : [-320, -50],       #"Nup145.2" : [-170, -50],
-        "Nup157"   : [  40, 165],       #"Nup157"   : [   0,  95],  (Table S2 and Table S7 are different)
-        "Nup159.1" : [ 130, 400],       #"Nup159.1" :  [120, 240],
-        "Nup159.2" : [ 130, 400],       #"Nup159.2" :  [120, 240],
-        "Nup170"   : [   0,  75],       #"Nup170"   : [   0, 100],  (Table S2 and Table S7 are different)
-        "Nup188"   : [  40, 100],
-        "Nup192"   : [  20, 100],
-        "Nup42"    : [  70, 150],
-        "Nup49.1"  : [   0,  50],       #"Nup49.1"  : [  40, 100],
-        "Nup49.2"  : [ -50,   0],       #"Nup49.2"  : [  40, 100],
-        "Nup53"    : [  20, 100],
-        "Nup57.1"  : [ -20,  80],       #"Nup57.1"  : [   0,  80],  (Table S2 and Table S7 are different)
-        "Nup57.2"  : [ -80,  20],       #"Nup57.2"  : [   0,  80],
-        "Nup59"    : [  40, 120],
-        "Nup60.1"  : [-200,-100],
-        "Nup60.2"  : [-200,-100],
-        "Nup82.1"  : [ 130, 400],       #"Nup82.1"  : [ 145, 295],
-        "Nup82.2"  : [ 130, 400],       #"Nup82.2"  : [ 145, 295],
-        "Nup84"    : [ 185, 400],       #"Nup84"    : [ 150, 170],
-        "Nup85"    : [  65, 400],       #"Nup85"    : [ 140, 200],
-        "Pom34"    : [ -10,  50],       #"Pom34"    : [   0,  65],  (Table S2 and Table S7 are different)
-        "Seh1"     : [  65, 400],       #"Seh1"     : [  50, 170],
-        "Pom152"   : [   5,  60]        #"Pom152"   : [   0,  95]   (Table S2 and Table S7 are different)
+        "Ndc1"     : [-70, 152],
+        "Nic96.1"  : [-60, 235],
+        "Nic96.2"  : [-60, 235],
+        "Nup120"   : [ 38, 240],
+        "Nup133"   : [ 38, 240],
+        "Nup145c"  : [ 38, 240],
+        "Nup157"   : [-70, 152],
+        "Nup159.1" : [ 72, 355],
+        "Nup159.2" : [ 72, 355],
+        "Nup170"   : [-70, 152],
+        "Nup188"   : [ 16, 124],
+        "Nup192"   : [-12, 132],
+        "Nup49.1"  : [-60, 235],
+        "Nup49.2"  : [-60, 235],
+        "Nup53"    : [-70, 152],
+        "Nup57.1"  : [-60, 235],
+        "Nup57.2"  : [-60, 235],
+        "Nup59"    : [-70, 152],
+        "Nup82.1"  : [ 72, 355],
+        "Nup82.2"  : [ 72, 355],
+        "Nup84"    : [ 38, 240],
+        "Nup85"    : [ 38, 240],
+        "Pom34"    : [-70, 152],
+        "Pom152"   : [-68, 148]
     }
     print "\nZAxialPositionRestraint !!"
     for protein, z in ZAXIAL.iteritems():
@@ -1135,16 +914,6 @@ if (is_inner_ring):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
-    if (False):
-        dist_max = 30.0
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr.add_to_model()
-        dr.set_label("Nup157C-Nup170C")
-        dr.set_weight(dr_weight)
-        outputobjects.append(dr)
-        print(dr.get_output())
-
 
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
@@ -1216,6 +985,7 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
+    """
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
         #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
@@ -1234,7 +1004,6 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    """
     xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=515, upper_bound=550, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (515, 550, "Pom152_859"))
     xyr.set_weight(radial_weight)
@@ -1394,22 +1163,6 @@ if (is_n84):
     outputobjects.append(msl)
     print (msl.get_output())
 
-    """
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup120_1')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup120_2')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-    """
-
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
     msl.set_label('Nup120_135-152_197-216')
     msl.set_weight(msl_weight)
@@ -1427,42 +1180,72 @@ tor_r       = tor_th/2.0
 mex_sigma   = 0.2
 mex_weight  = 1000.0
 
-nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
-nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
+if (use_MembraneExclusion):
+    nup_list = [entry[0] for entry in domains if not '@' in entry[0]]
+    nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
-MEX_LIST = [
-    [1, 110, "Pom152"],
-    [248, 655, "Ndc1"],
-    [151, 299, "Pom34"],
-    [0, 0, "Nup53"],
-    [0, 0, "Nup59"],
-    [0, 0, "Nup1"],
-    [0, 0, "Nup60.1"],
-    [0, 0, "Nup60.2"],
-    [1, 892, "Nup157"],
-    [1, 992, "Nup170"],
-    [0, 0, "Nup133"],
-    [0, 0, "Nup120"],
-    [0, 0, "Nup84"],
-    [0, 0, "Nup145c"],
-    [0, 0, "Nup145.1"],
-    [0, 0, "Nup145.2"],
-    [0, 0, "Mlp1"],
-    [0, 0, "Mlp2"],
-]
-print "\nMembraneExclusionRestraint !!"
-for z in MEX_LIST:
-    if (z[2] not in nup_list_unique):
-        continue
-    if (z[0] > 0):
-        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
-    else:
-        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, z[2], tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
-    mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
-    mex.set_weight(mex_weight)
-    mex.add_to_model()
-    outputobjects.append(mex)
-    print (mex.get_output())
+    MEX_LIST = [
+        [0, 0, "Nup84"],
+        #[0, 0, "Nup85"],
+        [0, 0, "Nup120"],
+        [0, 0, "Nup133"],
+        [0, 0, "Nup145c"],
+        #[0, 0, "Seh1"],
+        #[0, 0, "Sec13"],
+
+        #[0, 0, "Nup82.1"],
+        #[0, 0, "Nup82.2"],
+        #[0, 0, "Nsp1.1"],
+        #[0, 0, "Nsp1.2"],
+        #[0, 0, "Nup159.1"],
+        #[0, 0, "Nup159.2"],
+        [1, 965, "Nup116.1"],
+        [1, 965, "Nup116.2"],
+        #[0, 0, "Gle1"],
+        #[0, 0, "Nup42"],
+
+        #[0, 0, "Nic96.1"],
+        #[0, 0, "Nic96.2"],
+        #[0, 0, "Nsp1.3"],
+        #[0, 0, "Nsp1.4"],
+        #[0, 0, "Nup57.1"],
+        #[0, 0, "Nup57.2"],
+        #[0, 0, "Nup49.1"],
+        #[0, 0, "Nup49.2"],
+
+        [1, 110, "Pom152"],
+        [248, 655, "Ndc1"],
+        [151, 299, "Pom34"],
+        [0, 0, "Nup157"],
+        [0, 0, "Nup170"],
+        [0, 0, "Nup53"],
+        [0, 0, "Nup59"],
+        #[0, 0, "Nup188"],
+        #[0, 0, "Nup192"],
+
+        [0, 0, "Nup1"],
+        [0, 0, "Nup60.1"],
+        [0, 0, "Nup60.2"],
+        [0, 0, "Nup145.1"],
+        [0, 0, "Nup145.2"],
+        [0, 0, "Nup100.1"],
+        [0, 0, "Nup100.2"],
+        [0, 0, "Mlp1"],
+        [0, 0, "Mlp2"],
+    ]
+    print "\nMembraneExclusionRestraint !!"
+    for z in MEX_LIST:
+        if (z[2] not in nup_list_unique):
+            continue
+        if (z[0] > 0):
+            mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (z[0], z[1], z[2]), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        else:
+            mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, z[2], tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        mex.set_label('%s_mex_%d_%d' % (z[2], z[0], z[1]))
+        mex.set_weight(mex_weight)
+        mex.add_to_model()
+        outputobjects.append(mex)
+        print (mex.get_output())
 
 
 #####################################################
@@ -1506,35 +1289,6 @@ if (use_XL):
     XL_restraints = [xl1]
 else:
     XL_restraints = None
-
-
-#####################################################
-# Restraints setup
-# Distance restraints for XL cliques involving the membrane nups
-#####################################################
-"""
-if (is_inner_ring and is_membrane):
-    db = IMP.pmi.tools.get_db_from_csv('../data_npc/XL_cliques.csv')
-    dist_max = 30.0
-
-    for nxl, entry in enumerate(db):
-        #print nxl, entry
-        mol1 = entry["Protein 1"]
-        res1 = int(entry["Residue 1"])
-        mol2 = entry["Protein 2"]
-        res2 = int(entry["Residue 2"])
-
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr.add_to_model()
-        temp_label = mol1 + "_" + str(res1) + "-" + mol2 + "_" + str(res2)
-        dr.set_label(temp_label)
-        dr.set_weight(dr_weight)
-        outputobjects.append(dr)
-        print(dr.get_output())
-
-    print "\nDistance Restraints applied for XL cliques !!"
-    print "weight = ", dr_weight, "dist_min = ", dist_min, "dist_max = ", dist_max, "\n"
-"""
 
 
 #####################################################

@@ -190,17 +190,17 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362ca.pdb"
 #####################################################
 # Parameters for Debugging
 #####################################################
-is_n84 = False
-is_n82 = False
-is_nic96 = False
-is_inner_ring = False
+is_n84 = True
+is_n82 = True
+is_nic96 = True
+is_inner_ring = True
 is_membrane = True
-is_cytoplasm = False
-is_nucleoplasm = False
+is_cytoplasm = True
+is_nucleoplasm = True
 is_basket = True
 is_FG = False
 
-use_neighboring_spokes = False
+use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
 #Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
 #Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
@@ -209,7 +209,7 @@ use_shuffle = True
 use_ExcludedVolume = True
 use_Immuno_EM = True
 use_FG_anchor = False
-use_sampling_boundary = False
+use_sampling_boundary = True
 use_MembraneExclusion = True
 use_XL = True
 use_EM3D = True
@@ -987,6 +987,7 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
+    """
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
         #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
@@ -1005,7 +1006,6 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    """
     xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=515, upper_bound=550, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (515, 550, "Pom152_859"))
     xyr.set_weight(radial_weight)
@@ -1300,19 +1300,31 @@ else:
 if (use_sampling_boundary):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
-        if '@' in entry[0]:
+        # ignore GMMs of the Nup84 complex in nucleoplasm
+        if ( ('Nup84' in entry[0]) and ('@11' in entry[0]) ):
             other_spokes.append(entry[0])
-        elif ('Nup84' in entry[0]) or ('Nup85' in entry[0]) or ('Nup120' in entry[0]) or ('Nup133' in entry[0]):
+        elif ( ('Nup85' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup120' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup133' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Nup145c' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Seh1' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif ( ('Sec13' in entry[0]) and ('@11' in entry[0]) ):
+            other_spokes.append(entry[0])
+        elif 'Dyn2' in entry[0]:
+            other_spokes.append(entry[0])
+        elif '@11' in entry[0]:
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
-        elif ('Nup145c' in entry[0]) or ('Seh1' in entry[0]) or ('Sec13' in entry[0]):
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
-        elif ('Nup82' in entry[0]) or ('Nup159' in entry[0]) or ('Nsp1.1' in entry[0]) or ('Nsp1.2' in entry[0]):
-            main_spoke.append(entry[0])
-            main_spoke_hier_name.append(entry[1])
+        elif '@' in entry[0]:
+            other_spokes.append(entry[0])
         else:
-            other_spokes.append(entry[0])
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
     main_spoke_unique = sorted(list(set(main_spoke)))
     main_spoke_hier_name = sorted(main_spoke_hier_name)
     other_spokes_unique = sorted(list(set(other_spokes)))
@@ -1325,18 +1337,18 @@ if (use_sampling_boundary):
     print ("resdensities=", resdensities)       ####  TODO: make sure resdensities are correct
 
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
-    #mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
-    mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
-    print ("Total mass for the Sampling Boundary EM restraint for the outer-ring = ", mass)
+    mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
+    print ("Total mass for the Sampling Boundary EM restraint = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_outer_ring_newEM.gmm.250.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.gmm.100.txt',
                                                     target_mass_scale=mass,
-                                                    #slope=0.01,
-                                                    slope=0.0000001,
+                                                    slope=0.01,
+                                                    #slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(10000.0)        # play with the weight
-    sbr.set_label("Sampling_Boundary_outer-ring")
+    sbr.set_weight(1.0)        # play with the weight
+    #sbr.set_weight(10000.0)        # play with the weight
+    sbr.set_label("Sampling_Boundary")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
 
