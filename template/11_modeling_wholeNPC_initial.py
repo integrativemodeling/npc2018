@@ -208,7 +208,7 @@ use_neighboring_spokes = True
 use_shuffle = True
 use_ExcludedVolume = True
 use_Immuno_EM = True
-use_FG_anchor = False
+use_FG_anchor = True
 use_sampling_boundary = True
 use_MembraneExclusion = True
 use_XL = True
@@ -686,7 +686,7 @@ for rt in rigid_tuples:
 if (use_shuffle) :
     #simo.shuffle_configuration(max_translation=1, avoidcollision=False, ignore_initial_coordinates=True)
     #simo.shuffle_configuration(bounding_box=((350, -150, 50), (1050, 200, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
-    simo.shuffle_configuration(bounding_box=((150, -150, 0), (750, 150, 400)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
+    simo.shuffle_configuration(bounding_box=((50, -150, 50), (650, 150, 550)), ignore_initial_coordinates=True, cutoff=1.0, niterations=1000)
 
 
 #####################################################
@@ -1340,14 +1340,13 @@ if (use_sampling_boundary):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
     sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.gmm.100.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.gmm.200.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.01,
                                                     #slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(1.0)        # play with the weight
-    #sbr.set_weight(10000.0)        # play with the weight
+    sbr.set_weight(0.1)        # play with the weight
     sbr.set_label("Sampling_Boundary")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
@@ -1375,8 +1374,8 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    #number_of_frames = 500,
-                                    number_of_frames = 50,
+                                    number_of_frames = 500,
+                                    #number_of_frames = 50,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
