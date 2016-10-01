@@ -201,10 +201,8 @@ is_basket = True
 is_FG = False
 
 use_neighboring_spokes = True
-#Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
-#Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
-#Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
-#Stopwatch_None_delta_seconds  ~150   (3 spokes for all, ~8.0G memory) with XL + EM + EV
+#Stopwatch_None_delta_seconds  ~200   (1 spoke, ~5.0G memory) with XL + Sampling Boundary
+#Stopwatch_None_delta_seconds  ~300   (3 spokes for all, ~8.0G memory) with XL + Sampling Boundary
 use_shuffle = True
 use_ExcludedVolume = True
 use_Immuno_EM = True
@@ -213,8 +211,7 @@ use_sampling_boundary = True
 use_MembraneExclusion = True
 use_XL = True
 use_EM3D = True
-
-
+enforce_outer_ring = True
 
 #####################################################
 # REPRESENTATION
@@ -887,17 +884,6 @@ if (is_nucleoplasm):
     outputobjects.append(dr)
     print(dr.get_output())
 
-"""
-# Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure if it is real
-if (is_n84 and use_neighboring_spokes):
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
-    dr.add_to_model()
-    dr.set_label("Nup133-Nup120@2")
-    dr.set_weight(10.0)
-    outputobjects.append(dr)
-    print(dr.get_output())
-"""
-
 if (is_inner_ring):
     dist_max = 15.0
     # connection between NTD and CTD
@@ -916,6 +902,25 @@ if (is_inner_ring):
     outputobjects.append(dr)
     print(dr.get_output())
 
+if (enforce_outer_ring and is_n84 and use_neighboring_spokes):
+    dist_max = 35.0
+    # Nup120 - Nup133 to form the outer ring, based on the cross-link of Nup120@2 #431 - Nup133 #191
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(191,191,"Nup133"), (431,431,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup133-Nup120@2")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    """
+    # Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure if it is real - disable it
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Nup133-Nup120@2")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+    """
 
 #####################################################
 # Restraints setup - Membrane Localization + ALPS Motif
@@ -1155,6 +1160,22 @@ if (is_inner_ring):
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
+
+# ALPS Motifs of the Nup84 complex
+if (is_n84):
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Nup133')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
+
+    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
+    msl.set_label('Nup120_135-152_197-216')
+    msl.set_weight(msl_weight)
+    msl.add_to_model()
+    outputobjects.append(msl)
+    print (msl.get_output())
 
 
 #####################################################
@@ -1435,35 +1456,6 @@ if (use_EM3D):
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print "\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
-
-
-#####################################################
-# Restraints setup - Membrane Localization + ALPS Motif
-# Campelo et al, PLOS CompBio, 2014 (PMC3983069)
-#####################################################
-tor_th      = 45.0
-tor_th_ALPS = 12.0
-tor_R       = 390.0 + 150.0
-tor_r       = 150.0 - tor_th/2.0
-tor_r_ALPS  = 150.0 - tor_th_ALPS/2.0
-msl_sigma   = 1.0
-msl_weight  = 10.0
-
-# ALPS Motifs of the Nup84 complex
-if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup133')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
-
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationConditionalRestraint(simo, protein1=(135,152,'Nup120'), protein2=(197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma, resolution = res_ev)
-    msl.set_label('Nup120_135-152_197-216')
-    msl.set_weight(msl_weight)
-    msl.add_to_model()
-    outputobjects.append(msl)
-    print (msl.get_output())
 
 
 #####################################################
