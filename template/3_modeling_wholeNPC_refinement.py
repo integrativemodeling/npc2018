@@ -1293,7 +1293,7 @@ else:
 
 #####################################################
 # Restraints setup
-# Sampling Boundary Restraint for the inner ring
+# Sampling Boundary Restraint for the outer ring
 #####################################################
 if (use_sampling_boundary):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
