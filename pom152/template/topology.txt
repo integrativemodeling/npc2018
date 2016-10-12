@@ -1,0 +1,8 @@
+|directories|
+|pdb_dir|../data/|
+|fasta_dir|../data/|
+|gmm_dir|../data/|
+
+|topology_dictionary|
+|component_name|domain_name|fasta_fn|fasta_id|pdb_fn|chain|residue_range|pdb_offset|bead_size|em_residues_per_gaussian|
+|pom152 |pom152_11|FASTA_pom152.txt|pom152|BEADS| |1,378   |0|50|50|
