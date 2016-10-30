@@ -23,7 +23,8 @@
 #########################################
 
 #lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-NSLOTS=6    ## Should be an "EVEN number" or 1
+NSLOTS=8    ## Should be an "EVEN number" or 1
+#NSLOTS=1    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=1
 
 # load MPI modules
@@ -35,9 +36,9 @@ export IMP=setup_environment.sh
 MODELING_SCRIPT=modeling_pdb375_482.py
 SAXS_FILE=SAXS_26996_merged_q27.dat
 XL_FILE=XL.csv
-RMF_FILE=../data/rmfs_1st/0_8583.rmf
+RMF_FILE=../data/rmfs/0.rmf3
 RMF_FRAME=0
-EM2D_FILE=../data/em2d/pom152_wt_resized_classes.0.pgm
+EM2D_FILE=../data/em2d_WT/no_bg.0.pgm
 EM2D_WEIGHT=1000.0
 #XL_FILE=XL_MVV_061515_confirmed.csv
 #export PYTHONPATH=$PYTHONPATH:/netapp/sali/etjioe/IMP/local_modules/lib64/python/:/netapp/sali/etjioe/IMP/local_modules/lib/python/
@@ -45,7 +46,7 @@ EM2D_WEIGHT=1000.0
 for (( SGE_TASK_ID = 1; SGE_TASK_ID <= 10; SGE_TASK_ID++ )); do
     # Parameters
     if [ -z $1 ]; then
-        REPEAT="2000"
+        REPEAT="10000"
     else
         REPEAT="$1"
     fi
@@ -62,7 +63,7 @@ for (( SGE_TASK_ID = 1; SGE_TASK_ID <= 10; SGE_TASK_ID++ )); do
     echo "JOB_ID = $JOB_ID"
     echo "NSLOTS = $NSLOTS"
 
-    # write hostname and starting time 
+    # write hostname and starting time
     hostname
     date
 
@@ -89,10 +90,16 @@ for (( SGE_TASK_ID = 1; SGE_TASK_ID <= 10; SGE_TASK_ID++ )); do
     if [ $PWD_PARENT != $PWD ]; then
         # run the job
         #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -sym False -r $REPEAT -out $OUTPUT -refine True -w 50.0 -x ../data/$XL_FILE
+        
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
         #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
-        echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
-        mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
-        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME -em2d $EM2D_FILE -weight $EM2D_WEIGHT
+
+        echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
+        mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME
+
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
+
         cd ..
     fi
 
@@ -173,4 +180,3 @@ date
 #process_output.py -f stat.5.out -s SimplifiedModel_Total_Score_None ISDCrossLinkMS_Data_Score_DSS rmf_file rmf_frame_index
 
 #process_output.py -f stat.5.out -s SimplifiedModel_Total_Score_None rmf_file rmf_frame_index | grep 103.147
-
