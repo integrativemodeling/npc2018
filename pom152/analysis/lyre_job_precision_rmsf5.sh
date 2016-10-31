@@ -33,7 +33,7 @@ NSLOTS=1    ## Should be an "EVEN number" or 1
 export IMP=setup_environment.sh
 #export PYTHONPATH=$PYTHONPATH:/netapp/sali/kimsj/bin/scikit-learn/lib64/python2.6/site-packages/:/netapp/sali/etjioe/IMP/local_modules/lib64/python/:/netapp/sali/etjioe/IMP/local_modules/lib/python/
 
-for (( SGE_TASK_ID=5; SGE_TASK_ID >= 1; SGE_TASK_ID-- )); do
+for (( SGE_TASK_ID=5; SGE_TASK_ID >= 5; SGE_TASK_ID-- )); do
     echo "NSLOTS = $NSLOTS"
     echo "JOB_ID = $JOB_ID"
     echo "SGE_TASK_ID = $SGE_TASK_ID"

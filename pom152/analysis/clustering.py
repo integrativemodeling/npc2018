@@ -118,8 +118,8 @@ mc.clustering("SimplifiedModel_Total_Score_None",  # don't change, field where t
               "rmf_frame_index",                   # don't change, field for the frame index
               prefiltervalue=prefiltervalue,               # prefilter the models by score
               number_of_best_scoring_models=nbestscoringmodels,   # number of models to be clustered
-              #alignment_components=None,           # don't change, (list of proteins you want to use for structural alignment
-              alignment_components=components_names,         # don't change, (list of proteins you want to use for structural alignment
+              alignment_components=None,           # don't change, (list of proteins you want to use for structural alignment
+              #alignment_components=components_names,         # don't change, (list of proteins you want to use for structural alignment
               rmsd_calculation_components=components_names,  # list of proteins used to calculated the rmsd
               distance_matrix_file="distance.rawmatrix.pkl", # save the distance matrix
               outputdir="kmeans_"+str(nbestscoringmodels)+"_"+str(nclusters)+"/",  # directory name for the clustering

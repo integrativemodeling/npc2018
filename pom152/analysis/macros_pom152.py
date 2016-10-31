@@ -1240,7 +1240,7 @@ class AnalysisReplicaExchange0(object):
                 feature_keyword_list_dict = defaultdict(list)
 
                 #rmf_file_list = glob.glob('../prefilter/kmeans_10_1/all_models.9/*_truncated.rmf3')
-                rmf_file_list = glob.glob('../prefilter/kmeans_500_1/all_models.499/*_truncated.rmf3')
+                rmf_file_list = glob.glob('../prefilter/kmeans_1000_1/all_models.999/*_truncated.rmf3')
                 for i in range(len(rmf_file_list)):
                     rmf_file_frame_list.append(0)
                     score_list.append(1.0)
