@@ -428,7 +428,7 @@ if (is_membrane):
 
 # The Pom152 ring
 if (is_membrane):
-    dist_max = 25.0
+    dist_max = 20.0
 
     # same residue cross-link of Pom152 62-62
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
@@ -449,14 +449,21 @@ if (is_membrane):
         outputobjects.append(dr)
         print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(301,301,"Pom152"), (301,301,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
-    dr.set_label("Pom152-Pom152@11")
+    dr.set_label("Pom152-Pom152@11_301")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
 
-    pom152_min = 10;     pom152_max = 40;
+    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr.add_to_model()
+    dr.set_label("Pom152-Pom152@11_351")
+    dr.set_weight(dr_weight)
+    outputobjects.append(dr)
+    print(dr.get_output())
+
+    pom152_min = 5;     pom152_max = 40;
     POM_LIST = [ 379, 472, 520, 611, 616, 714, 722, 818, 824, 918, 931, 1026, 1036, 1141, 1150, 1229, 1244, 1337 ]
     for z in POM_LIST:
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (z, z, "Pom152"), lower_bound=pom152_min, upper_bound=pom152_max, consider_radius=False, sigma=1.0, term='M')
@@ -546,7 +553,7 @@ if (use_XL):
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
     xl1.add_to_model()
-    xl1.set_weight(20.0)        # play with the weight
+    xl1.set_weight(2.0)        # play with the weight
     sampleobjects.append(xl1)
     outputobjects.append(xl1)
     xl1.set_psi_is_sampled(False)
@@ -780,15 +787,15 @@ if (use_ExcludedVolume):
 # Domain connectivity
 #####################################################
 if (True):
-    dist_min = 10.0
+    dist_min = 7.5
     dr_weight = 100.0
 
     IG_LIST = [ [472,520], [611,616], [714,722], [818,824], [918,931], [1026,1036], [1141,1150], [1229,1244] ]
     for z in IG_LIST:
         if (z[0] == 472):
-            dist_max = 20.0
-        else:
             dist_max = 15.0
+        else:
+            dist_max = 12.5
             
         dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (z[0],z[0],"Pom152"), (z[1],z[1],"Pom152"), distancemin=dist_min, distancemax=dist_max, resolution=1)
         dr.add_to_model()
