@@ -54,7 +54,7 @@ selection_dictionary={"pom152":["pom152"],
                       "pom152_7":[(1036,1141,"pom152")],
                       "pom152_8":[(1150,1229,"pom152")],
                       "pom152_9":[(1244,1337,"pom152")]}
-                  
+
 
 #####################################################################
 # don't change anything below
@@ -66,14 +66,14 @@ clusterdirectories=glob.glob(root_cluster_directory+'/cluster.*/')
 if test_mode:
   # runs on the first 10 structures to test if it runs smoothly
   for clusterdirectory in clusterdirectories:
-      rmfs.append(glob.glob(clusterdirectory+'/*.rmf3')[0::2])
+      rmfs.append(glob.glob(clusterdirectory+'/*.rmf3')[0::3])
       #rmfs.append(glob.glob(clusterdirectory+'/*.rmf3')[0::10])
       frames.append([0]*len(rmfs[-1]))
 else:
   for clusterdirectory in clusterdirectories:
       rmfs.append(glob.glob(clusterdirectory+'/*.rmf3')[0::1])
       frames.append([0]*len(rmfs[-1]))
- 
+
 model=IMP.Model()
 pr=IMP.pmi.analysis.Precision(model, resolution=1, selection_dictionary=selection_dictionary)
 pr.set_precision_style('pairwise_rmsd')
@@ -99,4 +99,3 @@ for n in range(len(rmfs)):
                 #is_mpi=is_mpi,
                 skip=1)
     #pr.get_rmsf(clusterdirectories[n],clusterdirectories[n]+"/",is_mpi=is_mpi,skip=1,set_plot_yaxis_range=(0,100.0))
-

@@ -52,22 +52,23 @@ prefiltervalue = float(inputs.prefiltervalue)                   # prefilter the 
 #####################################################
 # initialize the macro
 #####################################################
+import macros_pom152
+
 model=IMP.Model()
 
-mc=IMP.pmi.macros.AnalysisReplicaExchange0(model,
+mc=macros_pom152.AnalysisReplicaExchange0(model,
                                         stat_file_name_suffix="stat",     # don't change
                                         #merge_directories=["../modeling1"], # change this list splitting the runs or adding new runs
-                                        merge_directories=["../back_up_pdb375_482/modeling1",
-                                                           "../back_up_pdb375_482/modeling1_s40",
-                                                           "../back_up_pdb375_482/modeling2",
-                                                           "../back_up_pdb375_482/modeling3",
-                                                           "../back_up_pdb375_482/modeling4",
-                                                           "../back_up_pdb375_482/modeling5",
-                                                           "../back_up_pdb375_482/modeling6",
-                                                           "../back_up_pdb375_482/modeling7",
-                                                           "../back_up_pdb375_482/modeling8",
-                                                           "../back_up_pdb375_482/modeling9",
-                                                           "../back_up_pdb375_482/modeling10"],
+                                        merge_directories=["../modeling1",
+                                                           "../modeling2",
+                                                           "../modeling3",
+                                                           "../modeling4",
+                                                           "../modeling5",
+                                                           "../modeling6",
+                                                           "../modeling7",
+                                                           "../modeling8",
+                                                           "../modeling9",
+                                                           "../modeling10"],
                                         global_output_directory="output/")
 
 # fields that have to be extracted for the stat file
@@ -76,15 +77,14 @@ feature_list=[
               #"ISDCrossLinkMS_Distance_intrarb",
               #"ISDCrossLinkMS_Distance_interrb",
               #"ISDCrossLinkMS_Data_Score",
-              "GaussianEMRestraint_None",
-              "SimplifiedModel_Linker_Score_None",
-              "ExcludedVolumeSphere_None",
               #"ISDCrossLinkMS_Psi",
               #"ISDCrossLinkMS_Sigma"
+              "GaussianEMRestraint_GaussianEMRestraint_Relion",
+              "GaussianEMRestraint_Sampling_Boundary",
+              "SimplifiedModel_Linker_Score_None",
+              "ExcludedVolumeSphere_None",
+              "PlaneDihedralRestraint_pom152_pdr",
               "DistanceRestraint",
-              "SimplifiedModel_Total_Score_None",
-              "rmf_file",
-              "rmf_frame_index"              
              ]
 
 # Dictionary of densities to be calculated
@@ -108,11 +108,11 @@ reduced_density_dict={"pom152":["pom152"],
 
 # list of component names needed to calculate the RMSD for the clustering
 
-components_names={"pom152":("pom152")
+components_names={"pom152":"pom152"
                   #"EloB":("EloB"),
                  }
 
-    
+
 mc.clustering("SimplifiedModel_Total_Score_None",  # don't change, field where to find the score
               "rmf_file",                          # don't change, field where to find the path for the rmf_file
               "rmf_frame_index",                   # don't change, field for the frame index
@@ -126,11 +126,10 @@ mc.clustering("SimplifiedModel_Total_Score_None",  # don't change, field where t
               feature_keys=feature_list,                     # extract these fields from the stat file
               load_distance_matrix_file=load_distance_matrix_file,                # skip the matrix calcuklation and read the precalculated matrix
               skip_clustering=False,                         # skip clustering
-              display_plot=False,                            # display the heat map plot of the distance matrix
+              display_plot=True,                            # display the heat map plot of the distance matrix
               exit_after_display=False,                      # exit after having displayed the distance matrix plot
               get_every=1,                                   # skip structures for faster computation
               #is_mpi=is_mpi,                                 # mpi enabled
               number_of_clusters=nclusters,                  # number of clusters to be used by kmeans algorithm
               voxel_size=5.0,                                # voxel size of the mrc files
               density_custom_ranges=reduced_density_dict)    # setup the list of densities to be calculated
-

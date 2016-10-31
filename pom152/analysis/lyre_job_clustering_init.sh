@@ -21,8 +21,8 @@
 ##$ -t 1-10                        #-- specify the number of tasks
 #$ -N cluster5
 #########################################
-  
-NSLOTS=1    ## Should be an "EVEN number" or 1
+
+NSLOTS=8    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=5
 
 # load MPI modules
@@ -52,18 +52,17 @@ fi
 echo "NMODS = $NMODS"
 
 
-# write hostname and starting time 
+# write hostname and starting time
 hostname
 date
 
 #run
-echo "$IMP python ./clustering.py -mpi False -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER"; echo
-$IMP python ./clustering.py -mpi False -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER
+#echo "$IMP python ./clustering.py -mpi False -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER"; echo
+#$IMP python ./clustering.py -mpi False -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER
 
-#echo "mpirun -np $NSLOTS $IMP python ./clustering.py -mpi True -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER"
-#mpirun -np $NSLOTS $IMP python ./clustering.py -mpi True -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER
+echo "mpirun -np $NSLOTS $IMP python ./clustering.py -mpi True -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER"; echo
+mpirun -np $NSLOTS $IMP python ./clustering.py -mpi True -preload False -nmods $NMODS -nclusters $SGE_TASK_ID -prefilter $PREFILTER
 
 # done
 hostname
 date
-

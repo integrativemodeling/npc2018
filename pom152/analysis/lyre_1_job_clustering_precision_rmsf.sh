@@ -9,7 +9,7 @@ fi
 echo "PREFILTER = $PREFILTER"
 
 if [ -z $2 ]; then
-    NMODS="1000"
+    NMODS="500"
 else
     NMODS="$2"
 fi
@@ -63,4 +63,3 @@ rm -rf job_clustering_jobid.txt
 ###############################################################################
 echo; echo "./lyre_job_precision_rmsf.sh $NMODS"
 ./lyre_job_precision_rmsf.sh $NMODS
-
