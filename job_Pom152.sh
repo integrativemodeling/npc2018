@@ -33,7 +33,8 @@ SGE_TASK_ID=152
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=modeling_pom152.py
+#MODELING_SCRIPT=modeling_pom152.py
+MODELING_SCRIPT=modeling_pom152_PlaneDihedral.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
 RMF_FILE=../data_npc/Inner_ring_rmfs/1IR_409_0.rmf3
@@ -89,14 +90,14 @@ echo $PWD_PARENT : $PWD
 
 if [ $PWD_PARENT != $PWD ]; then
     # run the job
-    #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
-    #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
+    echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
+    mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
 
     #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -sym False -r $REPEAT -out $OUTPUT -refine True -w 50.0 -x ../data/$XL_FILE
     #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
     #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
-    echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
-    mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME
+    #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
+    #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME
     cd ..
 fi
 
