@@ -454,7 +454,7 @@ if (is_membrane):
     print(dr.get_output())
 
     if (use_neighboring_spokes):
-        dist_max = 25.0
+        dist_max = 23.0
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
         #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
@@ -466,8 +466,8 @@ if (is_membrane):
         print(dr.get_output())
 
 
-    pom152_min = 0;     pom152_max = 15;
-    POM_LIST = [ 379, 392, 472, 520, 611, 616, 714, 722, 818, 824, 866, 918, 931, 1010, 1026, 1036, 1141, 1150, 1229, 1244, 1282, 1337 ]
+    pom152_min = 2.5;     pom152_max = 15;
+    POM_LIST = [ 379, 392, 472, 520, 611, 616, 714, 722, 818, 824, 866, 918, 931, 1010, 1026, 1036, 1064, 1141, 1150, 1182, 1229, 1244, 1282, 1337 ]
     for z in POM_LIST:
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (z, z, "Pom152"), lower_bound=pom152_min, upper_bound=pom152_max, consider_radius=False, sigma=1.0, term='M')
         zax.set_label('Lower_%d_Upper_%d_Pom152_%s' % (pom152_min, pom152_max, z))
@@ -789,15 +789,14 @@ if (use_ExcludedVolume):
 # Domain connectivity
 #####################################################
 if (True):
-    dist_min = 9.0
     dr_weight = 100.0
     IG_LIST = [ [471,520], [611,616], [713,722], [816,824], [916,933], [1025,1038], [1141,1150], [1229,1244] ]
     for z in IG_LIST:
-        #if (z[0] == 611):
-        #    dist_min = 10.0
-        #else:
-        #    dist_min = 5.0
-            
+        if (z[0] == 611):
+            dist_min = 12.0
+        else:
+            dist_min = 9.0
+
         dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (z[0],z[0],"Pom152"), (z[1],z[1],"Pom152"), distancemin=dist_min, distancemax=dist_min+5.0, resolution=1)
         dr.add_to_model()
         dr.set_label('Pom152_%d_%d' % (z[0], z[1]))
@@ -826,7 +825,7 @@ class PlaneDihedralRestraint(object):
         \note Particles defining planes should be rigid and more or less
               parallel for proper behavior
         """
-        
+
         # PMI1/2 selection
         if representation is None and hier is not None:
             self.m = hier.get_model()
@@ -952,4 +951,3 @@ mc4.execute_macro()
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print "\nEVAL 8 : ", sf.evaluate(False), " (final evaluation) - ", rank
 exit(0)
-
