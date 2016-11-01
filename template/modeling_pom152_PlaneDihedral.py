@@ -208,7 +208,7 @@ use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
 use_sampling_boundary = True
-use_XL = True
+use_XL = False
 use_EM3D = True
 
 
@@ -261,7 +261,8 @@ bm1.set_gmm_models_directory(gmm_f)
 
 if (True):
     if (is_membrane):
-        bm1.set_rmf_file('Pom152', "../data_npc/Pom152_rmfs/Pom152_0_final.rmf3", 0)
+        #bm1.set_rmf_file('Pom152', "../data_npc/Pom152_rmfs/Pom152_0_final.rmf3", 0)
+        bm1.set_rmf_file('Pom152', "../data_npc/Pom152_rmfs/Pom152_new_final.rmf3", 0)
 
 # remove connectivity for clones
 clone_list = [entry[0] for entry in domains if '@' in entry[0]]
@@ -438,17 +439,6 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    if (use_neighboring_spokes):
-        # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr.add_to_model()
-        #dr.set_label("Pom152-Pom152@12")
-        dr.set_label("Pom152-Pom152@13")
-        dr.set_weight(dr_weight)
-        outputobjects.append(dr)
-        print(dr.get_output())
-
     dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(301,301,"Pom152"), (301,301,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11_301")
@@ -463,8 +453,21 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    pom152_min = 5;     pom152_max = 40;
-    POM_LIST = [ 379, 472, 520, 611, 616, 714, 722, 818, 824, 918, 931, 1026, 1036, 1141, 1150, 1229, 1244, 1337 ]
+    if (use_neighboring_spokes):
+        dist_max = 25.0
+        # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
+        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr.add_to_model()
+        #dr.set_label("Pom152-Pom152@12")
+        dr.set_label("Pom152-Pom152@13")
+        dr.set_weight(dr_weight)
+        outputobjects.append(dr)
+        print(dr.get_output())
+
+
+    pom152_min = 0;     pom152_max = 15;
+    POM_LIST = [ 379, 392, 472, 520, 611, 616, 714, 722, 818, 824, 866, 918, 931, 1010, 1026, 1036, 1141, 1150, 1229, 1244, 1282, 1337 ]
     for z in POM_LIST:
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (z, z, "Pom152"), lower_bound=pom152_min, upper_bound=pom152_max, consider_radius=False, sigma=1.0, term='M')
         zax.set_label('Lower_%d_Upper_%d_Pom152_%s' % (pom152_min, pom152_max, z))
@@ -546,7 +549,6 @@ if (use_XL):
                                                         columnmapping = columnmap,
                                                         ids_map = ids_map,
                                                         resolution = 1.0,
-                                                        #inner_slope = 0.02,
                                                         inner_slope = 0.01,
                                                         filelabel = "wtDSS",
                                                         label = "wtDSS",
@@ -685,7 +687,7 @@ if (use_EM3D):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(1000.0)        # play with the weight
+    gem.set_weight(2000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
@@ -775,7 +777,7 @@ if (use_ExcludedVolume):
                                                                      resolution = res_ev)
         ev2.add_to_model()
         ev2.set_label('bipartite')
-        ev2.set_weight(10.0)
+        ev2.set_weight(10000.0)
         outputobjects.append(ev2)
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
@@ -787,17 +789,16 @@ if (use_ExcludedVolume):
 # Domain connectivity
 #####################################################
 if (True):
-    dist_min = 7.5
+    dist_min = 9.0
     dr_weight = 100.0
-
-    IG_LIST = [ [472,520], [611,616], [714,722], [818,824], [918,931], [1026,1036], [1141,1150], [1229,1244] ]
+    IG_LIST = [ [471,520], [611,616], [713,722], [816,824], [916,933], [1025,1038], [1141,1150], [1229,1244] ]
     for z in IG_LIST:
-        if (z[0] == 472):
-            dist_max = 15.0
-        else:
-            dist_max = 12.5
+        #if (z[0] == 611):
+        #    dist_min = 10.0
+        #else:
+        #    dist_min = 5.0
             
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (z[0],z[0],"Pom152"), (z[1],z[1],"Pom152"), distancemin=dist_min, distancemax=dist_max, resolution=1)
+        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (z[0],z[0],"Pom152"), (z[1],z[1],"Pom152"), distancemin=dist_min, distancemax=dist_min+5.0, resolution=1)
         dr.add_to_model()
         dr.set_label('Pom152_%d_%d' % (z[0], z[1]))
         dr.set_weight(dr_weight)
