@@ -19,13 +19,13 @@
 #$ -pe ompi 6
 ##$ -t 1
 #$ -t 1-20                        #-- specify the number of tasks
-#$ -N n82_n84
+#$ -N npc_IR
 #########################################
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
-#NSLOTS=4    ## Should be an "EVEN number" or 1
-NSLOTS=1    ## Should be an "EVEN number" or 1
-SGE_TASK_ID=9
+#NSLOTS=20   ## Should be an "EVEN number" or 1
+NSLOTS=4    ## Should be an "EVEN number" or 1
+SGE_TASK_ID=9191
 #'
 # load MPI modules
 #module load openmpi-1.6-nodlopen
@@ -36,7 +36,6 @@ export IMP=setup_environment.sh
 MODELING_SCRIPT=modeling_MLPs.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
-RMF_FILE=../data_nup82/rmfs/B_8_1-95.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0
@@ -44,7 +43,8 @@ EM2D_WEIGHT=10000.0
 
 # Parameters
 if [ -z $1 ]; then
-    REPEAT="5000"
+    #REPEAT="10000"
+    REPEAT="1000"
 else
     REPEAT="$1"
 fi
@@ -61,7 +61,7 @@ echo "SGE_TASK_ID = $SGE_TASK_ID"
 echo "JOB_ID = $JOB_ID"
 echo "NSLOTS = $NSLOTS"
 
-# write hostname and starting time 
+# write hostname and starting time
 hostname
 date
 
@@ -70,57 +70,85 @@ let "SLEEP_TIME=$SGE_TASK_ID*2"
 
 PWD_PARENT=$(pwd)
 
-i=$(expr $SGE_TASK_ID)
-DIR=modeling$i
+for (( INDEX=2100; INDEX <= 2120; INDEX++ )); do
+    # write hostname and starting time
+    echo "INDEX = $INDEX"
+    hostname
+    date
 
-rm -rf $DIR
-if [ ! -d $DIR ]; then
-    mkdir $DIR
-    cp -pr template/$MODELING_SCRIPT $DIR
-    #cp -pr template/em2d_nup82.py $DIR
-    #cp -pr template/representation_nup82.py $DIR
-    #cp -pr template/crosslinking_nup82.py $DIR
-fi
-cd $DIR
+    DIR=modeling${INDEX}
+    RMF_FILE=../prefilter/${INDEX}kmeans_10_1/all_models.9/0_1spoke.rmf3
 
-PWD=$(pwd)
-echo $PWD_PARENT : $PWD
+    rm -rf $DIR
+    if [ ! -d $DIR ]; then
+        mkdir $DIR
+        cp -pr template/$MODELING_SCRIPT $DIR
+        #cp -pr template/em2d_nup82.py $DIR
+        #cp -pr template/representation_nup82.py $DIR
+        #cp -pr template/crosslinking_nup82.py $DIR
+    fi
+    sleep 1
+    cd $DIR
 
-if [ $PWD_PARENT != $PWD ]; then
-    # run the job
-    #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
-    #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
+    PWD=$(pwd)
+    echo $PWD_PARENT : $PWD
 
-    #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -sym False -r $REPEAT -out $OUTPUT -refine True -w 50.0 -x ../data/$XL_FILE
-    #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
-    #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
-    echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
-    mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME
-    cd ..
-fi
+    if [ $PWD_PARENT != $PWD ]; then
+        # run the job
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
 
-# done
-hostname
-date
-#exit -1
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -sym False -r $REPEAT -out $OUTPUT -refine True -w 50.0 -x ../data/$XL_FILE
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
+        echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
+        mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME > $DIR.log
+        cd ..
+    fi
 
-################################################################################
-#cd $OUTPUT
-
-#process_output.py -f modeling2/output/stat.0.out -s ISDCrossLinkMS_Distance_interrb_13-State:0-127:Cul5_80:EloC-1-1-1.0_DSS ISDCrossLinkMS_Score_interrb_13-State:0-127:Cul5_80:EloC-1-1-1.0_DSS ISDCrossLinkMS_PriorSig_Score_DSS ISDCrossLinkMS_Sigma_1_DSS
-#process_output.py -f modeling2/output/stat.1.out -s ISDCrossLinkMS_Distance_interrb_13-State:0-127:Cul5_80:EloC-1-1-1.0_DSS ISDCrossLinkMS_Score_interrb_13-State:0-127:Cul5_80:EloC-1-1-1.0_DSS ISDCrossLinkMS_PriorSig_Score_DSS ISDCrossLinkMS_Sigma_1_DSS
-
-#process_output.py -f modeling2/output/stat.0.out -n 1
-#process_output.py -f modeling2/output/stat.0.out -p
-
-################################################################################
-### searching for correlationo of the pdb file with rmf file / output log file
-################################################################################
-#process_output.py -f modeling2/output/stat.0.out -s SimplifiedModel_Total_Score_None ISDCrossLinkMS_Data_Score_scEDC ElectronMicroscopy2D_None Stopwatch_None_delta_seconds rmf_file rmf_frame_index
-#process_output.py -f modeling2/output/stat.0.out -s SimplifiedModel_Total_Score_None ISDCrossLinkMS_Data_Score_scEDC ElectronMicroscopy2D_None Stopwatch_None_delta_seconds
-#process_output.py -f modeling2/pre-EM2D_output/stat.0.out -s SimplifiedModel_Total_Score_None ISDCrossLinkMS_Data_Score_scEDC Stopwatch_None_delta_seconds
-#process_output.py -f modeling2/output/stat.0.out -s SimplifiedModel_Total_Score_None rmf_file rmf_frame_index | grep 103.147
+    # done
+    hostname
+    date
+done
 
 
-#rmf_slice 29.rmf3 n82_r29_f1445.rmf3 -f 1445 -s 1000000
-#em2d_single_score model.0.pdb -r 20 -s 3.23 -n 400 -c *.pgm
+for (( INDEX=2200; INDEX <= 2220; INDEX++ )); do
+    # write hostname and starting time
+    echo "INDEX = $INDEX"
+    hostname
+    date
+
+    DIR=modeling${INDEX}
+    RMF_FILE=../prefilter/${INDEX}kmeans_10_1/all_models.9/0_1spoke.rmf3
+
+    rm -rf $DIR
+    if [ ! -d $DIR ]; then
+        mkdir $DIR
+        cp -pr template/$MODELING_SCRIPT $DIR
+        #cp -pr template/em2d_nup82.py $DIR
+        #cp -pr template/representation_nup82.py $DIR
+        #cp -pr template/crosslinking_nup82.py $DIR
+    fi
+    sleep 1
+    cd $DIR
+
+    PWD=$(pwd)
+    echo $PWD_PARENT : $PWD
+
+    if [ $PWD_PARENT != $PWD ]; then
+        # run the job
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT"
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT
+
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -sym False -r $REPEAT -out $OUTPUT -refine True -w 50.0 -x ../data/$XL_FILE
+        #echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT"
+        #mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -em2d $EM2D_FILE -weight $EM2D_WEIGHT
+        echo "mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME"
+        mpirun -np $NSLOTS $IMP python ./$MODELING_SCRIPT -r $REPEAT -out $OUTPUT -rmf $RMF_FILE -rmf_n $RMF_FRAME > $DIR.log
+        cd ..
+    fi
+
+    # done
+    hostname
+    date
+done

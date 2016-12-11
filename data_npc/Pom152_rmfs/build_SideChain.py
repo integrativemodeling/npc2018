@@ -1,3 +1,7 @@
+###################################################################################
+## README:  Please run this script on Linux or any platform that is case-sensitive
+## README:  Windows and OSX are not case-sensitive - so don't run it on them
+###################################################################################
 from math import sqrt
 from Bio.PDB import *
 #from Bio.PDB.PDBParser import PDBParser
@@ -43,9 +47,12 @@ env = environ()
 
 for chain in structure.get_chains():
     pdb_name = 'chain' + chain.get_id() + '.rebuilt.pdb'    
-    mdl = model(env, file=pdb_name)
-    mdl.chains[0].name = chain.get_id()
-    mdl.write(pdb_name)
+    try:
+        mdl = model(env, file=pdb_name)
+        mdl.chains[0].name = chain.get_id()
+        mdl.write(pdb_name)
+    except:
+        continue
 
 
 ####################################################
@@ -63,7 +70,7 @@ for chain in structure.get_chains():
     io.save(outfile, write_end=True)
     os.remove(pdb_name)
 outfile.close()
-os.system('grep -vwE "(END|ENDMDL|MODEL      0)" ' + outfile_name + " > " + (structure.get_id()).replace(".pdb", "_rebuilt.pdb"))
+os.system('grep -vwE "(TER|END|ENDMDL|MODEL      0)" ' + outfile_name + " > " + (structure.get_id()).replace(".pdb", "_rebuilt.pdb"))
 os.remove(outfile_name)
 
 
