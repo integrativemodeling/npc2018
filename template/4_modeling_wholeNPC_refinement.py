@@ -846,7 +846,7 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
     print (zax.get_output())
 
     zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (690,690,"Mlp2"), lower_bound=dist_min, upper_bound=dist_max, consider_radius=False, sigma=1.0, term='M')
-    zax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp1_690"))
+    zax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp2_690"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
