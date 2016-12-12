@@ -24,8 +24,8 @@
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
 #NSLOTS=6    ## Should be an "EVEN number" or 1
-NSLOTS=1    ## Should be an "EVEN number" or 1
-SGE_TASK_ID=1
+NSLOTS=2    ## Should be an "EVEN number" or 1
+SGE_TASK_ID=3100
 #'
 # load MPI modules
 #module load openmpi-1.6-nodlopen
@@ -33,10 +33,11 @@ SGE_TASK_ID=1
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=2_modeling_wholeNPC_FG_anchor_EV.py
+MODELING_SCRIPT=4_modeling_wholeNPC_refinement.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
-RMF_FILE=../data_npc/WholeNPC_rmfs/wholeNPC_refined_0.rmf3
+myvar=$(expr $SGE_TASK_ID - 1000)
+RMF_FILE=../prefilter/NPC_rmfs/NPC${myvar}.rmf3
 RMF_FRAME=0
 EM2D_FILE=../data/em2d/2.pgm
 EM2D_WEIGHT=10000.0
