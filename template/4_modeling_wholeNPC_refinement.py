@@ -191,15 +191,15 @@ Gle2_pdbfile   = npc + "Gle2_3mmy_A_4_362ca.pdb"
 #####################################################
 is_n84 = True
 is_n82 = True
-is_nic96 = False
-is_inner_ring = False
-is_membrane = False
-is_cytoplasm = False
-is_nucleoplasm = False
-is_basket = False
+is_nic96 = True
+is_inner_ring = True
+is_membrane = True
+is_cytoplasm = True
+is_nucleoplasm = True
+is_basket = True
 is_FG = False
 
-use_neighboring_spokes = False
+use_neighboring_spokes = True
 #Stopwatch_None_delta_seconds  ~22   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL
 #Stopwatch_None_delta_seconds  ~25   (1 spoke for OR / IR + 3 spokes for others, 3.0G memory) with XL + EM
 #Stopwatch_None_delta_seconds  ~65   (1 spoke for OR / IR + 3 spokes for others, 5.0G memory) with XL + EM + EV
@@ -827,12 +827,30 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
+        # applying Z-position restraints on the C-termini of each protein
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
         zax.set_label('Lower_%d_Upper_%d_%s' % (z[0], z[1], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
         outputobjects.append(zax)
         print (zax.get_output())
+
+    # localizing the Mlp1-Mlp2 hetero-dimer near the outer-ring on the nucleoplasm
+    dist_min = -400.0
+    dist_max = -200.0
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (716,716,"Mlp1"), lower_bound=dist_min, upper_bound=dist_max, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp1_716"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
+
+    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (690,690,"Mlp2"), lower_bound=dist_min, upper_bound=dist_max, consider_radius=False, sigma=1.0, term='M')
+    zax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp1_690"))
+    zax.set_weight(zaxial_weight)
+    zax.add_to_model()
+    outputobjects.append(zax)
+    print (zax.get_output())
 
 
 #####################################################
@@ -962,7 +980,7 @@ if (is_basket):
 
     # localizing the Mlp1-Mlp2 hetero-dimer near the x-axis
     dist_min = -10.0
-    dist_max = 30.0
+    dist_max = 40.0
     yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (1875,1875,"Mlp1"), lower_bound=dist_min, upper_bound=dist_max, consider_radius=False, sigma=1.0, term='M')
     yax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp1_1875"))
     yax.set_weight(yaxial_weight)
@@ -977,6 +995,7 @@ if (is_basket):
     outputobjects.append(yax)
     print (yax.get_output())
 
+    """
     # Mlp1-Mlp2 hetero-dimer
     dist_min = 3.0
     dist_max = 15.0
@@ -986,6 +1005,7 @@ if (is_basket):
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
+    """
 
 
 #####################################################
@@ -1407,7 +1427,7 @@ if (use_sampling_boundary):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(9000.0)        # play with the weight
+    sbr.set_weight(10000.0)        # play with the weight
     sbr.set_label("Sampling_Boundary_outer-ring")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)

@@ -24,7 +24,7 @@
 
 #: '#lyre usage : nohup ./job_test.sh 20000 output > job_test.log &
 #NSLOTS=6    ## Should be an "EVEN number" or 1
-NSLOTS=2    ## Should be an "EVEN number" or 1
+NSLOTS=4    ## Should be an "EVEN number" or 1
 SGE_TASK_ID=3100
 #'
 # load MPI modules
@@ -33,7 +33,7 @@ SGE_TASK_ID=3100
 #mpirun -V
 
 export IMP=setup_environment.sh
-MODELING_SCRIPT=4_modeling_wholeNPC_refinement.py
+MODELING_SCRIPT=4_modeling_wholeNPC_refinement_n84n82.py
 SAXS_FILE=SAXS.dat
 XL_FILE=XL.csv
 myvar=$(expr $SGE_TASK_ID - 1000)
