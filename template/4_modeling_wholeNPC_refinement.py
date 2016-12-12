@@ -979,7 +979,7 @@ if (is_basket):
     print (xyr.get_output())
 
     # localizing the Mlp1-Mlp2 hetero-dimer near the x-axis
-    dist_min = -10.0
+    dist_min = 0.0
     dist_max = 40.0
     yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (1875,1875,"Mlp1"), lower_bound=dist_min, upper_bound=dist_max, consider_radius=False, sigma=1.0, term='M')
     yax.set_label('Lower_%d_Upper_%d_%s' % (dist_min, dist_max, "Mlp1_1875"))
