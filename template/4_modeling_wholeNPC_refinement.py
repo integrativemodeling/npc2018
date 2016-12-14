@@ -1389,7 +1389,7 @@ else:
 # Restraints setup
 # Sampling Boundary Restraint for the outer ring
 #####################################################
-if (use_sampling_boundary):
+if (use_sampling_boundary and (is_n84 or is_n82 or is_basket)):
     main_spoke = [];  other_spokes = [];    main_spoke_hier_name = []
     for entry in domains:
         if '@' in entry[0]:
@@ -1401,6 +1401,9 @@ if (use_sampling_boundary):
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
         elif ('Nup82' in entry[0]) or ('Nup159' in entry[0]) or ('Nsp1.1' in entry[0]) or ('Nsp1.2' in entry[0]):
+            main_spoke.append(entry[0])
+            main_spoke_hier_name.append(entry[1])
+        elif ('Mlp1' in entry[0]) or ('Mlp2' in entry[0]):
             main_spoke.append(entry[0])
             main_spoke_hier_name.append(entry[1])
         else:
@@ -1520,13 +1523,13 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1750.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1000.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(3571.4)        # play with the weight
+    gem.set_weight(6000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
