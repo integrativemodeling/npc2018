@@ -861,12 +861,12 @@ if (use_FG_anchor and is_nic96 and not is_FG):
     nup_list_unique = sorted(list(set(nup_list)))   # Make a unique list
 
     RADIAL = {
-        "Nsp1.3"   : [180, 230],
-        "Nup49.1"  : [180, 230],
-        "Nup57.1"  : [180, 230],
-        "Nsp1.4"   : [180, 230],
-        "Nup49.2"  : [180, 230],
-        "Nup57.2"  : [180, 230],
+        "Nsp1.3"   : [180, 225],
+        "Nup49.1"  : [180, 225],
+        "Nup57.1"  : [180, 225],
+        "Nsp1.4"   : [180, 225],
+        "Nup49.2"  : [180, 225],
+        "Nup57.2"  : [180, 225],
         #"Nup1"     : [180, 350],
         #"Nup60.1"  : [180, 350],
         #"Nup60.2"  : [180, 350]
@@ -1523,13 +1523,13 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1000.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1500.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(6000.0)        # play with the weight
+    gem.set_weight(4000.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
