@@ -207,7 +207,7 @@ use_neighboring_spokes = True
 use_shuffle = False
 use_ExcludedVolume = True
 use_Immuno_EM = False
-use_FG_anchor = False
+use_FG_anchor = True
 use_sampling_boundary = True
 use_MembraneExclusion = True
 use_XL = True
@@ -1430,7 +1430,7 @@ if (use_sampling_boundary and (is_n84 or is_n82 or is_basket)):
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     sbr.add_to_model()
-    sbr.set_weight(10000.0)        # play with the weight
+    sbr.set_weight(20000.0)        # play with the weight
     sbr.set_label("Sampling_Boundary_outer-ring")
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
@@ -1523,13 +1523,13 @@ if (use_EM3D):
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
     gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
-                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1500.txt',
+                                                    '../data_npc/em_gmm_model/SJ_cropped_r_09_02_resfilt143_rotated_adjusted90.gmm.1750.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
                                                     target_radii_scale=3.0)
     gem.add_to_model()
-    gem.set_weight(4000.0)        # play with the weight
+    gem.set_weight(3571.0)        # play with the weight
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
