@@ -1,17 +1,16 @@
-# NPC complex
+# The entire 552-protein yeast NPC complex
 
-These scripts demonstrate the use of [IMP](http://salilab.org/imp) in the modeling of the NPC complex using data as described in Frank Alber's 2007 NPC paper. 
+These scripts demonstrate the use of [IMP](http://salilab.org/imp) in the modeling of the yeast NPC complex using data as described in Seung Joong Kim, et al.'s 2018 NPC article published in Nature. 
 
-The scripts work with the [IMP](http://salilab.org/imp) (version 385a178).
+The scripts work with the [IMP](http://salilab.org/imp) (version 2.6).
 A default build of IMP compiled with the IMP::npc module should work, but for most effective sampling, it should
 be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP_1_1mpi.html) so that replica exchange can be used.
 
 ## List of files and directories:
 
-- `data`		            contains all relevant data
-- `NPC_papers`			    contains relevant NPC papers
-- `scripts`			  
-  - `test_NPC_scoring_functions.py` the main IMP script modeling for NPC
+- `input_data_files`		            contains all relevant data
+- `results`		                      contains resulting structures and output files
+- `template`			                  contains modeling scripts
 
 ## Compiling IMP with NPC-specific module:
 - Clone IMP version 385a178
@@ -24,7 +23,7 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 
 ## Information
 
-_Author(s)_: Elina Tjioe, Frank Alber
+_Author(s)_: Seung Joong Kim
 
 _License_: [LGPL](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html).
 This library is free software; you can redistribute it and/or
@@ -34,5 +33,5 @@ version 2 of the License, or (at your option) any later version.
 
 _Publications_:
 
-- Frank Alber\*, Svetlana Dokudovskaya\*, et al, [The Molecular Architecture of the Nuclear Pore Complex](http://www.nature.com/nature/journal/v450/n7170/abs/nature06405.html), Nature 450, 695-701, 2007.
+- Seung Joong Kim\*, Javier Fernandez-Martines\*, Ilona Nudelman\*, et al, [Integrative structure and Functional Anatomy of a Nuclear Pore Complex](http://www.nature.com/nature/journal/), Nature , 2018, in press.
 
