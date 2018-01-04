@@ -1,0 +1,2 @@
+sym #0 group c8  
+then save each PDB file relative to the origin in chimera
