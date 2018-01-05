@@ -25,11 +25,9 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 
 _Author(s)_: Seung Joong Kim
 
-_License_: [LGPL](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html).
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
+_License_: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
+This work is freely available under the terms of the Creative Commons
+Attribution-ShareAlike 4.0 International License.
 
 _Publications_:
 
