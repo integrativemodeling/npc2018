@@ -9,11 +9,24 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 ## List of files and directories:
 
 - `input_data_files`		            contains all relevant data
+
   EMBD_final-yNPC_map_28A.mrc.gz  : Cryo-ET density map
-  SAXS.zip  : SAXS source data file (147 profiles for 18 different Nups)
-  Table1_crosslinks.xlsx : Summary of 3,077 chemical cross-links
+  
+  Table1_crosslinks.xlsx : 3,077 chemical cross-links
+  
+  SAXS.zip  : SAXS source data (147 SAXS profiles for 18 different Nups) file used for assessment of the NPC structure 
+  
+- `data_npc`		            contains representation files (PDB format)
 - `results`		                      contains resulting structures and output files
 - `template`			                  contains modeling scripts
+
+  1_modeling_wholeNPC.py  : Initial modeling script
+
+  2_modeling_wholeNPC_FG_anchor_EV.py : Intermediate modeling script
+
+  3_modeling_wholeNPC_refinement.py : Refinement modeling script
+
+  4_modeling_wholeNPC_refinement.py : Final refinement modeling script
 
 ## Compiling IMP with NPC-specific module:
 - Clone IMP version 2.6
