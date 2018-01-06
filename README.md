@@ -34,8 +34,10 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 - Compile IMP
 
 ## Running the IMP scripts for the NPC complex:
-- `cd scripts`
-- `python test_NPC_scoring_functions.py & > test_NPC_scoring_functions.out` (on a single processor; prepend `mpirun -np 6` or similar if you built IMP with MPI support)
+- `cd template`
+- `python XX.py & > XX.out` (on a single processor; prepend `mpirun -np 6` or similar if you built IMP with MPI support)
+
+or job_test4.sh
 
 ## Information
 
