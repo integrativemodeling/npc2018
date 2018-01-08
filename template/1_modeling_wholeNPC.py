@@ -34,6 +34,8 @@ import math
 import argparse
 
 parser = argparse.ArgumentParser(description='Performing the INITIAL/REFINEMENT Monte Carlo job, with crosslinks and selected/ALL domain mapping data. Example of usage: setup_environment.sh python ./sj_SEA_XLDM.py -f models_1877.rmf -n 0')
+parser.add_argument('--test', action='store_true',
+                    help="Run in test mode (fewer steps of sampling)")
 parser.add_argument('-copy', action="store", dest="ncopy", help="copy numbers (stoichiometry) for SEA4 and Seh1" )
 parser.add_argument('-sym', action="store", dest="symmetry", help="symmetry option for SEA4 and Seh1" )
 parser.add_argument('-rmf', action="store", dest="rmf_input", help="rmf file name to continue" )
@@ -1546,7 +1548,8 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 500,
+                                    number_of_frames = 500 if inputs.test
+                                                           else 10,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
@@ -1620,7 +1623,8 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_maximum_temperature = 5.0,
                                     number_of_best_scoring_models = 0,
                                     monte_carlo_steps = 10,
-                                    number_of_frames = 3000,
+                                    number_of_frames = 3000 if inputs.test
+                                                            else 30,
                                     write_initial_rmf = True,
                                     initial_rmf_name_suffix = "initial",
                                     stat_file_name_suffix = "stat",
