@@ -9,6 +9,8 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
+import IMP.pmi.mmcif
+import IMP.pmi.metadata
 import IMP.pmi.restraints.crosslinking
 import IMP.pmi.restraints.stereochemistry
 import IMP.pmi.restraints.em
@@ -36,6 +38,10 @@ import argparse
 parser = argparse.ArgumentParser(description='Performing the INITIAL/REFINEMENT Monte Carlo job, with crosslinks and selected/ALL domain mapping data. Example of usage: setup_environment.sh python ./sj_SEA_XLDM.py -f models_1877.rmf -n 0')
 parser.add_argument('--test', action='store_true',
                     help="Run in test mode (fewer steps of sampling)")
+parser.add_argument('--dry-run', action='store_true',
+                    help="Dry run (do not do any sampling)")
+parser.add_argument('--mmcif', action='store', type=str, default=None,
+                    help="Record modeling protocol in a named mmCIF file")
 parser.add_argument('-copy', action="store", dest="ncopy", help="copy numbers (stoichiometry) for SEA4 and Seh1" )
 parser.add_argument('-sym', action="store", dest="symmetry", help="symmetry option for SEA4 and Seh1" )
 parser.add_argument('-rmf', action="store", dest="rmf_input", help="rmf file name to continue" )
@@ -116,6 +122,13 @@ m = IMP.Model()
 #s = IMP.pmi.topology.System(m)
 #st = s.create_state()
 simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+
+if inputs.mmcif:
+    # Record the modeling protocol to an mmCIF file
+    po = IMP.pmi.mmcif.ProtocolOutput(open(inputs.mmcif, 'w'))
+    simo.add_protocol_output(po)
+
+simo.dry_run = inputs.dry_run
 
 try:
     from mpi4py import MPI
@@ -1559,6 +1572,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = "1_pre_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
+                                    test_mode=simo.dry_run,
                                     replica_stat_file_suffix = "stat_replica")
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
@@ -1634,6 +1648,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = "2_XL_EM_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
+                                    test_mode=simo.dry_run,
                                     #replica_stat_file_suffix = "stat_replica")
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex1)
@@ -1726,6 +1741,7 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = "3_EV_output",
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
+                                    test_mode=simo.dry_run,
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex2)
 mc3.execute_macro()
@@ -1757,9 +1773,14 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     global_output_directory = inputs.folder_output,
                                     rmf_dir = "rmfs/",
                                     best_pdb_dir = "pdbs/",
+                                    test_mode=simo.dry_run,
                                     replica_stat_file_suffix = "stat_replica",
                                     replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
 print "\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank
 #exit(0)
+
+if inputs.mmcif:
+    # todo: add actual structure
+    po.flush()
