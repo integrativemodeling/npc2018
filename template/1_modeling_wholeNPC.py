@@ -3,6 +3,7 @@
 # Last Update: June 30th, 2016 by Seung Joong Kim
 # Andrej Sali group, University of California San Francisco (UCSF)
 #####################################################
+from __future__ import print_function
 import IMP
 import IMP.core
 import IMP.algebra
@@ -112,7 +113,7 @@ if (inputs.draw_hierarchy == "True") or (inputs.draw_hierarchy == "true") or (in
     inputs.draw_hierarchy = True
 else:
     inputs.draw_hierarchy = False
-print inputs
+print(inputs)
 
 
 #####################################################
@@ -140,7 +141,7 @@ if MPI:
     rank = comm.Get_rank()
 else:
     rank = 0
-print "rank = ", rank
+print("rank = ", rank)
 
 # rigid body movement params
 rbmaxtrans = 3.00
@@ -949,7 +950,7 @@ if (use_Immuno_EM):
         "Seh1"     : [250, 370],
         "Pom152"   : [470, 630]     #"Pom152"   : [370, 630]     #(Table S2 and Table S7 are different)
     }
-    print "\nXYRadialPositionRestraint !!"
+    print("\nXYRadialPositionRestraint !!")
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
@@ -1008,7 +1009,7 @@ if (use_Immuno_EM):
         "Seh1"     : [  65, 400],       #"Seh1"     : [  50, 170],
         "Pom152"   : [   5,  60]        #"Pom152"   : [   0,  95]   (Table S2 and Table S7 are different)
     }
-    print "\nZAxialPositionRestraint !!"
+    print("\nZAxialPositionRestraint !!")
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
@@ -1044,7 +1045,7 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
         "Mlp1"     : [-400,-200],
         "Mlp2"     : [-400,-200]
     }
-    print "\nZAxialPositionRestraints for Cytoplasm / Nucleoplasm / Basket !!"
+    print("\nZAxialPositionRestraints for Cytoplasm / Nucleoplasm / Basket !!")
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
@@ -1074,7 +1075,7 @@ if (use_FG_anchor and is_nic96 and not is_FG):
         #"Nup60.1"  : [180, 350],
         #"Nup60.2"  : [180, 350]
     }
-    print "\nFG_XYRadialPositionRestraint !!"
+    print("\nFG_XYRadialPositionRestraint !!")
     radial_weight = 10.0
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
@@ -1170,7 +1171,7 @@ msl_weight  = 1.0
 
 # Transmembrane domains
 if (is_membrane):
-    print "\nMembraneSurfaceLocationRestraint !!"
+    print("\nMembraneSurfaceLocationRestraint !!")
     msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Pom152_101_200')
     msl.set_weight(msl_weight)
@@ -1450,7 +1451,7 @@ if (use_XL):
     psi2.set_scale(0.05)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 1 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank
+    print("\nEVAL 1 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank)
     XL_restraints = [xl1]
 else:
     XL_restraints = None
@@ -1465,7 +1466,7 @@ if (is_inner_ring and is_membrane):
     dist_max = 30.0
 
     for nxl, entry in enumerate(db):
-        #print nxl, entry
+        #print(nxl, entry)
         mol1 = entry["Protein 1"]
         res1 = int(entry["Residue 1"])
         mol2 = entry["Protein 2"]
@@ -1479,8 +1480,8 @@ if (is_inner_ring and is_membrane):
         outputobjects.append(dr)
         print(dr.get_output())
 
-    print "\nDistance Restraints applied for XL cliques !!"
-    print "weight = ", dr_weight, "dist_min = ", dist_min, "dist_max = ", dist_max, "\n"
+    print("\nDistance Restraints applied for XL cliques !!")
+    print("weight = ", dr_weight, "dist_min = ", dist_min, "dist_max = ", dist_max, "\n")
 
 
 #####################################################
@@ -1539,17 +1540,17 @@ if (use_sampling_boundary):
     outputobjects.append(sbr)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 2 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank
+    print("\nEVAL 2 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank)
 
 
 #####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-print "\nEVAL 3 : ", sf.evaluate(False), " (initial) - ", rank
+print("\nEVAL 3 : ", sf.evaluate(False), " (initial) - ", rank)
 
 simo.optimize_floppy_bodies(300)
-print "\nEVAL 4 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
+print("\nEVAL 4 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank)
 
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     simo,
@@ -1576,7 +1577,7 @@ mc1 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_stat_file_suffix = "stat_replica")
 mc1.execute_macro()
 rex1 = mc1.get_replica_exchange_object()
-print "\nEVAL 5 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank
+print("\nEVAL 5 : ", sf.evaluate(False), " (after performing the pre_sampling) - ", rank)
 #exit(0)
 
 
@@ -1621,7 +1622,7 @@ if (use_EM3D):
     outputobjects.append(gem)
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
+    print("\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank)
 
 
 #####################################################
@@ -1654,7 +1655,7 @@ mc2 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_object = rex1)
 mc2.execute_macro()
 rex2 = mc2.get_replica_exchange_object()
-print "\nEVAL 7 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank
+print("\nEVAL 7 : ", sf.evaluate(False), " (after performing the XL_EM_sampling) - ", rank)
 #exit(0)
 
 
@@ -1700,7 +1701,7 @@ if (use_ExcludedVolume):
     ev1.set_weight(0.3)
     outputobjects.append(ev1)
     print(ev1.get_output())
-    print "ExcludedVolumeSphere1 for the main spoke !!\n"
+    print("ExcludedVolumeSphere1 for the main spoke !!\n")
 
     if (use_neighboring_spokes):
         ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
@@ -1712,10 +1713,10 @@ if (use_ExcludedVolume):
         ev2.set_weight(0.3)
         outputobjects.append(ev2)
         print(ev2.get_output())
-        print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
+        print("ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n")
 
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
-    print "\nEVAL 8 : ", sf.evaluate(False), " (after applying the Excluded Volume restraint) - ", rank
+    print("\nEVAL 8 : ", sf.evaluate(False), " (after applying the Excluded Volume restraint) - ", rank)
 
 """
 #####################################################
@@ -1746,7 +1747,7 @@ mc3 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_object = rex2)
 mc3.execute_macro()
 rex3 = mc3.get_replica_exchange_object()
-print "\nEVAL 9 : ", sf.evaluate(False), " (after performing the EV_sampling) - ", rank
+print("\nEVAL 9 : ", sf.evaluate(False), " (after performing the EV_sampling) - ", rank)
 """
 
 
@@ -1778,7 +1779,7 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
-print "\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank
+print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 #exit(0)
 
 if inputs.mmcif:
