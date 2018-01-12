@@ -1615,9 +1615,16 @@ if (use_EM3D):
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
                                                     slope=0.0000001,
-                                                    target_radii_scale=3.0)
+                                                    target_radii_scale=3.0,
+                                                    representation=simo)
     gem.add_to_model()
     gem.set_weight(1000.0)        # play with the weight
+
+    # Point to the original map in EMDDB
+    l = IMP.pmi.metadata.EMDBLocation('EMD-7321')
+    emdb = IMP.pmi.metadata.EMDensityDataset(location=l)
+    gem.dataset.add_primary(emdb)
+
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
