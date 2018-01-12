@@ -1790,5 +1790,18 @@ print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 #exit(0)
 
 if inputs.mmcif:
-    # todo: add actual structure
+    # todo: fill in correct numbers
+    pp = po._add_simple_postprocessing(num_models_begin=15000,
+                                       num_models_end=2267)
+    for c in simo.get_component_names():
+        # Strip out 10-per-bead representation and Gaussians, since this
+        # was previously done for the results RMF files (for speed)
+        for reptop in simo.hier_dict[c].get_children():
+            if 'Res:10' in reptop.get_name():
+                IMP.atom.destroy(reptop)
+        simo.set_coordinates_from_rmf(c, '../results/RMF_files/cluster0_47-35_3spokes.rmf3', 0, force_rigid_update=True, skip_gaussian_in_representation=True)
+    c = po._add_simple_ensemble(pp, name="Cluster 1", num_models=5, drmsd=1.0,
+                                num_models_deposited=1,
+                                localization_densities={}, ensemble_file=None)
+    m = po.add_model(c.model_group)
     po.flush()
