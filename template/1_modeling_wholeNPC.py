@@ -124,6 +124,40 @@ m = IMP.Model()
 #st = s.create_state()
 simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
+# Record additional software used
+# Detection of templates for comparative modeling (HHPred)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='HHpred', classification='protein homology detection',
+          description='Protein homology detection by HMM-HMM comparison',
+          version='2.0.16',
+          url='https://toolkit.tuebingen.mpg.de/hhpred'))
+
+# Secondary structure prediction (PSIPRED)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='PSIPRED', classification='secondary structure prediction',
+          description='Protein secondary structure prediction based on '
+                      'position-specific scoring matrices',
+          version='4.0',
+          url='http://bioinf.cs.ucl.ac.uk/psipred/'))
+
+# Disordered region prediction (DISOPRED)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='DISOPRED', classification='disorder prediction',
+          description='prediction of protein disorder', version=3,
+          url='http://bioinf.cs.ucl.ac.uk/psipred/?disopred=1'))
+
+# Domain boundary prediction (DomPred)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='DomPred', classification='domain boundary prediction',
+          description='identification of putative domain boundaries',
+          url='http://bioinf.cs.ucl.ac.uk/dompred'))
+
+# Coiled-coil region prediction (COILS/PCOILS)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='COILS/PCOILS', classification='coiled-coil prediction',
+          description='prediction of coiled-coil structure',
+          url='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
+
 if inputs.mmcif:
     # Record the modeling protocol to an mmCIF file
     po = IMP.pmi.mmcif.ProtocolOutput(open(inputs.mmcif, 'w'))
