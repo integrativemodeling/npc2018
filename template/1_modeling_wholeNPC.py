@@ -1674,7 +1674,8 @@ if (use_sampling_boundary):
 sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
 print("\nEVAL 3 : ", sf.evaluate(False), " (initial) - ", rank)
 
-simo.optimize_floppy_bodies(300)
+if not inputs.dry_run:
+    simo.optimize_floppy_bodies(300)
 print("\nEVAL 4 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank)
 
 mc1 = IMP.pmi.macros.ReplicaExchange0(m,
