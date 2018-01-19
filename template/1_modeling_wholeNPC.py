@@ -4,6 +4,8 @@
 # Andrej Sali group, University of California San Francisco (UCSF)
 #####################################################
 from __future__ import print_function
+import collections
+import RMF
 import IMP
 import IMP.core
 import IMP.algebra
@@ -160,10 +162,6 @@ simo.add_metadata(IMP.pmi.metadata.Software(
           description='prediction of coiled-coil structure',
           url='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
 
-if inputs.mmcif:
-    # Record the modeling protocol to an mmCIF file
-    po = IMP.pmi.mmcif.ProtocolOutput(open(inputs.mmcif, 'w'))
-    simo.add_protocol_output(po)
 
 simo.dry_run = inputs.dry_run
 
@@ -265,6 +263,206 @@ use_FG_anchor = False
 use_sampling_boundary = False
 use_XL = True
 use_EM3D = True
+
+class _ChainWithFGs(object):
+    """Override IMP.pmi.mmcif._Chain to add in coordinates for FGs"""
+    def __init__(self, orig_chain, fg_repeats, fg_spheres):
+        self.orig_chain = orig_chain
+        self.fg_repeats = fg_repeats
+        self.fg_spheres = fg_spheres
+    def _get_fg_spheres(self, fg_anchor, npc_anchor, residue_range, fg_spheres):
+        # Make sure FG anchor matches NPC anchor, if the NPC is
+        # unstructured (cannot compare to resolution=1 bead)
+        # npc_anchor[3] is the list of residue indexes, which is None for
+        # resolution=1 beads
+        xyz0 = IMP.algebra.Vector3D(fg_anchor)
+        xyz1 = IMP.algebra.Vector3D(npc_anchor[0])
+        if npc_anchor[3] is not None and (xyz0 - xyz1).get_magnitude() > 0.1:
+            raise ValueError("FG anchor coordinates mismatch; %s in FG "
+                             "output RMF vs %s in NPC output RMF for %s"
+                             % (xyz0, xyz1, self.comp))
+        resstart = residue_range[0]
+        for xyz, radius in fg_spheres:
+            resend = min(resstart + self.fg_repeats.beadsize,
+                          residue_range[1] + 1)
+            yield (xyz, "BEA", resstart + resend // 2,
+                   list(range(resstart, resend)), radius)
+            resstart = resend
+    def __get_spheres(self):
+        fg_spheres = self.fg_spheres.get(self.comp, None)
+        if fg_spheres:
+            nup = self.comp.split('.')[0].split('@')[0]
+            rng = self.fg_repeats.ranges[nup]
+            orig_spheres = list(self.orig_chain.spheres)
+            if rng[1] < rng[0]:
+                for f in self._get_fg_spheres(fg_spheres[0][0],
+                                              orig_spheres[0],
+                                              (rng[1], rng[0]),
+                                              reversed(fg_spheres[1:])):
+                    print(f)
+                    yield f
+            for s in orig_spheres:
+                yield s
+            if rng[1] > rng[0]:
+                for f in self._get_fg_spheres(fg_spheres[0][0],
+                                              orig_spheres[-1],
+                                              rng, fg_spheres[1:]):
+                    yield f
+        else:
+            for s in self.orig_chain.spheres:
+                yield s
+    spheres = property(__get_spheres)
+
+    chain_id = property(lambda self: self.orig_chain.chain_id)
+    atoms = property(lambda self: self.orig_chain.atoms)
+    entity = property(lambda self: self.orig_chain.entity)
+    comp = property(lambda self: self.orig_chain.comp)
+    orig_comp = property(lambda self: self.orig_chain.orig_comp)
+
+
+class FGRepeats(object):
+    """Handle FG repeat regions"""
+    beadsize = 20
+    Bead = collections.namedtuple('Bead', ['start', 'end', 'len'])
+    anchor = {'Nsp1': (601,636),
+              'Nup1': (301,351),
+              'Nup49': (201,269),
+              'Nup57': (201,286),
+              'Nup60': (351,398),
+              'Nup100': (551,575),
+              'Nup116': (751,775),
+              'Nup145': (201,225),
+              'Nup159': (1082,1116)}
+    ranges = {'Nsp1': (600,1),
+              'Nup1': (352,1049),
+              'Nup49': (200,1),
+              'Nup57': (200,1),
+              'Nup60': (399,498),
+              'Nup100': (550,11),
+              'Nup116': (750,11),
+              'Nup145': (200,1),
+              'Nup159': (1081,482)}
+    fasta_fn = {'Nsp1': f_n82+"Nsp1.txt",
+                'Nup1': f_npc+"Nup1.txt",
+                'Nup49': f_n96+"Nup49.txt",
+                'Nup57': f_n96+"Nup57.txt",
+                'Nup60': f_npc+"Nup60.txt",
+                'Nup100': f_npc+"Nup100.txt",
+                'Nup116': f_n82+"Nup116.txt",
+                'Nup145': f_npc+"Nup145.txt",
+                'Nup159': f_n82+"Nup159.txt"}
+    fasta_id = {'Nup100': 'YKL068W',
+                'Nup145': 'YGL092W',
+                'Nup49': 'YGL172W',
+                'Nup60': 'YAR002W',
+                'Nup57': 'YGR119C',
+                'Nup1': 'YOR098C'}
+    copies = {'Nsp1': ('.1', '.2', '.3', '.4', '.3@11', '.4@11'),
+              'Nup1': ('',),
+              'Nup49': ('.1', '.2', '.1@11', '.2@11'),
+              'Nup57': ('.1', '.2', '.1@11', '.2@11'),
+              'Nup60': ('.1', '.2'),
+              'Nup100': ('.1', '.2'),
+              'Nup116': ('.1', '.2'),
+              'Nup145': ('.1', '.2'),
+              'Nup159': ('.1', '.2')}
+
+    def get_number_of_beads(self, name):
+        rng = self.ranges[name]
+        return (max(rng) - min(rng) + self.beadsize) // self.beadsize
+
+    def get_beads(self, name, start, end):
+        """If an anchor point is passed, return the FG repeat beads"""
+        # Remove copy number
+        comp = name.split('.')[0].split('@')[0]
+        if self.anchor.get(comp, None) == (start, end):
+            rng = self.ranges[comp]
+            b = self.Bead(start=min(rng), end=max(rng),
+                          len=self.get_number_of_beads(comp))
+            return b, rng[0] > rng[1]
+        else:
+            return None, None
+
+    def add_bead_coordinates(self, fname, model):
+        spheres = self.read_rmf(fname)
+
+        # Monkey patch the Model.all_chains() method to add FG coordinates
+        orig_all_chains = model.all_chains
+        def patched_all_chains(slf, simo):
+            for c in orig_all_chains(simo):
+                yield _ChainWithFGs(c, self, spheres)
+        model.all_chains = patched_all_chains.__get__(model, type(model))
+
+    def read_rmf(self, fname):
+        r = RMF.open_rmf_file_read_only(fname)
+        r.set_current_frame(RMF.FrameID(0))
+        node_for_nup = {}
+        for node in r.get_root_node().get_children():
+            if node.get_name() in self.anchor:
+                node_for_nup[node.get_name()] = node
+        assert(len(node_for_nup) == len(self.anchor))
+
+        spheres = {}
+        for nup in self.anchor:
+            self._read_nup(nup, r, node_for_nup, spheres)
+        return spheres
+
+    def get_copy_names(self, name):
+        """Yield all names of Nup copies, including symmetry units.
+           These names should match the ordering of FG repeats in the RMF
+           file."""
+        for c in self.copies[name]:
+            if c.endswith('@11'):
+                # NPC symmetry copies alternate positive/negative rotations,
+                # while Nups are always positive rotations
+                for symm in ('@11', '@12', '@14', '@16', '@18', '@17',
+                             '@15', '@13'):
+                    yield(name + c[:-3] + symm)
+            else:
+                for symm in ('', '@2', '@4', '@6', '@8', '@7', '@5', '@3'):
+                    yield(name + c + symm)
+
+    def _read_nup(self, name, rh, nodemap, spheres):
+        rff = RMF.ReferenceFrameConstFactory(rh)
+        pf = RMF.ParticleConstFactory(rh)
+        node = nodemap[name]
+        node_copies = node.get_children()
+        assert(len(node_copies) == len(self.copies[name]) * 8)
+        for nc, copyname in zip(node_copies, self.get_copy_names(name)):
+            node_beads = nc.get_children()
+            # First bead is anchor
+            assert(len(node_beads) == self.get_number_of_beads(name) + 1)
+            spheres[copyname] = s = []
+            for b in node_beads:
+                assert(pf.get_is(b))
+                assert(rff.get_is(b))
+                radius = pf.get(b).get_radius()
+                coord = rff.get(b).get_translation()
+                s.append((coord, radius))
+
+
+class ProtocolOutput(IMP.pmi.mmcif.ProtocolOutput):
+    def __init__(self, *args, **keys):
+        super(ProtocolOutput, self).__init__(*args, **keys)
+        self.fgs = FGRepeats()
+
+    def add_bead_element(self, state, name, start, end, num, hier):
+        # Patch the representation to add FG repeat beads, either before
+        # or after the rest of the model
+        beads, prefix = self.fgs.get_beads(name, start, end)
+        if beads and prefix:
+            super(ProtocolOutput, self).add_bead_element(state, name,
+                                      beads.start, beads.end, beads.len, hier)
+        super(ProtocolOutput, self).add_bead_element(state, name, start,
+                                                     end, num, hier)
+        if beads and not prefix:
+            super(ProtocolOutput, self).add_bead_element(state, name,
+                                      beads.start, beads.end, beads.len, hier)
+
+if inputs.mmcif:
+    # Record the modeling protocol to an mmCIF file
+    po = ProtocolOutput(open(inputs.mmcif, 'w'))
+    simo.add_protocol_output(po)
 
 #####################################################
 # REPRESENTATION
@@ -1916,6 +2114,8 @@ print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 #exit(0)
 
 if inputs.mmcif:
+    framework_rmf = 'npc_fg_2018/InputData/47-35_1spoke.rmf3'
+    fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN12_103.rmf'
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,
                                        num_models_end=2267)
@@ -1925,9 +2125,10 @@ if inputs.mmcif:
         for reptop in simo.hier_dict[c].get_children():
             if 'Res:10' in reptop.get_name():
                 IMP.atom.destroy(reptop)
-        simo.set_coordinates_from_rmf(c, '../results/RMF_files/cluster0_47-35_3spokes.rmf3', 0, force_rigid_update=True, skip_gaussian_in_representation=True)
+        simo.set_coordinates_from_rmf(c, framework_rmf, 0, force_rigid_update=True, skip_gaussian_in_representation=True)
     c = po._add_simple_ensemble(pp, name="Cluster 1", num_models=5, drmsd=1.0,
                                 num_models_deposited=1,
                                 localization_densities={}, ensemble_file=None)
     m = po.add_model(c.model_group)
+    po.fgs.add_bead_coordinates(fgs_rmf, m)
     po.flush()
