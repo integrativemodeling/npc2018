@@ -2125,9 +2125,16 @@ if inputs.mmcif:
             if 'Res:10' in reptop.get_name():
                 IMP.atom.destroy(reptop)
         simo.set_coordinates_from_rmf(c, framework_rmf, 0, force_rigid_update=True, skip_gaussian_in_representation=True)
+    den = {}
+    for d in po.all_modeled_components:
+        if '@' in d: continue
+        den[d] = IMP.pmi.metadata.FileLocation(
+                          path='../results/localization_density_files_MRC/'
+                               '1spoke-C1/%s.mrc' % d,
+                          details="Localization density for %s" % d)
     c = po._add_simple_ensemble(pp, name="Cluster 1", num_models=5, drmsd=1.0,
                                 num_models_deposited=1,
-                                localization_densities={}, ensemble_file=None)
+                                localization_densities=den, ensemble_file=None)
     m = po.add_model(c.model_group)
     po.fgs.add_bead_coordinates(fgs_rmf, m)
     po.flush()
