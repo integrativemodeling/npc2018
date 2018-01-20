@@ -47,8 +47,9 @@ parser.add_argument('--one-spoke', action='store_true',
                     help="Speed up sampling by modeling only one spoke (not 3)")
 parser.add_argument('--mmcif', action='store', type=str, default=None,
                     help="Record modeling protocol in a named mmCIF file")
+parser.add_argument('--no-symmetry', action='store_false', dest="symmetry",
+                    help="Don't add symmetry to make all 8 spokes")
 parser.add_argument('-copy', action="store", dest="ncopy", help="copy numbers (stoichiometry) for SEA4 and Seh1" )
-parser.add_argument('-sym', action="store", dest="symmetry", help="symmetry option for SEA4 and Seh1" )
 parser.add_argument('-rmf', action="store", dest="rmf_input", help="rmf file name to continue" )
 parser.add_argument('-rmf_n', action="store", dest="rmf_frame_number", help="rmf frame number to continue" )
 parser.add_argument('-em2d', action="store", dest="em2d_input", help="em2d image file name to read" )
@@ -71,10 +72,6 @@ inputs = parser.parse_args()
 #####################################################
 if (inputs.ncopy is None) :
     inputs.ncopy = "2"
-if (inputs.symmetry == "True") or (inputs.symmetry == "true") or (inputs.symmetry == "Yes") or (inputs.symmetry == "yes") :
-    inputs.symmetry = True
-else:
-    inputs.symmetry = False
 
 if (inputs.rmf_input is not None) :
     f=open(inputs.rmf_input,"r")
@@ -375,7 +372,7 @@ class FGRepeats(object):
         """If an anchor point is passed, return the FG repeat beads"""
         # Remove copy number
         comp = name.split('.')[0].split('@')[0]
-        if self.anchor.get(comp, None) == (start, end):
+        if inputs.symmetry and self.anchor.get(comp, None) == (start, end):
             rng = self.ranges[comp]
             b = self.Bead(start=min(rng), end=max(rng),
                           len=self.get_number_of_beads(comp))
@@ -384,6 +381,8 @@ class FGRepeats(object):
             return None, None
 
     def add_bead_coordinates(self, fname, model):
+        if not inputs.symmetry:
+            return
         spheres = self.read_rmf(fname)
 
         # Monkey patch the Model.all_chains() method to add FG coordinates
@@ -868,7 +867,7 @@ if (use_neighboring_spokes):
     if (is_n84):
         proteins = ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c',
                     'Seh1', 'Sec13']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
@@ -877,14 +876,14 @@ if (use_neighboring_spokes):
     if (is_n82):
         proteins = ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1',
                     'Nup159.2', 'Nsp1.1', 'Nsp1.2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False)
 #       for protein in proteins:
 #           simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_nic96):
         proteins = ['Nic96.1', 'Nic96.2', 'Nsp1.3', 'Nsp1.4', 'Nup49.1',
                     'Nup49.2', 'Nup57.1', 'Nup57.2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
@@ -892,7 +891,7 @@ if (use_neighboring_spokes):
             simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_inner_ring):
         proteins = ['Nup157', 'Nup170', 'Nup188', 'Nup192']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
@@ -900,7 +899,7 @@ if (use_neighboring_spokes):
             #simo.create_rotational_symmetry(protein+'@11', [protein+'@%d'%i for i in range(12,14)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_membrane):
         proteins = ['Nup53', 'Nup59', 'Ndc1', 'Pom34', 'Pom152']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
@@ -910,19 +909,19 @@ if (use_neighboring_spokes):
         #for protein in ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42', 'Gle1', 'Gle2.1', 'Gle2.2']:
         proteins = ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42',
                     'Gle1']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_nucleoplasm):
         proteins = ['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2', 'Nup1']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
     if (is_basket):
         proteins = ['Mlp1', 'Mlp2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@%d'%i for i in range(2,4)], rotational_axis=IMP.algebra.Vector3D(0, 0, 1.0), nSymmetry=8, skip_gaussian_in_clones=True)
@@ -930,7 +929,7 @@ else:
     if (is_n84):
         proteins = ['Nup84', 'Nup85', 'Nup120', 'Nup133', 'Nup145c', 'Seh1',
                     'Sec13']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True,
                             one_spoke=True)
         for protein in proteins:
@@ -938,27 +937,27 @@ else:
     if is_n82:
         proteins = ['Dyn2.1', 'Dyn2.2', 'Nup82.1', 'Nup82.2', 'Nup159.1',
                     'Nup159.2', 'Nsp1.1', 'Nsp1.2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False,
                             one_spoke=True)
     if (is_nic96):
         proteins = ['Nic96.1', 'Nic96.2', 'Nsp1.3', 'Nsp1.4', 'Nup49.1',
                     'Nup49.2', 'Nup57.1', 'Nup57.2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True,
                             one_spoke=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
     if (is_inner_ring):
         proteins = ['Nup157', 'Nup170', 'Nup188', 'Nup192']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True,
                             one_spoke=True)
         for protein in proteins:
             simo.create_rotational_symmetry(protein, [protein+'@11'], rotational_axis=IMP.algebra.Vector3D(1.0, 0, 0))
     if (is_membrane):
         proteins = ['Nup53', 'Nup59', 'Ndc1', 'Pom34', 'Pom152']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=True,
                             one_spoke=True)
         for protein in proteins:
@@ -966,17 +965,17 @@ else:
     if (is_cytoplasm):
         proteins = ['Nup100.1', 'Nup100.2', 'Nup116.1', 'Nup116.2', 'Nup42',
                     'Gle1']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False,
                             one_spoke=True)
     if (is_nucleoplasm):
         proteins = ['Nup145.1', 'Nup145.2', 'Nup60.1', 'Nup60.2', 'Nup1']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False,
                             one_spoke=True)
     if (is_basket):
         proteins = ['Mlp1', 'Mlp2']
-        if inputs.mmcif:
+        if inputs.mmcif and inputs.symmetry:
             create_8_spokes(simo, proteins, both_half_spokes=False,
                             one_spoke=True)
 
