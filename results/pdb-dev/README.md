@@ -8,3 +8,6 @@ To generate mmCIF files suitable for deposition in PDB-Dev, use the
 The 8 spoke model also includes FG repeats, which are read from the
 `npc_fg_2018` subdirectory - clone the `https://github.com/salilab/npc_fg_2018/`
 repository into this subdirectory first.
+
+Note that the scripts in **this** directory generate only very basic mmCIF
+files, with only coordinates (no experimental information).
