@@ -2151,11 +2151,26 @@ if inputs.mmcif:
 
     # Add ensemble for FG repeats
     if inputs.symmetry:
+        den = {}
+        den_nup = {}
+        for copy in po.all_modeled_components:
+            if '@' in copy: continue
+            nup = copy.split('.')[0]
+            if nup in po.fgs.ranges:
+                if nup not in den_nup:
+                    den_nup[nup] = IMP.pmi.metadata.FileLocation(
+                                    path='npc_fg_2018/Densities/%s.mrc' % nup,
+                                    details="Localization density for %s" % nup)
+                den[copy] = den_nup[nup]
         po.fgs.create_assembly(po)
-        # todo: add brownian dynamics protocol info, script file
+        # todo: add brownian dynamics script file, check numbers
+        po._add_protocol()
+        po._add_simple_dynamics(num_models_end=1000,
+                                method="Brownian dynamics")
+        pp = po._add_no_postprocessing(num_models=1000)
         c = po._add_simple_ensemble(pp, name="FG ensemble", num_models=1000,
                                     drmsd=1.0, num_models_deposited=1,
-                                    localization_densities={},
+                                    localization_densities=den,
                                     ensemble_file=None)
         m = po.add_model(c.model_group, assembly=po.fgs.assembly,
                          representation=po.fgs.representation)
