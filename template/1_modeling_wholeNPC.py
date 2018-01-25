@@ -261,14 +261,14 @@ use_sampling_boundary = False
 use_XL = True
 use_EM3D = True
 
-class _ChainWithFGs(object):
-    """Override IMP.pmi.mmcif._Chain to add in coordinates for FGs"""
+class _ChainOfFGs(object):
+    """Override IMP.pmi.mmcif._Chain to substitute coordinates for FGs"""
     def __init__(self, orig_chain, fg_repeats, fg_spheres):
         self.orig_chain = orig_chain
         self.fg_repeats = fg_repeats
         self.fg_spheres = fg_spheres
     def _get_fg_spheres(self, fg_anchor, npc_anchor, residue_range, fg_spheres):
-        # Make sure FG anchor matches NPC anchor, if the NPC is
+        # Make sure FG anchor matches NPC scaffold anchor, if the NPC is
         # unstructured (cannot compare to resolution=1 bead)
         # npc_anchor[3] is the list of residue indexes, which is None for
         # resolution=1 beads
@@ -276,8 +276,8 @@ class _ChainWithFGs(object):
         xyz1 = IMP.algebra.Vector3D(npc_anchor[0])
         if npc_anchor[3] is not None and (xyz0 - xyz1).get_magnitude() > 0.1:
             raise ValueError("FG anchor coordinates mismatch; %s in FG "
-                             "output RMF vs %s in NPC output RMF for %s"
-                             % (xyz0, xyz1, self.comp))
+                             "output RMF vs %s in NPC scaffold output RMF "
+                             "for %s" % (xyz0, xyz1, self.comp))
         resstart = residue_range[0]
         for xyz, radius in fg_spheres:
             resend = min(resstart + self.fg_repeats.beadsize,
@@ -296,22 +296,17 @@ class _ChainWithFGs(object):
                                               orig_spheres[0],
                                               (rng[1], rng[0]),
                                               reversed(fg_spheres[1:])):
-                    print(f)
                     yield f
-            for s in orig_spheres:
-                yield s
-            if rng[1] > rng[0]:
+            else:
                 for f in self._get_fg_spheres(fg_spheres[0][0],
                                               orig_spheres[-1],
                                               rng, fg_spheres[1:]):
                     yield f
-        else:
-            for s in self.orig_chain.spheres:
-                yield s
     spheres = property(__get_spheres)
 
     chain_id = property(lambda self: self.orig_chain.chain_id)
-    atoms = property(lambda self: self.orig_chain.atoms)
+    # No atomic coordinates for FGs
+    atoms = []
     entity = property(lambda self: self.orig_chain.entity)
     comp = property(lambda self: self.orig_chain.comp)
     orig_comp = property(lambda self: self.orig_chain.orig_comp)
@@ -364,6 +359,18 @@ class FGRepeats(object):
               'Nup145': ('.1', '.2'),
               'Nup159': ('.1', '.2')}
 
+    def __init__(self, po):
+        self.representation = po.create_representation("FG repeats")
+
+    def get_assembly(self):
+        """Get all components that constitute FG repeats"""
+        compdict = {}
+        for nup, rng in self.ranges.items():
+            r = tuple(sorted(rng))
+            for copy in self.get_copy_names(nup):
+                compdict[copy] = r
+        return compdict
+
     def get_number_of_beads(self, name):
         rng = self.ranges[name]
         return (max(rng) - min(rng) + self.beadsize) // self.beadsize
@@ -374,22 +381,29 @@ class FGRepeats(object):
         comp = name.split('.')[0].split('@')[0]
         if inputs.symmetry and self.anchor.get(comp, None) == (start, end):
             rng = self.ranges[comp]
-            b = self.Bead(start=min(rng), end=max(rng),
-                          len=self.get_number_of_beads(comp))
-            return b, rng[0] > rng[1]
-        else:
-            return None, None
+            return self.Bead(start=min(rng), end=max(rng),
+                             len=self.get_number_of_beads(comp))
+
+    def create_assembly(self, po):
+        self.assembly = po.assembly_dump.get_subassembly(
+                              self.get_assembly(), name="FG repeats",
+                              description="All FG repeats (unstructured regions"
+                                          " in the center of the pore)")
 
     def add_bead_coordinates(self, fname, model):
+        """Read in FG bead coordinates.
+           The model already contains coordinates for the scaffold. Replace
+           these with coordinates for the FG repeats, checking that the
+           anchor regions match."""
         if not inputs.symmetry:
             return
         spheres = self.read_rmf(fname)
 
-        # Monkey patch the Model.all_chains() method to add FG coordinates
+        # Monkey patch the Model.all_chains() method to use FG coordinates
         orig_all_chains = model.all_chains
         def patched_all_chains(slf, simo):
             for c in orig_all_chains(simo):
-                yield _ChainWithFGs(c, self, spheres)
+                yield _ChainOfFGs(c, self, spheres)
         model.all_chains = patched_all_chains.__get__(model, type(model))
 
     def read_rmf(self, fname):
@@ -443,20 +457,18 @@ class FGRepeats(object):
 class ProtocolOutput(IMP.pmi.mmcif.ProtocolOutput):
     def __init__(self, *args, **keys):
         super(ProtocolOutput, self).__init__(*args, **keys)
-        self.fgs = FGRepeats()
+        self.fgs = FGRepeats(self)
 
     def add_bead_element(self, state, name, start, end, num, hier):
-        # Patch the representation to add FG repeat beads, either before
-        # or after the rest of the model
-        beads, prefix = self.fgs.get_beads(name, start, end)
-        if beads and prefix:
-            super(ProtocolOutput, self).add_bead_element(state, name,
-                                      beads.start, beads.end, beads.len, hier)
         super(ProtocolOutput, self).add_bead_element(state, name, start,
                                                      end, num, hier)
-        if beads and not prefix:
+        # Add representation for FG repeat beads
+        beads = self.fgs.get_beads(name, start, end)
+        if beads:
             super(ProtocolOutput, self).add_bead_element(state, name,
-                                      beads.start, beads.end, beads.len, hier)
+                                      beads.start, beads.end, beads.len, hier,
+                                      self.fgs.representation)
+
 
 if inputs.mmcif:
     # Record the modeling protocol to an mmCIF file
@@ -2132,9 +2144,20 @@ if inputs.mmcif:
                           path='../results/localization_density_files_MRC/'
                                '1spoke-C1/%s.mrc' % d,
                           details="Localization density for %s" % d)
-    c = po._add_simple_ensemble(pp, name="Cluster 1", num_models=5, drmsd=1.0,
-                                num_models_deposited=1,
+    c = po._add_simple_ensemble(pp, name="Scaffold cluster 1", num_models=5,
+                                drmsd=1.0, num_models_deposited=1,
                                 localization_densities=den, ensemble_file=None)
     m = po.add_model(c.model_group)
-    po.fgs.add_bead_coordinates(fgs_rmf, m)
+
+    # Add ensemble for FG repeats
+    if inputs.symmetry:
+        po.fgs.create_assembly(po)
+        # todo: add brownian dynamics protocol info, script file
+        c = po._add_simple_ensemble(pp, name="FG ensemble", num_models=1000,
+                                    drmsd=1.0, num_models_deposited=1,
+                                    localization_densities={},
+                                    ensemble_file=None)
+        m = po.add_model(c.model_group, assembly=po.fgs.assembly,
+                         representation=po.fgs.representation)
+        po.fgs.add_bead_coordinates(fgs_rmf, m)
     po.flush()
