@@ -3,7 +3,7 @@ To generate mmCIF files suitable for deposition in PDB-Dev, use the
 
  - For 1 spoke: `--mmcif=test.cif --dry-run --one-spoke --no-symmetry`
  - For 3 spokes: `--mmcif=test.cif --dry-run --no-symmetry`
- - For 8 spokes: `--mmcif=test.cif --dry-run`
+ - For 8 spokes: `--mmcif=test.cif --dry-run --one-spoke`
 
 The 8 spoke model also includes FG repeats, which are read from the
 `npc_fg_2018` repository. To produce or visualize these modules, you will need
