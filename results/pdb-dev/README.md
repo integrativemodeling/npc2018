@@ -9,7 +9,7 @@ The 8 spoke model also includes FG repeats, which are read from the
 `npc_fg_2018` repository. To produce or visualize these modules, you will need
 to get a copy of that repository - do that by running
 
-    `git submodule init && git submodule update`
+    git submodule init && git submodule update
 
 Note that since paths to external files (such as localization densities) are
 relative to the script directory, for now in order to visualize the files you
