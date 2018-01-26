@@ -2126,7 +2126,7 @@ print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 
 if inputs.mmcif:
     framework_rmf = 'npc_fg_2018/InputData/47-35_1spoke.rmf3'
-    fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN12_103.rmf'
+    fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN11_101.rmf'
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,
                                        num_models_end=2267)
