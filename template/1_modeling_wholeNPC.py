@@ -2168,10 +2168,13 @@ if inputs.mmcif:
         po._add_simple_dynamics(num_models_end=1000,
                                 method="Brownian dynamics")
         pp = po._add_no_postprocessing(num_models=1000)
+        f = IMP.pmi.metadata.FileLocation(
+               path='npc_fg_2018/RepresentativeEnsemble/fg_repeat_ensemble.dcd',
+               details="All ensemble structures for FG repeats")
         c = po._add_simple_ensemble(pp, name="FG ensemble", num_models=1000,
                                     drmsd=1.0, num_models_deposited=1,
                                     localization_densities=den,
-                                    ensemble_file=None)
+                                    ensemble_file=f)
         m = po.add_model(c.model_group, assembly=po.fgs.assembly,
                          representation=po.fgs.representation)
         po.fgs.add_bead_coordinates(fgs_rmf, m)
