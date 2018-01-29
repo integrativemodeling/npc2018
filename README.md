@@ -38,6 +38,11 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 - `data_npc\input_contact_frequencies`		  Contact frequency data from the 2007 NPC topological model
 - `data_npc\input_density_maps`		  Localization probability densities from the 2007 NPC topological model
 
+- `data_nic96`		            contains Nic96 complex-specific representation (PDB or rmf3 formats), sequence (*.txt), cross-links (XLs folder), and EM2D (Nic96complex_classes.hdf) files
+- `data_nup82`		            contains Nup82 complex-specific representation (PDB or rmf3 formats), sequence (*.txt), cross-links (*.csv) files 
+- `data_nup84_2016`		            contains Nup84 complex-specific representation (PDB or rmf3 formats), sequence (*.txt), cross-links (*.csv), hhpred (*.pdf or *.webarchive), and EM2D (EM_image.png) files 
+- `pom152`		            Integrative structure determination of the Pom152 membrane ring - needed to be separate.
+
 - `results`		                      contains resulting structures and output files
 - `template`			                  contains modeling scripts
 
