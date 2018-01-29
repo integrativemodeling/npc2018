@@ -50,9 +50,29 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 
   2_modeling_wholeNPC_FG_anchor_EV.py : Intermediate modeling script
 
-  3_modeling_wholeNPC_refinement.py : Refinement modeling script
+  3_modeling_wholeNPC_refinement.py : Refinement script
 
-  4_modeling_wholeNPC_refinement.py : Final refinement modeling script
+  4_modeling_wholeNPC_refinement.py : Final refinement script
+  
+  Clustering_RMSD_GPU.py : Clustering script using GPU
+
+  modeling_Nic96complex_initial.py : Initial modeling script for the Nic96 complex components
+  
+  modeling_inner_ring.py : Initial modeling script for the inner-ring components
+  
+  modeling_inner_ring_refinement.py : Refinement script for the inner-ring components
+  
+  modeling_MLPs.py : Refinement script for the basket components
+  
+  modeling_outer_ring.py : Initial modeling script for the outer-ring components
+
+  modeling_outer_ring_refinement82.py : Refinement script for the outer-ring components
+  
+  modeling_pom152.py : Initial modeling script for the membrane-ring (pom152) component
+  
+  modeling_pom152_PlaneDihedral.py : Refinement script for the membrane-ring (pom152) component
+  
+
 
 ## Compiling IMP with NPC-specific module:
 - Clone IMP version 2.6
