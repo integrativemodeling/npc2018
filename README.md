@@ -12,17 +12,31 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 
   EMBD_final-yNPC_map_28A.mrc.gz  : Cryo-ET density map
   
-  Table1_crosslinks.xlsx : 3,077 chemical cross-links
+  Table1_crosslinks.xlsx : a table of all 3,077 chemical cross-links
   
   SAXS.zip  : SAXS source data (147 SAXS profiles for 18 different Nups) file used for assessment of the NPC structure 
   
 - `data_npc`		            contains representation (PDB or rmf3 formats), sequence, MODELLER files
 
-   protein_fasta.*.txt : sequence for each Nups
-   *.pdb (or *.rmf3): representation pdb files for each Nups 
+   protein_fasta.*.txt : Sequence for each Nups
+   
+   *.pdb (or *.rmf3): Representation pdb (or rmf3) files for each Nups
+   
    emd_5556.map : EM 3D density map for Nup192
-   XL_optimized_ambiguity.csv : a subset of the chemical cross-links used for refinement
-   XL_Merged_wholeNPC_MLPs : a subset of the chemical cross-links used for the basket components of Mlp1 and Mlp2
+   
+   XL_optimized_ambiguity.csv : A subset of the chemical cross-links used for the refinement
+   
+   XL_Merged_wholeNPC_MLPs : A subset of the chemical cross-links used for the basket components of Mlp1 and Mlp2
+   
+- `data_npc\Inner_ring_rmfs`		  Representation for the inner ring components
+- `data_npc\Outer_ring_rmfs`		  Representation for the outer ring components
+- `data_npc\Pom152_rmfs`		  Representation for the membrane ring (Pom152) component
+- `data_npc\WholeNPC_rmfs`		  Intermediate files
+- `data_npc\XL_backup`		  Backup of Chemical cross-links data
+- `data_npc\em_gmm_model`		  Gaussian Mixture Model (GMM) for each Nups
+- `data_npc\generating_em_gmm`		  Python scripts to generate Gaussian Mixture Model (GMM) for each Nups
+- `data_npc\input_contact_frequencies`		  Contact frequency data from the 2007 NPC topological model
+- `data_npc\input_density_maps`		  Localization probability densities from the 2007 NPC topological model
 
 - `results`		                      contains resulting structures and output files
 - `template`			                  contains modeling scripts
