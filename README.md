@@ -16,7 +16,14 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
   
   SAXS.zip  : SAXS source data (147 SAXS profiles for 18 different Nups) file used for assessment of the NPC structure 
   
-- `data_npc`		            contains representation files (PDB format)
+- `data_npc`		            contains representation (PDB or rmf3 formats), sequence, MODELLER files
+
+   protein_fasta.*.txt : sequence for each Nups
+   *.pdb (or *.rmf3): representation pdb files for each Nups 
+   emd_5556.map : EM 3D density map for Nup192
+   XL_optimized_ambiguity.csv : a subset of the chemical cross-links used for refinement
+   XL_Merged_wholeNPC_MLPs : a subset of the chemical cross-links used for the basket components of Mlp1 and Mlp2
+
 - `results`		                      contains resulting structures and output files
 - `template`			                  contains modeling scripts
 
