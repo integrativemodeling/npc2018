@@ -1,0 +1,24 @@
+ _aln.pos         10        20        30        40        50        60
+Nup53     WDDHAIIIFGYPETIANSIILHFANFGEILEDFRVIK------------------------------- 
+Nup59     SSLSAIIVFGYPESISNELIEHFSHFGHIMEDFQVLRLGRGINPNTFRIFHNHDTGCDENDSTVNKSI 
+ _consrvd     *** ***** * *  * **  ** * *** *
+
+ _aln.p   70        80        90       100       110       120       130
+Nup53     ------------KYPIYTGDGWVKLTYKSEISKSRALQENGIIMNGTLIGCVSYSPAALKQLASLKKS 
+Nup59     TLKGRNNESNNKKYPIFTGESWVKLTYNSPSSALRALQENGTIFRGSLIGCIPYSKNAVEQLAGCKID 
+ _consrvd             **** **  ****** *  *  ******* *  * ****  **  *  ***  *
+
+ _aln.pos  140       150       160       170       180       190       200
+Nup53     E/WDDHAIIIFGYPETIANSIILHFANFGEILEDFRVIK----------------------------- 
+Nup59     N/SSLSAIIVFGYPESISNELIEHFSHFGHIMEDFQVLRLGRGINPNTFRIFHNHDTGCDENDSTVNK 
+ _consrvd       *** ***** * *  * **  ** * *** *
+
+ _aln.pos    210       220       230       240       250       260       270
+Nup53     --------------KYPIYTGDGWVKLTYKSEISKSRALQENGIIMNGTLIGCVSYSPAALKQLASLK 
+Nup59     SITLKGRNNESNNKKYPIFTGESWVKLTYNSPSSALRALQENGTIFRGSLIGCIPYSKNAVEQLAGCK 
+ _consrvd               **** **  ****** *  *  ******* *  * ****  **  *  ***  *
+
+ _aln.pos
+Nup53     KSE 
+Nup59     IDN 
+ _consrvd

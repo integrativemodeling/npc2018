@@ -1,0 +1,29 @@
+ _aln.pos         10        20        30        40        50        60
+3mmyA     FGTTSGFGTSGTSMF----TDNHNPMKDIEVTSSPDDSIGCLSFSPPTLPGNFL-IAGSWANDVRCWE 
+Gle2      FNRSNTTSALGT---STAMANEKDLANDIVINSPAEDSISDIAFSP---QQDFMFSASSWDGKVRIWD 
+ _consrvd *         **               **   *   ***    ***      *   * **   ** *
+
+ _aln.p   70        80        90       100       110       120       130
+3mmyA     VQDSGQTIPKAQQMHTGPVLDVCWSDDGSKVFTASCDKTAKMWDLSSNQAIQIAQHDAPVKTIHWIKA 
+Gle2      V-QNGVPQGRAQHESSSPVLCTRWSNDGTKVASGGCDNALKLYDIASGQTQQIGMHSAPIKVLRF--V 
+ _consrvd *   *     **     ***   ** ** **    **   *  *  * *  **  * ** *
+
+ _aln.pos  140       150       160       170       180       190       200
+3mmyA     PNY----SCVMTGSWDKTLKFWDTRSSNPMMVLQLPERCYCADVIYPMAVVATAERGLIVYQLENQPS 
+Gle2      QCGPSNTECIVTGSWDKTIKYWDMRQPQPVSTVMMPERVYSMDNKQSLLVVATAERHIAIINLANPTT 
+ _consrvd         *  ******* * ** *   *      *** *  *      *******      * *
+
+ _aln.pos    210       220       230       240       250       260       270
+3mmyA     EFRRIESPLKHQHRCVAIFKDKQNKPTGFALGSIEGRVAIHYINPPNPAKDNFTFKCHRSN----S-- 
+Gle2      IFKATTSPLKWQTRCVACYNEADG----YAIGSVEGRCSIRYIDDGMQKKSGFSFKCHRQTNPNRAPG 
+ _consrvd  *    **** * ****            * ** ***  * **      *  * *****
+
+ _aln.pos      280       290       300       310       320       330       340
+3mmyA     --APQDIYAVNGIAFHPVHGTLATVGSDGRFSFWDKDARTKLKTSEQLDQPISACCFNHNGNIFAYAS 
+Gle2      SNGQSLVYPVNSIAFHPLYGTFVTAGGDGTFNFWDKNQRHRLKGYPTLQASIPVCSFNRNGSVFAYAL 
+ _consrvd        * ** *****  **  * * ** * ****  *  **    *   *  * ** **  ****
+
+ _aln.pos        350       360       370
+3mmyA     SYDWSKGHEFYNPQKKNYIFLRNAA-EELKPR 
+Gle2      SYDWHQGHMGNRPDYPNVIRLHATTDEEVKEK 
+ _consrvd ****  **    *   * * *     ** *

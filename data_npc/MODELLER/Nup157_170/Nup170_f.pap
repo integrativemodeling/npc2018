@@ -1,0 +1,69 @@
+ _aln.pos         10        20        30        40        50        60
+4mhc_A    SEPLQLASEFVQDLSFRDRNTPILDNPDYYSKGLDYNFSDEVGGLGAFTPFQRQQVTNIPDEVLSQVS 
+Nup170N   SKPLDLAGKYIDHLQHKDSNTPVLDERSYYNSGVDYNFSREKNGLGAFTPFEKQDVFNIPDEILHEFS 
+ _consrvd * ** **      *   * *** **   **  * ***** *  ********  * * ***** *   *
+
+ _aln.p   70        80        90       100       110       120       130
+4mhc_A    NTEIKSDMGIFLELNYCWITSDNKLILWNINNSSEYHCIDEIEHTILKVKLVKPSPNTFVSSVENLLI 
+Nup170N   TSQTKTDMGIFPELNRCWITIDNKLILWNINNDNEYQVVDDMKHTIQKVALVRPKPNTFVPAVKHLLL 
+ _consrvd     * ***** *** **** ***********  **   *   *** ** ** * *****  *  **
+
+ _aln.pos  140       150       160       170       180       190       200
+4mhc_A    VATLFDIYILTISFNDRTHELNIFNTGLKVNVTGFNVSNIISYERTGQIFFTGATDGV-NVWELQYN- 
+Nup170N   ISTTMELFMFAISLDKATNELSVFNTHLSVPVQGIDVIDIVSHERSGRIFFAGQ-ASGLNIWELHYSG 
+ _consrvd   *        **    * **  *** * * * *  *  * * ** * *** *      * *** *
+
+ _aln.pos    210       220       230       240       250       260       270
+4mhc_A    ----------KICLTKSNL---------------------------------EETISQLEVDQSRGVL 
+Nup170N   SDDWFNSKCSKVCLTKSALLSLLPTNMLSQIPGVDFIQALFEDNSNGNGGFSQETITQLTIDQQRGII 
+ _consrvd           * ***** *                                  *** **  ** **
+
+ _aln.pos      280       290       300       310       320       330       340
+4mhc_A    HTLSTKSIVRSYLITSNGLVGPVLIDAAHIRRGMNALGVKNSPLLSNRAFKIAKIVSISMCENNDLFL 
+Nup170N   YSLSSKSTIRAYVITEKSLEGPMSIEPAYISRIIGTTTARAAPILGPKYLKIVKISSVAPEENNNLFL 
+ _consrvd   ** **  * * **   * **  *  * * *          * *     ** ** *    *** ***
+
+ _aln.pos        350       360       370       380       390       400
+4mhc_A    AVITTTGVRLYFKGSISRRSIGSLKLDSVKFPPTS--------------------------------- 
+Nup170N   VALTVGGVRLYFNGSMGRFNIEALRLESIKFPPSSVTPEVIQQELLHQQQEQAKRSFPFFSNLMSSEP 
+ _consrvd    *  ****** **  *  *  * * * **** *
+
+ _aln.p  410       420       430       440       450       460       470
+4mhc_A    GPLSTQKASSTYINTTCASTIISPGIYFTCVRK----RA------------------------E---- 
+Nup170N   VLLKFQKKSSVLLETTKASTIISPGIFFSAVIKSSQQTHQQEKKENSSVTGTTATAGSKTVKQQPVTL 
+ _consrvd   *  ** **    ** ********* *  * *
+
+ _aln.pos  480       490       500       510       520       530       540
+4mhc_A    -HKLYVSAPDYGILKNYGKYVENTALLDTTDEIKEIVPLTRSFNYTSTPQGYANVFASQYSAEPLKVA 
+Nup170N   QHKLFVSVPDYGILKTHGKYVENATFLETAGPVQQIIPLSGLFNATTKPQGFANEFATQYTSETLRVA 
+ _consrvd  *** ** *******  ******   * *      * **   ** *  *** ** ** **  * * **
+
+ _aln.pos    550       560       570       580       590       600       610
+4mhc_A    VLTSNALEIYCYRTPDEVFESLIENPLPFIHSYGLSEACSTALYLACKFNKSEHIKSSALAFFSAGIP 
+Nup170N   VLTSTSIEIYKYRTPDEIFEDLIDNPLPFVLNYGAAEACSTALFVTCKSNKSEKLRSNALTFLTMGIP 
+ _consrvd ****   *** ****** ** ** *****   **  *******   ** ****   * ** *   ***
+
+ _aln.pos      620       630       640       650       660       670       680
+4mhc_A    GVVEIKPKS-----------------------------------------------VLSPRFYGSALL 
+Nup170N   GVVDIKPVYNRYSVSTVSSLLSKPTLSTATTNLQQSITGFSKPSPANKEDFDLDDVILSPRFYGIALL 
+ _consrvd *** ***                                                  ******* ***
+
+ _aln.pos        690       700       710       720       730       740
+4mhc_A    ITRLFSQIWEERVFV---------------------------------------GISITRPQVEYYLS 
+Nup170N   ITRLLRDIWGRHVFMTFTDNRVTSHAFISSSDPITPSINNLKSDEISQNRNIISKVSISKDCIEYYLS 
+ _consrvd ****   **   **                                          **     *****
+
+ _aln.p  750       760       770       780       790       800       810
+4mhc_A    SISVLADFFNIHRPSFVS---------------------TASDAESIAMNALILLINSIKDALSLINV 
+Nup170N   SINILNEFFITYGDSISQISAPYVLANNSNGRVIDKTEEVANQAESIAINAMIKMVQSIKEGLSFLNV 
+ _consrvd **  *  **     *                         *  ***** ** *    ***  **  **
+
+ _aln.pos  820       830       840       850       860       870       880
+4mhc_A    FYED--IDAFKSLLNTLM-----YDSKTREYFFDLKFHDLFTPNAKTKQLIKEILIEVVNANIASGTS 
+Nup170N   LYEESEVEGFDNQYLGFKDIISFVSLDVQKDLVKLDFKDLFAPNDKTKSLIREILLSIINRNITKGAS 
+ _consrvd  **      *                        * * *** ** *** ** ***    * **  * *
+
+ _aln.pos    890
+4mhc_A    ADYIVNVLKERF 
+Nup170N   IEYTATALQERC 
+ _consrvd   *    * **
