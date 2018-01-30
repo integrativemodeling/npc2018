@@ -2136,7 +2136,10 @@ print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 #exit(0)
 
 if inputs.mmcif:
-    framework_rmf = '../results/RMF_files/cluster0_47-35_1spoke.rmf3'
+    if inputs.one_spoke:
+        framework_rmf = '../results/RMF_files/cluster0_47-35_1spoke.rmf3'
+    else:
+        framework_rmf = '../results/RMF_files/cluster0_47-35_3spokes.rmf3'
     fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN11_101.rmf'
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,
