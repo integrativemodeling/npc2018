@@ -73,7 +73,7 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 
 ## Running the IMP scripts for the NPC complex:
 
-1. Inner-ring components (Nup157, Nup170, Nup188, Nup192, Nic96, Nup53, Nup95, Ndc1, Pom34, and Pom152 NTD)
+1. Inner-ring components (Nup157, Nup170, Nup188, Nup192, Nic96, Nup53, Nup59, Ndc1, Pom34, and Pom152 NTD)
 - Initial: template/inner_ring/job_IR501-510.sh (running script for template/inner_ring/modeling_inner_ring_initial.py), generates "3IR_502_0.rmf3" (an initial model)
 - Refinement : template/inner_ring/job_IR860-869_refinement.sh (running script for template/inner_ring/modeling_inner_ring_refinement.py, which reads "3IR_502_0.rmf3 for the starting coordinate), generates "IR_865_0_final.rmf3" (a refined model).
 
