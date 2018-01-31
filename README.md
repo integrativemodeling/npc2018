@@ -81,6 +81,9 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 - Initial: template/inner_ring/job_IR501-510.sh (running script for template/inner_ring/modeling_inner_ring_initial.py), generates "3IR_502_0.rmf3" (an initial model)
 - Refinement : template/inner_ring/job_IR860-869_refinement.sh (running script for template/inner_ring/modeling_inner_ring_refinement.py, which reads "3IR_502_0.rmf3 for the starting coordinate), generates "IR_865_0_final.rmf3" (a refined model).
 
+2. Outer-ring components (Nup82 and Nup84 complexes)
+- Initial : 
+- Refinement :
 
 - `cd template`
 - `python XX.py & > XX.out` (on a single processor; prepend `mpirun -np 6` or similar if you built IMP with MPI support)
