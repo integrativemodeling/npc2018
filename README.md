@@ -57,11 +57,7 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
   Clustering_RMSD_GPU.py : Clustering script using GPU
 
   modeling_Nic96complex_initial.py : Initial modeling script for the Nic96 complex components
-  
-  modeling_inner_ring.py : Initial modeling script for the inner-ring components
-  
-  modeling_inner_ring_refinement.py : Refinement script for the inner-ring components
-  
+   
   modeling_MLPs.py : Refinement script for the basket components
    
   modeling_pom152.py : Initial modeling script for the membrane-ring (pom152) component
