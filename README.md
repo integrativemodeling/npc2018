@@ -63,11 +63,7 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
   modeling_inner_ring_refinement.py : Refinement script for the inner-ring components
   
   modeling_MLPs.py : Refinement script for the basket components
-  
-  modeling_outer_ring.py : Initial modeling script for the outer-ring components
-
-  modeling_outer_ring_refinement82.py : Refinement script for the outer-ring components
-  
+   
   modeling_pom152.py : Initial modeling script for the membrane-ring (pom152) component
   
   modeling_pom152_PlaneDihedral.py : Refinement script for the membrane-ring (pom152) component
@@ -80,6 +76,12 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 - Compile IMP
 
 ## Running the IMP scripts for the NPC complex:
+
+1. Inner-ring components (Nup157, Nup170, Nup188, Nup192, Nic96, Nup53, Nup95, Ndc1, Pom34, and Pom152 NTD)
+- Initial: template/inner_ring/job_IR501-510.sh (running script for template/inner_ring/modeling_inner_ring_initial.py), generates "3IR_502_0.rmf3" (an initial model)
+- Refinement : template/inner_ring/job_IR860-869_refinement.sh (running script for template/inner_ring/modeling_inner_ring_refinement.py, which reads "3IR_502_0.rmf3 for the starting coordinate), generates "IR_865_0_final.rmf3" (a refined model).
+
+
 - `cd template`
 - `python XX.py & > XX.out` (on a single processor; prepend `mpirun -np 6` or similar if you built IMP with MPI support)
 
