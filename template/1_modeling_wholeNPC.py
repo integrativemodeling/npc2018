@@ -2174,8 +2174,8 @@ if inputs.mmcif:
         den = {}
         den_nup = {}
         for copy in po.all_modeled_components:
-            if '@' in copy: continue
-            nup = copy.split('.')[0]
+            # One MRC file covers all instances of a Nup (copies and symmetries)
+            nup = copy.split('.')[0].split('@')[0]
             if nup in po.fgs.ranges:
                 if nup not in den_nup:
                     den_nup[nup] = IMP.pmi.metadata.FileLocation(
