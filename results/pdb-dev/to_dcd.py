@@ -141,8 +141,24 @@ class RMFReader(object):
             if comp in primary_comps:
                 # Force get_particle_infos to only look at this one chain
                 o.dictionary_pdbs[name] = mol
-                coords[comp], _ = o.get_particle_infos_for_pdb_writing(name)
+                c, _ = o.get_particle_infos_for_pdb_writing(name)
+                coords[comp] = self._exclude_coordinates(c, comp)
         return coords
+
+    def _exclude_coordinates(self, coords, component):
+        def not_excluded(coord, seqrange):
+            all_indexes = coord[5] if coord[5] else [coord[4], coord[4]]
+            return all_indexes[0] < seqrange[0] or all_indexes[-1] > seqrange[1]
+
+        excludes = {'Mlp1': (717, 1875),
+                    'Mlp2': (691,1679),
+                    'Nup42': (364,430),
+                    'Gle1': (121,538)}
+        exclude = excludes.get(component.split('@')[0], None)
+        if exclude is None:
+            return coords
+        if exclude:
+            return [c for c in coords if not_excluded(c, exclude)]
 
 
 class CifParser(object):

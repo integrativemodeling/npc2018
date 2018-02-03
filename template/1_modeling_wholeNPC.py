@@ -474,6 +474,20 @@ if inputs.mmcif:
     # Record the modeling protocol to an mmCIF file
     po = ProtocolOutput(open(inputs.mmcif, 'w'))
     simo.add_protocol_output(po)
+    # Exclude domains that weren't well resolved in the modeling from mmCIF
+    po.add_comment("Missing residues: the following residues were poorly "
+                   "constrained by the available experimental data, and as "
+                   "such coordinates are not available in this model: "
+                   "Mlp1 717-1875; Mlp2 691-1670; Nup42 1-430; Gle1 121-538.")
+    if use_neighboring_spokes:
+        suffixes = ['', '@2', '@3']
+    else:
+        suffixes = ['']
+    for suffix in suffixes:
+        po.exclude_coordinates('Mlp1'+suffix, (717,1875))
+        po.exclude_coordinates('Mlp2'+suffix, (691,1679))
+        po.exclude_coordinates('Nup42'+suffix, (364,430))
+        po.exclude_coordinates('Gle1'+suffix, (121,538))
 
 #####################################################
 # REPRESENTATION
