@@ -793,20 +793,10 @@ if (is_nucleoplasm):
 ##########################
 if (is_basket):
     domains.append((    "Mlp1",      "Mlp1",      0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), gmm,  beadsize50,  9191,  None,   0,  None,  None, None))
-    # Full length Mlp1/2 were included in the final refinement, so include
-    # them in the mmCIF file too
-    if inputs.mmcif:
-        domains.append((    "Mlp1",      "Mlp1c",     0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (717,1875,0), None,  beadsize100, 9192,  [9191], 0,  None,  None, None, False))
     domains.append((    "Mlp2",      "Mlp2",      0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), gmm,  beadsize50,  9191,  None,   0,  None,  None, None))
-    if inputs.mmcif:
-        domains.append((    "Mlp2",      "Mlp2c",     0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (691,1679,0), None,  beadsize100, 9192,  [9191], 0,  None,  None, None, False))
     for i in clones_range_B:
         domains.append(("Mlp1@%d"%i, "Mlp1@%d"%i, 0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (238, 716,0), None, beadsize50,  None,  None,   0,  None,  None, None))
-        if inputs.mmcif:
-            domains.append(("Mlp1@%d"%i, "Mlp1c@%d"%i,0.0, f_npc+"Mlp1.txt",   "YKR095W", "BEADS",   " ", (717,1875,0), None, beadsize100, None,  None,   0,  None,  None, None))
         domains.append(("Mlp2@%d"%i, "Mlp2@%d"%i, 0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (215, 690,0), None, beadsize50,  None,  None,   0,  None,  None, None))
-        if inputs.mmcif:
-            domains.append(("Mlp2@%d"%i, "Mlp2c@%d"%i,0.2, f_npc+"Mlp2.txt",   "YIL149C", "BEADS",   " ", (691,1679,0), None, beadsize100, None,  None,   0,  None,  None, None))
 
 #####################################################
 # Model Building
@@ -850,8 +840,7 @@ if (True):
             if (is_FG): bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95.rmf3", 0)
             else:       bm1.set_rmf_file(d, "../data_nup82/rmfs/B_8_1-95_FGtruncated.rmf3", 0)
     """
-    if is_basket and not inputs.mmcif:
-        # mmCIF output uses full length Mlps, which won't match this input
+    if is_basket:
         Mlps=['Mlp1', 'Mlp2']
         for d in list(Mlps):
             bm1.set_rmf_file(d, "../data_npc/Mlps_1.rmf3", 0)
