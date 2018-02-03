@@ -2158,9 +2158,12 @@ if inputs.mmcif:
                           path='../results/localization_density_files_MRC/'
                                '1spoke-C1/%s.mrc' % d,
                           details="Localization density for %s" % d)
-    f = IMP.pmi.metadata.FileLocation(
-           path='../results/pdb-dev/scaffold.dcd',
-           details="All ensemble structures for scaffold")
+    if inputs.symmetry:
+        f = IMP.pmi.metadata.FileLocation(
+               path='../results/pdb-dev/scaffold.dcd',
+               details="All ensemble structures for scaffold")
+    else:
+        f = None
     c = po._add_simple_ensemble(pp, name="Scaffold cluster 1", num_models=5,
                                 drmsd=1.0, num_models_deposited=1,
                                 localization_densities=den, ensemble_file=f)
