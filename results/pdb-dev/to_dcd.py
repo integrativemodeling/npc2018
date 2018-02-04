@@ -126,6 +126,7 @@ class RMFReader(object):
         rmf.set_current_frame(RMF.FrameID(0))
         m = IMP.Model()
         mhs = IMP.rmf.create_hierarchies(rmf, m)
+        m.update()
         assert(len(mhs) == 1)
         return self._get_primary_coords(m, mhs, primary_comps)
 
