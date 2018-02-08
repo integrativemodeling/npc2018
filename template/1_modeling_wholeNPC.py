@@ -2156,7 +2156,8 @@ if inputs.mmcif:
         simo.set_coordinates_from_rmf(c, framework_rmf, 0, force_rigid_update=True, skip_gaussian_in_representation=True)
     den = {}
     for d in po.all_modeled_components:
-        if '@' in d: continue
+        # No densities for copies; no coordinates for Nup42
+        if '@' in d or d == 'Nup42': continue
         den[d] = IMP.pmi.metadata.FileLocation(
                           path='../results/localization_density_files_MRC/'
                                '1spoke-C1/%s.mrc' % d,
