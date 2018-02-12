@@ -159,6 +159,35 @@ simo.add_metadata(IMP.pmi.metadata.Software(
           description='prediction of coiled-coil structure',
           url='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
 
+# EM particle picking (EMAN2) & generation of Nic96 class averages (ISAC)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='EMAN2', classification='image processing',
+          description='processing of data from transmission electron '
+                      'microscopes',
+          version='2.2',
+          url='http://blake.bcm.edu/emanwiki/EMAN2'))
+
+# Parallel tomographic analysis (Relion)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='RELION', classification='image processing',
+          description='refinement of (multiple) 3D reconstructions or '
+                      '2D class averages in electron cryo-microscopy',
+          version='1.4',
+          url='https://www2.mrc-lmb.cam.ac.uk/relion/'))
+
+# Prediction of transmembrane domains (SGD)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='SGD', classification='database',
+          description='biological information for the budding yeast '
+                      'Saccharomyces cerevisiae along with search and '
+                      'analysis tools to explore these data',
+          url='https://www.yeastgenome.org/'))
+
+# Prediction of membrane binding motifs (HeliQuest)
+simo.add_metadata(IMP.pmi.metadata.Software(
+          name='HeliQuest', classification='helix prediction',
+          description='prediction of helix content from primary sequence',
+          url='http://heliquest.ipmc.cnrs.fr/'))
 
 simo.dry_run = inputs.dry_run
 
