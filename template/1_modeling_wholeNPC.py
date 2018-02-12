@@ -1790,6 +1790,16 @@ if (use_XL):
                                                         label = "wtDSS",
                                                         attributes_for_label = ["XLUniqueID"],
                                                         csvfile = True)
+    # Point to the raw mass spec data and peaklists used to derive the
+    # crosslinks.
+    r = IMP.pmi.metadata.Repository(doi="10.5281/zenodo.1149746",
+        url='https://zenodo.org/record/1149746/files/TODO')
+    l = IMP.pmi.metadata.FileLocation(repo=r, path='TODO',
+                         details='All raw mass spectrometry files and '
+                                 'peaklists used in the study')
+    d = IMP.pmi.metadata.MassSpecDataset(location=l)
+    xl.dataset.add_primary(d)
+
     xl1.add_to_model()
     xl1.set_weight(10.0)        # play with the weight
     sampleobjects.append(xl1)
