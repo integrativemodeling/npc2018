@@ -2155,13 +2155,24 @@ if inputs.mmcif:
                 IMP.atom.destroy(reptop)
         simo.set_coordinates_from_rmf(c, framework_rmf, 0, force_rigid_update=True, skip_gaussian_in_representation=True)
     den = {}
-    for d in po.all_modeled_components:
-        # No densities for copies; no coordinates for Nup42
-        if '@' in d or d == 'Nup42': continue
-        den[d] = IMP.pmi.metadata.FileLocation(
+    den_nup = {}
+    if inputs.symmetry:
+        prefix = '8spokes-C8/C8_'
+    elif inputs.one_spoke:
+        prefix = '1spoke-C1/'
+    else:
+        prefix = '3spoke3-C3/C3_'
+    for copy in po.all_modeled_components:
+        # One MRC file covers all symmetry copies of a Nup
+        nup = copy.split('@')[0]
+        # No coordinates for Nup42
+        if nup == 'Nup42': continue
+        if nup not in den_nup:
+            den_nup[nup] = IMP.pmi.metadata.FileLocation(
                           path='../results/localization_density_files_MRC/'
-                               '1spoke-C1/%s.mrc' % d,
-                          details="Localization density for %s" % d)
+                               '%s%s.mrc' % (prefix, nup),
+                          details="Localization density for %s" % nup)
+        den[copy] = den_nup[nup]
     if inputs.symmetry:
         f = IMP.pmi.metadata.FileLocation(
                path='../results/pdb-dev/scaffold.dcd',
