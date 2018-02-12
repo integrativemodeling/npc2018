@@ -1979,10 +1979,15 @@ if (use_EM3D):
     gem.add_to_model()
     gem.set_weight(1000.0)        # play with the weight
 
-    # Point to the original map in EMDDB
+    # Point to the original map in EMDB
     l = IMP.pmi.metadata.EMDBLocation('EMD-7321')
     emdb = IMP.pmi.metadata.EMDensityDataset(location=l)
     gem.dataset.add_primary(emdb)
+
+    # Point back to Cryo-ET raw data (tilt series)
+    l = IMP.pmi.metadata.EMPIARLocation('EMPIAR-10155')
+    d = IMP.pmi.metadata.EMMicrographsDataset(location=l, number=120)
+    emdb.add_primary(d)
 
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
