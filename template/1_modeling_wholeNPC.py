@@ -2173,9 +2173,10 @@ if inputs.mmcif:
                                '%s%s.mrc' % (prefix, nup),
                           details="Localization density for %s" % nup)
         den[copy] = den_nup[nup]
-    if inputs.symmetry:
+    if inputs.one_spoke and not inputs.symmetry:
+        # Only include full scaffold ensemble for 1-spoke model due to size
         f = IMP.pmi.metadata.FileLocation(
-               path='../results/pdb-dev/scaffold.dcd',
+               path='../results/pdb-dev/scaffold-1spoke.dcd',
                details="All ensemble structures for scaffold")
     else:
         f = None
