@@ -9,7 +9,7 @@
    may need to change sys.path accordingly, below.
 """
 
-from __future__ import print_function
+from __future__ import print_function, division
 import glob
 import os
 import re
@@ -45,14 +45,16 @@ class DCDOutput(object):
         self.comps = comps
         self.primary_comps = primary_comps
         self.bead_resrange = {}
+        self.symmetry = len(comps) / len(primary_comps)
+        assert(self.symmetry in (1,3,8))
         for comp in primary_comps:
             self.bead_resrange[comp] = bead_resrange[comp]
         n_coords = sum(len(b) for b in bead_resrange.values())
         self._init_dcd(n_coords)
     
     def _count_coords(self, primary_coords):
-        # Need to account for all 8 spokes
-        return sum(len(b) for b in primary_coords.values()) * 8
+        # Need to account for all spokes
+        return sum(len(b) for b in primary_coords.values()) * self.symmetry
 
     def _get_resrange(self, coords):
         for c in coords:
@@ -212,7 +214,7 @@ class CifParser(object):
 
 def parse_args():
     if len(sys.argv) != 5:
-        print("Usage: %s path-to-8spoke.cif scaffold-model-num "
+        print("Usage: %s path-to-Nspoke.cif scaffold-model-num "
               "rmf_dir dcd-fname\n\n" % sys.argv[0], file=sys.stderr)
         # e.g. ./to_dcd.py results/pdb-dev/npc-8spoke.cif 1 /netapp/sali/kimsj/npc/prefilter/all_models_5529/all_models.5544 scaffold_ensemble.dcd
         sys.exit(1)
