@@ -1798,7 +1798,7 @@ if (use_XL):
                          details='All raw mass spectrometry files and '
                                  'peaklists used in the study')
     d = IMP.pmi.metadata.MassSpecDataset(location=l)
-    xl.dataset.add_primary(d)
+    xl1.dataset.add_primary(d)
 
     xl1.add_to_model()
     xl1.set_weight(10.0)        # play with the weight
