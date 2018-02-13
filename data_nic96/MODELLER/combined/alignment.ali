@@ -1,0 +1,65 @@
+>P1;5cws_F
+structureX:5cws:141  :F:180  :F:Nucleoporin NIC96; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+ALFDSLLARNKKQAEGETALGELPSLQLGLADLRQRLRKL*
+
+>P1;5cws_C1
+structureX:5cws:467  :C:557  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+----------------------------------------/
+MDEIITRWATDLAKYQKEFKEQAAKVMEWDRLLVENGEKIQKLYTSTYEAERASNEIERQLSNVESQQEELTAWL
+DRYERELDELYAKQMG*
+
+>P1;5cws_C2
+structureX:5cws:572  :C:608  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+----------------------------------------/
+---------------------------------------------------------------------------
+----------------/
+ERTYKLAEKLTDQLDEMGKDLAKMIKEINDMSNTLSK*
+
+>P1;5cws_C3
+structureX:5cws:614  :C:649  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+----------------------------------------/
+---------------------------------------------------------------------------
+----------------/
+-------------------------------------/
+DPLTQIVRVLNGHLAQLQWIDTNAAALQAKVAAAQK*
+
+>P1;5cws_D
+structureX:5cws:245  :D:467  :D:Nucleoporin NUP49; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+----------------------------------------/
+---------------------------------------------------------------------------
+----------------/
+-------------------------------------/
+------------------------------------/
+SEALQQEIAKIDEEIQKCIRDKEAVDAFLPAHGEQLAAIPTDVNFVTRKSEGAHNALSSDILAIDQLRELVKQDA
+DNARLSFKAIDNLKL-----SNADLISYFSKTADEMEEMMKKFEKTITEIEAHLTGVEAHAMA-M---------Q
+NVA---------VDERVYELAAVLREFEESILKVAGVVGGVKEGVTELQLRDF*
+
+>P1;5cws_E
+structureX:5cws:74   :E:314  :E:Nucleoporin NUP57; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
+----------------------------------------/
+---------------------------------------------------------------------------
+----------------/
+-------------------------------------/
+------------------------------------/
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+-----------------------------------------------------/
+PIPEQIKLIVDKWNPNHPNCAFKTYLYNKVDEHTVPLYGPGPNEDPKEWEEALQRKPAPNFIPVLCSGFPSIVAR
+LMLQRRVITEFNNKLHQINASLDAILSRHDLDHTVRAFNARRRHAELSRRCLHLAARVQVLRNRGYALSGDEDEL
+KQKLQQIDKTLNDPAQGSRLEELWSRLIVLRGYAEDLKDQINQAGITESD-------------GLGEEIEAKAKK
+ILEDYDKQLQHLKKQVEEAKKDFEEWEKQ-*
+
+>P1;Nic96_complex
+sequence::     : :     : ::: 0.00: 0.00
+KKLNELLESSDNLPSA---SSELGSIQVSINELRRRVFQL/
+LDDLVTKWTNQLTESASHFEQYTKKINSWDQVLVKGGEQISQLYSDAVMAEHSQNKIDQSLQYIERQQDELENFL
+DNFETKTEALLSDVVS/
+QQAYKTAQTLDENLNSLSSNLSSLIVEINNVSNTFNK/
+DENIQLIKILNSHFDALRSLDDNSTSLEKQINSIKK/
+PPQIRQEIEQLDQYIQKQVQISHHLKADTIDHDELIDSIPRDVAYLLKSESATSQYLKQDLKKISSFKSLIDEDL
+LDTQTFSVLLQQLLTPGSKISSNDLDKFFQKKIHLYEKKLEDYCRILSDIETAVNGIDTDLFGAPNNPNSTAITA
+DLGSSEAENLLQLKTGLAAIVSTVIEEFTLFMDIAERIAVLHQKTKTLASLSI/
+QIQEQVLKCKESWDPNTTKTKLRAFVYNKVNETEAILYTKPGHVLQEEWDQAMEKKPSPQTIPIQIYGFEGLNQR
+NQVQTENVAQARIILNHILEKSTQLQQKHELDTASRILKAQSRNVEIEKRILKLGTQLATLKNRGLPLGIAEEKM
+WSQFQTLLQRSEDPAGLGKTNELWARLAILKERAKNISSQLDSKLMVFNDDTKNQDSMSKGTGEESNDRINKIVE
+ILTNQQRGITYLNEVLEKDAAIVKKYKNK-*
