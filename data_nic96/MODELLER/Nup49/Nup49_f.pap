@@ -1,0 +1,14 @@
+ _aln.pos         10        20        30        40        50        60
+5cws_D    SEALQQEIAKIDEEIQKCIRDKEAVDAFLPAHGEQLAAIPTDVNFVTRKSEGAHNALSSDILAIDQLR 
+N49       PPQIRQEIEQLDQYIQKQVQISHHLKADTIDHDELIDSIPRDVAYLLKSESATSQYLKQDLKKISSFK 
+ _consrvd      ***   *  ***         *    * *    ** **             *  *   *
+
+ _aln.p   70        80        90       100       110       120       130
+5cws_D    ELVKQDADNARLSFKAIDNLKL-----SNADLISYFSKTADEMEEMMKKFEKTITEIEAHLTGVEAHA 
+N49       SLIDEDLLDTQTFSVLLQQLLTPGSKISSNDLDKFFQKKIHLYEKKLEDYCRILSDIETAVNGIDTDL 
+ _consrvd  *   *             *       *  **   * *     *            **    *
+
+ _aln.pos  140       150       160       170       180       190       200
+5cws_D    MA-M---------QNVA---------VDERVYELAAVLREFEESILKVAGVVGGVKEGVTELQLRDF 
+N49       FGAPNNPNSTAITADLGSSEAENLLQLKTGLAAIVSTVIEEFTLFMDIAERIAVLHQKTKTLASLSI 
+ _consrvd                                        *        *            *
