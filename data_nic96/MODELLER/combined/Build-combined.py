@@ -16,8 +16,8 @@ class MyModel(automodel):
 
 a = MyModel(env,
             alnfile='alignment.ali',
-            knowns=('5cws_F', '5cws_C1', '5cws_C2', '5cws_C3', '5cws_D',
-                    '5cws_E'),  
+            knowns=('5cwsF', '5cwsC_1', '5cwsC_2', '5cwsC_3', '5cwsD',
+                    '5cwsE'),
             sequence='Nic96_complex',
             assess_methods=(assess.DOPE, assess.GA341))
 

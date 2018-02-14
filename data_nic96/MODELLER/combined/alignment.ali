@@ -1,21 +1,21 @@
->P1;5cws_F
+>P1;5cwsF
 structureX:5cws:141  :F:180  :F:Nucleoporin NIC96; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ALFDSLLARNKKQAEGETALGELPSLQLGLADLRQRLRKL*
 
->P1;5cws_C1
+>P1;5cwsC_1
 structureX:5cws:467  :C:557  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ----------------------------------------/
 MDEIITRWATDLAKYQKEFKEQAAKVMEWDRLLVENGEKIQKLYTSTYEAERASNEIERQLSNVESQQEELTAWL
 DRYERELDELYAKQMG*
 
->P1;5cws_C2
+>P1;5cwsC_2
 structureX:5cws:572  :C:608  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ----------------------------------------/
 ---------------------------------------------------------------------------
 ----------------/
 ERTYKLAEKLTDQLDEMGKDLAKMIKEINDMSNTLSK*
 
->P1;5cws_C3
+>P1;5cwsC_3
 structureX:5cws:614  :C:649  :C:Nucleoporin NSP1; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ----------------------------------------/
 ---------------------------------------------------------------------------
@@ -23,7 +23,7 @@ structureX:5cws:614  :C:649  :C:Nucleoporin NSP1; nucleocytoplasmic transport, p
 -------------------------------------/
 DPLTQIVRVLNGHLAQLQWIDTNAAALQAKVAAAQK*
 
->P1;5cws_D
+>P1;5cwsD
 structureX:5cws:245  :D:467  :D:Nucleoporin NUP49; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ----------------------------------------/
 ---------------------------------------------------------------------------
@@ -34,7 +34,7 @@ SEALQQEIAKIDEEIQKCIRDKEAVDAFLPAHGEQLAAIPTDVNFVTRKSEGAHNALSSDILAIDQLRELVKQDA
 DNARLSFKAIDNLKL-----SNADLISYFSKTADEMEEMMKKFEKTITEIEAHLTGVEAHAMA-M---------Q
 NVA---------VDERVYELAAVLREFEESILKVAGVVGGVKEGVTELQLRDF*
 
->P1;5cws_E
+>P1;5cwsE
 structureX:5cws:74   :E:314  :E:Nucleoporin NUP57; nucleocytoplasmic transport, protein transport; 3.77A {Chaetomium thermophilum}:Chaetomium thermophilum: 3.77: 0.23
 ----------------------------------------/
 ---------------------------------------------------------------------------
