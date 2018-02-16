@@ -2223,7 +2223,7 @@ if inputs.mmcif:
     elif inputs.one_spoke:
         prefix = '1spoke-C1/'
     else:
-        prefix = '3spoke3-C3/C3_'
+        prefix = '3spokes-C3/C3_'
     for copy in po.all_modeled_components:
         # One MRC file covers all symmetry copies of a Nup
         nup = copy.split('@')[0]
