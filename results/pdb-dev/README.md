@@ -15,6 +15,3 @@ Note that since paths to external files (such as localization densities) are
 relative to the script directory, for now in order to visualize the files you
 will need to copy them from the current directory into `../../template` and
 open them there.
-
-Note that the scripts in **this** directory generate only very basic mmCIF
-files, with only coordinates (no experimental information).
