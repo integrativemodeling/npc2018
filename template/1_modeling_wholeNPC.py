@@ -1840,6 +1840,24 @@ if (use_XL):
     sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
     print("\nEVAL 1 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank)
     XL_restraints = [xl1]
+
+    if inputs.mmcif:
+        # Also add Mlp-specific crosslinks to the final deposition
+        xl2 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+                 '../data_npc/XL_Merged_wholeNPC_MLPs.csv', length = 26.0,
+                 slope = 0.00, columnmapping = columnmap, ids_map = ids_map,
+                 resolution = 1.0, inner_slope = 0.01, filelabel = "wtDSS",
+                 label = "wtDSS", attributes_for_label = ["XLUniqueID"],
+                 csvfile = True)
+        xl2.dataset.add_primary(d)
+        xl2.add_to_model()
+        xl2.set_weight(10.0)
+        sampleobjects.append(xl2)
+        outputobjects.append(xl2)
+        xl2.set_psi_is_sampled(False)
+        psi2 = xl2.get_psi(1.0)[0]
+        psi2.set_scale(0.05)
+        XL_restraints.append(xl2)
 else:
     XL_restraints = None
 
