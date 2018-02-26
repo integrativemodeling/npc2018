@@ -1,0 +1,138 @@
+WARNING  Object "ImageReaderWriter1" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter4" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter7" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter10" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter13" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter16" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter19" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter22" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter25" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter28" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter31" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter34" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter37" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter40" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter43" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter46" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter49" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter52" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter55" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter58" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter61" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter64" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter67" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter70" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter73" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter76" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter79" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter82" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter85" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter88" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter91" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter94" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter97" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+WARNING  Object "ImageReaderWriter100" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Writing with TIFFImageReaderWriter discards image header 
+Ilan-Score Nic96complex_C2_NoBeads.pdb 0 ccc= 0.828573499528
+WARNING  Object "Image175105" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 1 ccc= 0.780967698536
+WARNING  Object "Image175106" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 2 ccc= 0.785868849726
+WARNING  Object "Image175107" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 3 ccc= 0.851710736282
+WARNING  Object "Image175108" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 4 ccc= 0.795886706234
+WARNING  Object "Image175109" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 5 ccc= 0.829702810599
+WARNING  Object "Image175110" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 6 ccc= 0.85303493961
+WARNING  Object "Image175111" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 7 ccc= 0.815221613775
+WARNING  Object "Image175112" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 8 ccc= 0.781755006397
+WARNING  Object "Image175113" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 9 ccc= 0.764304672938
+WARNING  Object "Image175114" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 10 ccc= 0.788915042092
+WARNING  Object "Image175115" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 11 ccc= 0.768792137011
+WARNING  Object "Image175116" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 12 ccc= 0.801510701731
+WARNING  Object "Image175117" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 13 ccc= 0.837906794418
+WARNING  Object "Image175118" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 14 ccc= 0.789514872922
+WARNING  Object "Image175119" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 15 ccc= 0.788617667564
+WARNING  Object "Image175120" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 16 ccc= 0.8621663113
+WARNING  Object "Image175121" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 17 ccc= 0.7996266075
+WARNING  Object "Image175122" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 18 ccc= 0.818809946539
+WARNING  Object "Image175123" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 19 ccc= 0.814648491195
+WARNING  Object "Image175124" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 20 ccc= 0.830944908257
+WARNING  Object "Image175125" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 21 ccc= 0.763136398903
+WARNING  Object "Image175126" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 22 ccc= 0.763436592347
+WARNING  Object "Image175127" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 23 ccc= 0.782847964643
+WARNING  Object "Image175128" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 24 ccc= 0.807374748471
+WARNING  Object "Image175129" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 25 ccc= 0.801449796672
+WARNING  Object "Image175130" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 26 ccc= 0.784114723919
+WARNING  Object "Image175131" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 27 ccc= 0.812426723241
+WARNING  Object "Image175132" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 28 ccc= 0.806462457759
+WARNING  Object "Image175133" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 29 ccc= 0.808925785299
+WARNING  Object "Image175134" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 30 ccc= 0.839195673878
+WARNING  Object "Image175135" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 31 ccc= 0.732986934355
+WARNING  Object "Image175136" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 32 ccc= 0.831929723426
+WARNING  Object "Image175137" was never used. See the IMP::Object documentation for an explanation.
+Ilan-Score Nic96complex_C2_NoBeads.pdb 33 ccc= 0.686196783363
+WARNING  Object "ImageReaderWriter0" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Object "ProjectionFinder0" was never used. See the IMP::Object documentation for an explanation.
+WARNING  Object "Image175138" was never used. See the IMP::Object documentation for an explanation.

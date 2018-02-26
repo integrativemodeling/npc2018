@@ -43,6 +43,9 @@ be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP
 - `data_nup84_2016`		            contains Nup84 complex-specific representation (PDB or rmf3 formats), sequence (*.txt), cross-links (*.csv), hhpred (*.pdf or *.webarchive), and EM2D (EM_image.png) files 
 - `pom152`		            Integrative structure determination of the Pom152 membrane ring - needed to be separate.
 
+- `validation` contains data not used in modeling
+  - `nic96_em2d` fit of final Nic96 structure against EM class averages
+
 - `results`		                      contains resulting structures and output files
 - `template`			                  contains modeling scripts
 
