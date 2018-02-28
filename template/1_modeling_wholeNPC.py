@@ -2215,6 +2215,10 @@ if inputs.mmcif:
                  path='../results/pdb-dev/chimerax/show-fg-ribbons.cxc',
                  details='Show FG repeats as ribbons')
     simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
+    l = IMP.pmi.metadata.FileLocation(
+                 path='../results/pdb-dev/chimerax/show-nic96-em2d.cxc',
+                 details='Show fit of Nic96 complex against EM class averages')
+    simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
 
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,

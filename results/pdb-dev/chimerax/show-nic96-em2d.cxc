@@ -1,0 +1,9 @@
+hide #1.1 models
+hide #1.3.2 models
+hide #1.3.1
+show #1.3.1/AA
+show #1.3.1/AB
+show #1.3.1/AC
+show #1.3.1/AD
+turn y 90 center #1.3.1/AA
+zoom 1.8
