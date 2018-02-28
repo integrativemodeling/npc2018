@@ -2211,10 +2211,11 @@ if inputs.mmcif:
     fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN11_101.rmf'
 
     # Point to ChimeraX command scripts to display aspects of the mmCIF model
-    l = IMP.pmi.metadata.FileLocation(
-                 path='../results/pdb-dev/chimerax/show-fg-ribbons.cxc',
-                 details='Show FG repeats as ribbons')
-    simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
+    if inputs.symmetry:
+        l = IMP.pmi.metadata.FileLocation(
+                     path='../results/pdb-dev/chimerax/show-fg-ribbons.cxc',
+                     details='Show FG repeats as ribbons')
+        simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
     l = IMP.pmi.metadata.FileLocation(
                  path='../results/pdb-dev/chimerax/show-nic96-em2d.cxc',
                  details='Show fit of Nic96 complex against EM class averages')
