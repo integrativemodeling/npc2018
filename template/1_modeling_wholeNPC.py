@@ -2206,6 +2206,13 @@ if inputs.mmcif:
     else:
         framework_rmf = '../results/RMF_files/cluster0_47-35_3spokes.rmf3'
     fgs_rmf = 'npc_fg_2018/RepresentativeEnsemble/modelN11_101.rmf'
+
+    # Point to ChimeraX command scripts to display aspects of the mmCIF model
+    l = IMP.pmi.metadata.FileLocation(
+                 path='../results/pdb-dev/chimerax/show-fg-ribbons.cxc',
+                 details='Show FG repeats as ribbons')
+    simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
+
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,
                                        num_models_end=2267)
