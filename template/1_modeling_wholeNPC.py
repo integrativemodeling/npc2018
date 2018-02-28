@@ -17,6 +17,7 @@ import IMP.pmi.metadata
 import IMP.pmi.restraints.crosslinking
 import IMP.pmi.restraints.stereochemistry
 import IMP.pmi.restraints.em
+import IMP.pmi.restraints.em2d
 import IMP.pmi.restraints.basic
 import IMP.pmi.restraints.proteomics
 import IMP.pmi.representation
@@ -31,6 +32,8 @@ import IMP.npc
 import IMP.npc.npc_restraints
 import random
 import os
+import sys
+import re
 import math
 
 #####################################################
@@ -2252,7 +2255,7 @@ if inputs.mmcif:
     c = po._add_simple_ensemble(pp, name="Scaffold cluster 1", num_models=5,
                                 drmsd=1.0, num_models_deposited=1,
                                 localization_densities=den, ensemble_file=f)
-    m = po.add_model(c.model_group)
+    scaffold_model = po.add_model(c.model_group)
 
     # Add ensemble for FG repeats
     if inputs.symmetry:
@@ -2283,4 +2286,47 @@ if inputs.mmcif:
         m = po.add_model(c.model_group, assembly=po.fgs.assembly,
                          representation=po.fgs.representation)
         po.fgs.add_bead_coordinates(fgs_rmf, m)
+
+    # Add 2DEM restraint (note that we didn't use this for modeling, only
+    # validation, and we actually used a different algorithm, but this
+    # distinction isn't important for mmCIF output)
+    pixel_size = 2.03
+    image_size = 128
+    n96_dir = '../validation/nic96_em2d'
+    image_numbers = [6,25]
+    images = ['%s/Images/Image-%d.pgm' % (n96_dir, num)
+              for num in image_numbers]
+    em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D(simo, images,
+                                                    resolution=1.0,
+                                                    pixel_size = pixel_size,
+                                                    image_resolution = 39.0,
+                                                    projection_number = 100)
+    em2d.add_to_model()
+    # Add CCC and transformation to model (as if stored in a PMI stat file)
+    sys.path.append('%s/Model_2B' % n96_dir)
+    from get_transformations import get_transformations, get_centroid
+    cccs = {}
+    pat = re.compile('Score (\S+) (\d+) ccc= ([\d.]+)')
+    with open('%s/Model_2B/C1_logs_35.txt' % n96_dir) as fh:
+        for match in pat.findall(fh.read()):
+            cccs[int(match[1])] = float(match[2])
+            pdb_file = match[0]
+    centroid = get_centroid('%s/Model_2B/%s' % (n96_dir, pdb_file))
+    transforms = {}
+    for num, trans in get_transformations(
+                            "%s/Model_2B/Registration-Parameters" % n96_dir,
+                            centroid, pixel_size, image_size):
+        transforms[num] = trans
+    stats = {}
+    for i, image_num in enumerate(image_numbers):
+        prefix = 'ElectronMicroscopy2D_None_Image%d' % (i+1)
+        stats[prefix + '_CCC'] = cccs[image_num]
+        rot = transforms[image_num].get_rotation().get_quaternion()
+        for n in range(4):
+            stats[prefix + '_Rotation%d' % n] = rot[n]
+        trn = transforms[image_num].get_translation()
+        for n in range(3):
+            stats[prefix + '_Translation%d' % n] = trn[n]
+    scaffold_model.em2d_stats = stats
+
     po.flush()
