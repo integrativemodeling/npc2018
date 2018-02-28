@@ -2289,6 +2289,8 @@ if inputs.mmcif:
                                     ensemble_file=f)
         m = po.add_model(c.model_group, assembly=po.fgs.assembly,
                          representation=po.fgs.representation)
+        # No restraints act on this model
+        m._is_restrained = False
         po.fgs.add_bead_coordinates(fgs_rmf, m)
 
     # Add 2DEM restraint (note that we didn't use this for modeling, only
