@@ -17,9 +17,10 @@ as follows:
    in these regions, they do not fit well against the class averages).
 
 4. The script `Model_2B/EM2D_Filter.py` was used to fit the PDB file against
-   each of the class averages. This reported the cross correlation coefficient
-   (ccc) for the fit in the log file `C1_logs_35.txt` and the transformation
-   between the model and the image in the file `Registration-Parameters`.
+   each of the class averages (using a resolution of 35Å and 10000 projections).
+   This reported the cross correlation coefficient (ccc) for the fit in the
+   log file `C1_logs_35.txt` and the transformation between the model and the
+   image in the file `Registration-Parameters`.
 
 5. Fits for class averages 6 and 25 (with CCCs of 0.85 and 0.80 respectively)
    were reported in the publication in Extended Data Figure 6, panel K.

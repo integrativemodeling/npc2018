@@ -2303,8 +2303,8 @@ if inputs.mmcif:
     em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D(simo, images,
                                                     resolution=1.0,
                                                     pixel_size = pixel_size,
-                                                    image_resolution = 39.0,
-                                                    projection_number = 100)
+                                                    image_resolution = 35.0,
+                                                    projection_number = 10000)
     em2d.add_to_model()
     # Add CCC and transformation to model (as if stored in a PMI stat file)
     sys.path.append('%s/Model_2B' % n96_dir)
