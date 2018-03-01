@@ -2308,6 +2308,13 @@ if inputs.mmcif:
                                                     pixel_size = pixel_size,
                                                     image_resolution = 35.0,
                                                     projection_number = 10000)
+    # Point to the raw micrographs in EMPIAR
+    l = IMP.pmi.metadata.EMPIARLocation('EMPIAR-10162')
+    # todo: fill in correct # of micrographs
+    micrographs = IMP.pmi.metadata.EMMicrographsDataset(number=800, location=l)
+    for d in em2d.datasets:
+        d.add_primary(micrographs)
+
     em2d.add_to_model()
     # Add CCC and transformation to model (as if stored in a PMI stat file)
     sys.path.append('%s/Model_2B' % n96_dir)
