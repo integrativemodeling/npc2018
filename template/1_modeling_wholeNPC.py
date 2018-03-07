@@ -35,6 +35,7 @@ import os
 import sys
 import re
 import math
+import glob
 
 #####################################################
 # Parsing parameter inputs
@@ -893,6 +894,46 @@ bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, seque
                 #skip_connectivity_these_domains=clone_list_unique, skip_gaussian_in_rmf=True, skip_gaussian_in_representation=use_EM3D)
 #exit(0)
 bm1.scale_bead_radii(100, 0.6)
+
+class SAXSFits(object):
+    """Parse the SAXS csv file and add suitable fit data to the mmCIF file"""
+    saxs_dir = '../input_data_files/SAXS'
+    seqrange_re = re.compile('(\d+)\s*\-\s*(\d+)')
+    sasbdb_re = re.compile('/data/(SASDB\w+)')
+
+    def __init__(self, po):
+        self.po = po
+
+    def add_from_csv(self, model):
+        import csv
+        with open(os.path.join(self.saxs_dir, 'Table6_SAXS.csv'), 'rb') as fh:
+            for row in csv.DictReader(fh):
+                if row['FoXS fit score']:
+                    self._add_one(model, row)
+
+    def _add_one(self, model, row):
+        protid = row['Protein ID']
+        m = self.sasbdb_re.search(row['Notes'])
+        if m:
+            l = IMP.pmi.metadata.SASBDBLocation(m.group(1))
+            detail = None
+        else:
+            profile = (glob.glob('%s/*/%s_*.sub' % (self.saxs_dir, protid))
+                     + glob.glob('%s/*/%s_*.dat' % (self.saxs_dir, protid)))[0]
+            l = IMP.pmi.metadata.FileLocation(profile,
+                                 details = row['Notes'] if row['Notes']
+                                                        else None)
+        dataset = IMP.pmi.metadata.SASDataset(location=l)
+        m = self.seqrange_re.match(row['Sequence coverage'])
+        seqrange = (int(m.group(1)), int(m.group(2)))
+        protein = row['Protein'].capitalize()
+        # For proteins with multiple copies, map to the first
+        if protein in ('Nup145', 'Nup100', 'Nup116', 'Nup82'):
+            protein += '.1'
+
+        self.po._add_foxs_restraint(model, protein, seqrange, dataset,
+                                    row['Rg'], row['FoXS fit score'], None)
+
 
 def create_8_spokes(simo, proteins, both_half_spokes, one_spoke=False):
     """Expand the 1 or 3 spoke model to encompass all 8 spokes.
@@ -2261,6 +2302,9 @@ if inputs.mmcif:
                                 drmsd=1.0, num_models_deposited=1,
                                 localization_densities=den, ensemble_file=f)
     scaffold_model = po.add_model(c.model_group)
+
+    f = SAXSFits(po)
+    f.add_from_csv(scaffold_model)
 
     # Add ensemble for FG repeats
     if inputs.symmetry:
