@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1194539.svg)](https://doi.org/10.5281/zenodo.1194539)
+
 # The entire 552-protein yeast NPC complex
 
 These scripts demonstrate the use of [IMP](http://salilab.org/imp) in the modeling of the yeast NPC complex using diverse types of data as described in Seung Joong Kim, et al.'s 2018 NPC article published in Nature.
