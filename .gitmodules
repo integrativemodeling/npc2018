@@ -1,0 +1,3 @@
+[submodule "template/npc_fg_2018"]
+	path = template/npc_fg_2018
+	url = https://github.com/integrativemodeling/npc_fg_2018
