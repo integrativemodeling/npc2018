@@ -1,7 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1194547.svg)](https://doi.org/10.5281/zenodo.1194547)
 
-# The entire 552-protein yeast NPC complex
-
 These scripts demonstrate the use of [IMP](http://salilab.org/imp) in the modeling of the yeast NPC complex using diverse types of data as described in Seung Joong Kim, et al.'s 2018 NPC article published in Nature.
 
 The scripts work with the [IMP](http://salilab.org/imp) (version 2.6).
@@ -98,6 +96,8 @@ _Author(s)_: Seung Joong Kim
 _License_: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
 This work is freely available under the terms of the Creative Commons
 Attribution-ShareAlike 4.0 International License.
+
+_Last known good IMP version_: [![build info](https://integrativemodeling.org/systems/?sysstat=28&branch=master)](https://integrativemodeling.org/systems/) [![build info](https://integrativemodeling.org/systems/?sysstat=28&branch=develop)](https://integrativemodeling.org/systems/)
 
 _Publications_:
 - Seung Joong Kim\*, Javier Fernandez-Martines\*, Ilona Nudelman\*, Yi Shi\*, Wenzhu Zhang\*, et al., [Integrative structure and Functional Anatomy of a Nuclear Pore Complex](http://www.nature.com/nature/journal/), Nature , 2018, in press.
