@@ -1,0 +1,6 @@
+title: Nuclear Pore Complex
+tags: [chemical crosslinks, PMI, X-ray, EM density map, affinity purification, EM class average, FoXS]
+prereqs: [modeller]
+test:
+    runtime: 24h
+    build: release
