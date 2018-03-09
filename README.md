@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1194539.svg)](https://doi.org/10.5281/zenodo.1194539)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1194547.svg)](https://doi.org/10.5281/zenodo.1194547)
 
 # The entire 552-protein yeast NPC complex
 

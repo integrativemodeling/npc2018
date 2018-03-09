@@ -37,6 +37,9 @@ import re
 import math
 import glob
 
+sys.path.append('../util/')
+import make_archive
+
 #####################################################
 # Parsing parameter inputs
 #####################################################
@@ -527,6 +530,16 @@ if inputs.mmcif:
         doi="10.5281/zenodo.1194533", root="npc_fg_2018",
         url="https://zenodo.org/record/1194533/files/npc_fg_2018-master.zip",
         top_directory="npc_fg_2018-master"))
+    for subdir, zipname in make_archive.ARCHIVES.items():
+        simo.add_metadata(IMP.pmi.metadata.Repository(
+              doi="10.5281/zenodo.1194547", root="../%s" % subdir,
+              url="https://zenodo.org/record/1194547/files/%s.zip" % zipname,
+              top_directory=os.path.basename(subdir)))
+        simo.add_metadata(IMP.pmi.metadata.Repository(
+              doi="10.5281/zenodo.1194547", root="..",
+              url="https://zenodo.org/record/1194547/files/npc2018-master.zip",
+              top_directory="npc2018-master"))
+
 
 #####################################################
 # REPRESENTATION
@@ -2299,8 +2312,9 @@ if inputs.mmcif:
         den[copy] = den_nup[nup]
     if inputs.one_spoke and not inputs.symmetry:
         # Only include full scaffold ensemble for 1-spoke model due to size
-        f = IMP.pmi.metadata.FileLocation(
-               path='../results/pdb-dev/scaffold-1spoke.dcd',
+        r = IMP.pmi.metadata.Repository(doi="10.5281/zenodo.1194547",
+             url='https://zenodo.org/record/1194547/files/scaffold-1spoke.dcd')
+        f = IMP.pmi.metadata.FileLocation(repo=r, path='.',
                details="All ensemble structures for scaffold")
     else:
         f = None
