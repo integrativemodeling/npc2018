@@ -522,6 +522,12 @@ if inputs.mmcif:
         po.exclude_coordinates('Nup42'+suffix, (364,430))
         po.exclude_coordinates('Gle1'+suffix, (121,538))
 
+    # Point to repositories where files are deposited
+    simo.add_metadata(IMP.pmi.metadata.Repository(
+        doi="10.5281/zenodo.1194533", root="npc_fg_2018",
+        url="https://zenodo.org/record/1194533/files/npc_fg_2018-master.zip",
+        top_directory="npc_fg_2018-master"))
+
 #####################################################
 # REPRESENTATION
 #####################################################
