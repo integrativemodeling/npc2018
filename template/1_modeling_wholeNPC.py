@@ -344,7 +344,7 @@ class _ChainOfFGs(object):
     chain_id = property(lambda self: self.orig_chain.chain_id)
     # No atomic coordinates for FGs
     atoms = []
-    entity = property(lambda self: self.orig_chain.entity)
+    asym_unit = property(lambda self: self.orig_chain.asym_unit)
     comp = property(lambda self: self.orig_chain.comp)
     orig_comp = property(lambda self: self.orig_chain.orig_comp)
 
@@ -422,7 +422,7 @@ class FGRepeats(object):
                              len=self.get_number_of_beads(comp))
 
     def create_assembly(self, po):
-        self.assembly = po.assembly_dump.get_subassembly(
+        self.assembly = po._get_subassembly(
                               self.get_assembly(), name="FG repeats",
                               description="All FG repeats (unstructured regions"
                                           " in the center of the pore)")
