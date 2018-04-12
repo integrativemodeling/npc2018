@@ -12,6 +12,7 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
+import ihm
 import IMP.pmi.mmcif
 import IMP.pmi.metadata
 import IMP.pmi.restraints.crosslinking
@@ -524,6 +525,10 @@ if inputs.mmcif:
         subtitle = 'three spokes'
     po.system.title = ('Integrative structure and functional anatomy of '
                        '%s of a nuclear pore complex' % subtitle)
+
+    # Add publication
+    po.system.citations.append(ihm.Citation.from_pubmed_id(29539637))
+
     if use_neighboring_spokes:
         suffixes = ['', '@2', '@3']
     else:
