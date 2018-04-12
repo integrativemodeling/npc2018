@@ -511,10 +511,19 @@ if inputs.mmcif:
     po = ProtocolOutput(open(inputs.mmcif, 'w'))
     simo.add_protocol_output(po)
     # Exclude domains that weren't well resolved in the modeling from mmCIF
-    po.add_comment("Missing residues: the following residues were poorly "
+    po.system.comments.append(
+                   "Missing residues: the following residues were poorly "
                    "constrained by the available experimental data, and as "
                    "such coordinates are not available in this model: "
                    "Mlp1 717-1875; Mlp2 691-1670; Nup42 1-430; Gle1 121-538.")
+    if inputs.symmetry:
+        subtitle = 'eight spokes'
+    elif inputs.one_spoke:
+        subtitle = 'a single spoke'
+    else:
+        subtitle = 'three spokes'
+    po.system.title = ('Integrative structure and functional anatomy of '
+                       '%s of a nuclear pore complex' % subtitle)
     if use_neighboring_spokes:
         suffixes = ['', '@2', '@3']
     else:
