@@ -12,9 +12,9 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import ihm
+import ihm.location
+import ihm.dataset
 import IMP.pmi.mmcif
-import IMP.pmi.metadata
 import IMP.pmi.restraints.crosslinking
 import IMP.pmi.restraints.stereochemistry
 import IMP.pmi.restraints.em
@@ -135,67 +135,67 @@ simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedleng
 
 # Record additional software used
 # Detection of templates for comparative modeling (HHPred)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='HHpred', classification='protein homology detection',
           description='Protein homology detection by HMM-HMM comparison',
           version='2.0.16',
-          url='https://toolkit.tuebingen.mpg.de/hhpred'))
+          location='https://toolkit.tuebingen.mpg.de/hhpred'))
 
 # Secondary structure prediction (PSIPRED)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='PSIPRED', classification='secondary structure prediction',
           description='Protein secondary structure prediction based on '
                       'position-specific scoring matrices',
           version='4.0',
-          url='http://bioinf.cs.ucl.ac.uk/psipred/'))
+          location='http://bioinf.cs.ucl.ac.uk/psipred/'))
 
 # Disordered region prediction (DISOPRED)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='DISOPRED', classification='disorder prediction',
           description='prediction of protein disorder', version=3,
-          url='http://bioinf.cs.ucl.ac.uk/psipred/?disopred=1'))
+          location='http://bioinf.cs.ucl.ac.uk/psipred/?disopred=1'))
 
 # Domain boundary prediction (DomPred)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='DomPred', classification='domain boundary prediction',
           description='identification of putative domain boundaries',
-          url='http://bioinf.cs.ucl.ac.uk/dompred'))
+          location='http://bioinf.cs.ucl.ac.uk/dompred'))
 
 # Coiled-coil region prediction (COILS/PCOILS)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='COILS/PCOILS', classification='coiled-coil prediction',
           description='prediction of coiled-coil structure',
-          url='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
+          location='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
 
 # EM particle picking (EMAN2) & generation of Nic96 class averages (ISAC)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='EMAN2', classification='image processing',
           description='processing of data from transmission electron '
                       'microscopes',
           version='2.2',
-          url='http://blake.bcm.edu/emanwiki/EMAN2'))
+          location='http://blake.bcm.edu/emanwiki/EMAN2'))
 
 # Parallel tomographic analysis (Relion)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='RELION', classification='image processing',
           description='refinement of (multiple) 3D reconstructions or '
                       '2D class averages in electron cryo-microscopy',
           version='1.4',
-          url='https://www2.mrc-lmb.cam.ac.uk/relion/'))
+          location='https://www2.mrc-lmb.cam.ac.uk/relion/'))
 
 # Prediction of transmembrane domains (SGD)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='SGD', classification='database',
           description='biological information for the budding yeast '
                       'Saccharomyces cerevisiae along with search and '
                       'analysis tools to explore these data',
-          url='https://www.yeastgenome.org/'))
+          location='https://www.yeastgenome.org/'))
 
 # Prediction of membrane binding motifs (HeliQuest)
-simo.add_metadata(IMP.pmi.metadata.Software(
+simo.add_metadata(ihm.Software(
           name='HeliQuest', classification='helix prediction',
           description='prediction of helix content from primary sequence',
-          url='http://heliquest.ipmc.cnrs.fr/'))
+          location='http://heliquest.ipmc.cnrs.fr/'))
 
 simo.dry_run = inputs.dry_run
 
@@ -540,16 +540,16 @@ if inputs.mmcif:
         po.exclude_coordinates('Gle1'+suffix, (121,538))
 
     # Point to repositories where files are deposited
-    simo.add_metadata(IMP.pmi.metadata.Repository(
+    simo.add_metadata(ihm.location.Repository(
         doi="10.5281/zenodo.1194533", root="npc_fg_2018",
         url="https://zenodo.org/record/1194533/files/npc_fg_2018-master.zip",
         top_directory="npc_fg_2018-master"))
     for subdir, zipname in make_archive.ARCHIVES.items():
-        simo.add_metadata(IMP.pmi.metadata.Repository(
+        simo.add_metadata(ihm.location.Repository(
               doi="10.5281/zenodo.1194547", root="../%s" % subdir,
               url="https://zenodo.org/record/1194547/files/%s.zip" % zipname,
               top_directory=os.path.basename(subdir)))
-        simo.add_metadata(IMP.pmi.metadata.Repository(
+        simo.add_metadata(ihm.location.Repository(
               doi="10.5281/zenodo.1194547", root="..",
               url="https://zenodo.org/record/1194547/files/npc2018-master.zip",
               top_directory="npc2018-master"))
@@ -948,15 +948,15 @@ class SAXSFits(object):
         protid = row['Protein ID']
         m = self.sasbdb_re.search(row['Notes'])
         if m:
-            l = IMP.pmi.metadata.SASBDBLocation(m.group(1))
+            l = ihm.location.SASBDBLocation(m.group(1))
             detail = None
         else:
             profile = (glob.glob('%s/*/%s_*.sub' % (self.saxs_dir, protid))
                      + glob.glob('%s/*/%s_*.dat' % (self.saxs_dir, protid)))[0]
-            l = IMP.pmi.metadata.FileLocation(profile,
+            l = ihm.location.InputFileLocation(profile,
                                  details = row['Notes'] if row['Notes']
                                                         else None)
-        dataset = IMP.pmi.metadata.SASDataset(location=l)
+        dataset = ihm.dataset.SASDataset(location=l)
         m = self.seqrange_re.match(row['Sequence coverage'])
         seqrange = (int(m.group(1)), int(m.group(2)))
         protein = row['Protein'].capitalize()
@@ -1898,12 +1898,12 @@ if (use_XL):
                                                         csvfile = True)
     # Point to the raw mass spec data and peaklists used to derive the
     # crosslinks.
-    r = IMP.pmi.metadata.Repository(doi="10.5281/zenodo.1149746",
+    r = ihm.location.Repository(doi="10.5281/zenodo.1149746",
         url='https://zenodo.org/record/1149746/files/TODO')
-    l = IMP.pmi.metadata.FileLocation(repo=r, path='TODO',
+    l = ihm.location.InputFileLocation(repo=r, path='TODO',
                          details='All raw mass spectrometry files and '
                                  'peaklists used in the study')
-    d = IMP.pmi.metadata.MassSpecDataset(location=l)
+    d = ihm.dataset.MassSpecDataset(location=l)
     xl1.dataset.add_primary(d)
 
     xl1.add_to_model()
@@ -2104,13 +2104,13 @@ if (use_EM3D):
     gem.set_weight(1000.0)        # play with the weight
 
     # Point to the original map in EMDB
-    l = IMP.pmi.metadata.EMDBLocation('EMD-7321')
-    emdb = IMP.pmi.metadata.EMDensityDataset(location=l)
+    l = ihm.location.EMDBLocation('EMD-7321')
+    emdb = ihm.dataset.EMDensityDataset(location=l)
     gem.dataset.add_primary(emdb)
 
     # Point back to Cryo-ET raw data (tilt series)
-    l = IMP.pmi.metadata.EMPIARLocation('EMPIAR-10155')
-    d = IMP.pmi.metadata.EMMicrographsDataset(location=l, number=120)
+    l = ihm.location.EMPIARLocation('EMPIAR-10155')
+    d = ihm.dataset.EMMicrographsDataset(location=l)
     emdb.add_primary(d)
 
     #gem.center_model_on_target_density(simo)
@@ -2286,14 +2286,14 @@ if inputs.mmcif:
 
     # Point to ChimeraX command scripts to display aspects of the mmCIF model
     if inputs.symmetry:
-        l = IMP.pmi.metadata.FileLocation(
+        l = ihm.location.VisualizationFileLocation(
                      path='../results/pdb-dev/chimerax/show-fg-ribbons.cxc',
                      details='Show FG repeats as ribbons')
-        simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
-    l = IMP.pmi.metadata.FileLocation(
+        simo.add_metadata(l)
+    l = ihm.location.VisualizationFileLocation(
                  path='../results/pdb-dev/chimerax/show-nic96-em2d.cxc',
                  details='Show fit of Nic96 complex against EM class averages')
-    simo.add_metadata(IMP.pmi.metadata.ChimeraXCommandScript(l))
+    simo.add_metadata(l)
 
     # todo: fill in correct numbers
     pp = po._add_simple_postprocessing(num_models_begin=15000,
@@ -2319,16 +2319,16 @@ if inputs.mmcif:
         # No coordinates for Nup42
         if nup == 'Nup42': continue
         if nup not in den_nup:
-            den_nup[nup] = IMP.pmi.metadata.FileLocation(
+            den_nup[nup] = ihm.location.OutputFileLocation(
                           path='../results/localization_density_files_MRC/'
                                '%s%s.mrc' % (prefix, nup),
                           details="Localization density for %s" % nup)
         den[copy] = den_nup[nup]
     if inputs.one_spoke and not inputs.symmetry:
         # Only include full scaffold ensemble for 1-spoke model due to size
-        r = IMP.pmi.metadata.Repository(doi="10.5281/zenodo.1194547",
+        r = ihm.location.Repository(doi="10.5281/zenodo.1194547",
              url='https://zenodo.org/record/1194547/files/scaffold-1spoke.dcd')
-        f = IMP.pmi.metadata.FileLocation(repo=r, path='.',
+        f = ihm.location.OutputFileLocation(repo=r, path='.',
                details="All ensemble structures for scaffold")
     else:
         f = None
@@ -2349,7 +2349,7 @@ if inputs.mmcif:
             nup = copy.split('.')[0].split('@')[0]
             if nup in po.fgs.ranges:
                 if nup not in den_nup:
-                    den_nup[nup] = IMP.pmi.metadata.FileLocation(
+                    den_nup[nup] = ihm.location.OutputFileLocation(
                                     path='npc_fg_2018/Densities/%s.mrc' % nup,
                                     details="Localization density for %s" % nup)
                 den[copy] = den_nup[nup]
@@ -2359,7 +2359,7 @@ if inputs.mmcif:
         po._add_simple_dynamics(num_models_end=1000,
                                 method="Brownian dynamics")
         pp = po._add_no_postprocessing(num_models=1000)
-        f = IMP.pmi.metadata.FileLocation(
+        f = ihm.location.OutputFileLocation(
                path='npc_fg_2018/RepresentativeEnsemble/fg_repeat_ensemble.dcd',
                details="All ensemble structures for FG repeats")
         c = po._add_simple_ensemble(pp, name="FG ensemble", num_models=1000,
@@ -2381,15 +2381,16 @@ if inputs.mmcif:
     image_numbers = [6,25]
     images = ['%s/Images/Image-%d.pgm' % (n96_dir, num)
               for num in image_numbers]
+    # todo: fill in correct # of micrographs
     em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D(simo, images,
                                                     resolution=1.0,
                                                     pixel_size = pixel_size,
                                                     image_resolution = 35.0,
-                                                    projection_number = 10000)
+                                                    projection_number = 10000,
+                                                    micrographs_number = 800)
     # Point to the raw micrographs in EMPIAR
-    l = IMP.pmi.metadata.EMPIARLocation('EMPIAR-10162')
-    # todo: fill in correct # of micrographs
-    micrographs = IMP.pmi.metadata.EMMicrographsDataset(number=800, location=l)
+    l = ihm.location.EMPIARLocation('EMPIAR-10162')
+    micrographs = ihm.dataset.EMMicrographsDataset(l)
     for d in em2d.datasets:
         d.add_primary(micrographs)
 
