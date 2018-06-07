@@ -100,5 +100,5 @@ Attribution-ShareAlike 4.0 International License.
 _Last known good IMP version_: [![build info](https://integrativemodeling.org/systems/?sysstat=28&branch=master)](https://integrativemodeling.org/systems/) [![build info](https://integrativemodeling.org/systems/?sysstat=28&branch=develop)](https://integrativemodeling.org/systems/)
 
 _Publications_:
-- Seung Joong Kim\*, Javier Fernandez-Martines\*, Ilona Nudelman\*, Yi Shi\*, Wenzhu Zhang\*, et al., [Integrative structure and Functional Anatomy of a Nuclear Pore Complex](https://www.nature.com/articles/nature26003), Nature 555, 475-482, 2018.
+- Seung Joong Kim\*, Javier Fernandez-Martinez\*, Ilona Nudelman\*, Yi Shi\*, Wenzhu Zhang\*, et al., [Integrative structure and Functional Anatomy of a Nuclear Pore Complex](https://www.nature.com/articles/nature26003), Nature 555, 475-482, 2018.
 
