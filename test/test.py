@@ -7,6 +7,13 @@ import subprocess
 
 TOPDIR = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), '..'))
 
+def get_mock_env():
+    # Potentially override methods that need network access
+    env = os.environ.copy()
+    env['PYTHONPATH'] = os.path.join(TOPDIR, 'test', 'mock') \
+                        + ':' + env.get('PYTHONPATH', '')
+    return env
+
 class Tests(unittest.TestCase):
     def run_modeller_script(self, script_dir, script_name, model_name, resrng,
                             chains=['A']):
@@ -69,7 +76,8 @@ class Tests(unittest.TestCase):
             os.unlink("npc-1spoke.cif")
         p = subprocess.check_call(
                 ["python", "1_modeling_wholeNPC.py", "--mmcif=npc-1spoke.cif",
-                 "--dry-run", "--one-spoke", "--no-symmetry"])
+                 "--dry-run", "--one-spoke", "--no-symmetry"],
+                env=get_mock_env())
         # Check size of output file
         with open("npc-1spoke.cif") as fh:
             wcl = len(fh.readlines())
@@ -82,7 +90,8 @@ class Tests(unittest.TestCase):
             os.unlink("npc-3spoke.cif")
         p = subprocess.check_call(
                 ["python", "1_modeling_wholeNPC.py", "--mmcif=npc-3spoke.cif",
-                 "--dry-run", "--no-symmetry"])
+                 "--dry-run", "--no-symmetry"],
+                env=get_mock_env())
         # Check size of output file
         with open("npc-3spoke.cif") as fh:
             wcl = len(fh.readlines())
@@ -95,7 +104,8 @@ class Tests(unittest.TestCase):
             os.unlink("npc-8spoke.cif")
         p = subprocess.check_call(
                 ["python", "1_modeling_wholeNPC.py", "--mmcif=npc-8spoke.cif",
-                 "--dry-run", "--one-spoke"])
+                 "--dry-run", "--one-spoke"],
+                env=get_mock_env())
         # Check size of output file
         with open("npc-8spoke.cif") as fh:
             wcl = len(fh.readlines())
