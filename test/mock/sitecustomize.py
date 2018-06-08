@@ -9,7 +9,7 @@ def mock_from_pubmed(cls, pubmed_id):
     return ihm.Citation(
             pmid=29539637,
             title='Integrative structure and functional anatomy of a '
-                  'nuclear pore complex.',
+                  'nuclear pore complex.', journal='Nature',
             volume=555, page_range=(475,482), year=2018, authors=[
                 'Kim SJ', 'Fernandez-Martinez J', 'Nudelman I', 'Shi Y',
                 'Zhang W', 'Raveh B', 'Herricks T', 'Slaughter BD', 'Hogan JA',
