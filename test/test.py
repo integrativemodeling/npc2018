@@ -81,7 +81,7 @@ class Tests(unittest.TestCase):
         # Check size of output file
         with open("npc-1spoke.cif") as fh:
             wcl = len(fh.readlines())
-        self.assertEqual(wcl, 152780)
+        self.assertEqual(wcl, 152809)
 
     def test_mmcif_3spoke(self):
         """Test generation of 3 spoke mmCIF output"""
@@ -95,7 +95,7 @@ class Tests(unittest.TestCase):
         # Check size of output file
         with open("npc-3spoke.cif") as fh:
             wcl = len(fh.readlines())
-        self.assertEqual(wcl, 389389)
+        self.assertEqual(wcl, 389454)
 
     def test_mmcif_8spoke(self):
         """Test generation of 8 spoke mmCIF output"""
@@ -109,7 +109,7 @@ class Tests(unittest.TestCase):
         # Check size of output file
         with open("npc-8spoke.cif") as fh:
             wcl = len(fh.readlines())
-        self.assertEqual(wcl, 785763)
+        self.assertEqual(wcl, 785792)
 
 
 if __name__ == '__main__':
