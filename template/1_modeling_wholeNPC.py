@@ -563,10 +563,10 @@ domains = []
 if (use_EM3D):  gmm = True
 else:           gmm = None
 if (use_neighboring_spokes):
-    clones_range_A = range(2,4)+range(11,14)
-    clones_range_B = range(2,4)
+    clones_range_A = list(range(2,4)) + list(range(11,14))
+    clones_range_B = list(range(2,4))
 else:
-    clones_range_A = range(11,12)
+    clones_range_A = list(range(11,12))
     clones_range_B = []
 ##########################
 # Nup84 complex
@@ -928,6 +928,13 @@ bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, seque
 #exit(0)
 bm1.scale_bead_radii(100, 0.6)
 
+if sys.version_info[0] >= 3:
+    def open_csv(fname):
+        return open(fname, newline='')
+else:
+    def open_csv(fname):
+        return open(fname, 'rb')
+
 class SAXSFits(object):
     """Parse the SAXS csv file and add suitable fit data to the mmCIF file"""
     saxs_dir = '../input_data_files/SAXS'
@@ -939,7 +946,7 @@ class SAXSFits(object):
 
     def add_from_csv(self, model):
         import csv
-        with open(os.path.join(self.saxs_dir, 'Table6_SAXS.csv'), 'rb') as fh:
+        with open_csv(os.path.join(self.saxs_dir, 'Table6_SAXS.csv')) as fh:
             for row in csv.DictReader(fh):
                 if row['FoXS fit score']:
                     self._add_one(model, row)
@@ -1328,7 +1335,7 @@ if (use_Composite):
     axis = IMP.algebra.Vector3D(0,0,1)
     rot = IMP.algebra.get_rotation_about_axis(axis, math.pi / 2.)
     transforms = [IMP.algebra.Transformation3D(r, IMP.algebra.Vector3D(0,0,0))
-                  for r in rot, rot.get_inverse()]
+                  for r in (rot, rot.get_inverse())]
     # Penalize configurations where spheres are not in contact
     penalty = 1.
     uf = IMP.core.HarmonicUpperBound(0., penalty)
@@ -1405,7 +1412,7 @@ if (use_Immuno_EM):
         "Pom152"   : [470, 630]     #"Pom152"   : [370, 630]     #(Table S2 and Table S7 are different)
     }
     print("\nXYRadialPositionRestraint !!")
-    for protein, r in RADIAL.iteritems():
+    for protein, r in RADIAL.items():
         if (protein not in nup_list_unique):
             continue
         xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0)
@@ -1464,7 +1471,7 @@ if (use_Immuno_EM):
         "Pom152"   : [   5,  60]        #"Pom152"   : [   0,  95]   (Table S2 and Table S7 are different)
     }
     print("\nZAxialPositionRestraint !!")
-    for protein, z in ZAXIAL.iteritems():
+    for protein, z in ZAXIAL.items():
         if (protein not in nup_list_unique):
             continue
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
@@ -1500,7 +1507,7 @@ if (is_cytoplasm or is_nucleoplasm or is_basket):
         "Mlp2"     : [-400,-200]
     }
     print("\nZAxialPositionRestraints for Cytoplasm / Nucleoplasm / Basket !!")
-    for protein, z in ZAXIAL.iteritems():
+    for protein, z in ZAXIAL.items():
         if (protein not in nup_list_unique):
             continue
         zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
@@ -1531,7 +1538,7 @@ if (use_FG_anchor and is_nic96 and not is_FG):
     }
     print("\nFG_XYRadialPositionRestraint !!")
     radial_weight = 10.0
-    for protein, r in RADIAL.iteritems():
+    for protein, r in RADIAL.items():
         if (protein not in nup_list_unique):
             continue
         if (protein in ['Nup1', 'Nup60.1', 'Nup60.2']):
