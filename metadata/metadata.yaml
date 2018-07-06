@@ -2,7 +2,7 @@ title: Nuclear Pore Complex
 tags: [chemical crosslinks, PMI, X-ray, EM density map, affinity purification, EM class average, FoXS]
 pmid: 29539637
 accessions: [PDBDEV_00000010, PDBDEV_00000011, PDBDEV_00000012]
-prereqs: [modeller]
+prereqs: [modeller, python/numpy]
 test:
     runtime: 24h
     build: release
