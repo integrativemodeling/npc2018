@@ -1353,7 +1353,13 @@ if (use_Composite):
         IMP.pmi.tools.add_restraint_to_model(simo.m, rsr)
 
 # Add absolute position restraints
-exec(open("positional_restraints_initial.py").read())
+if inputs.mmcif:
+    # Use final restraint values, not those for the initial modeling
+    use_FG_anchor = True
+    use_MembraneExclusion = True
+    exec(open("positional_restraints_final.py").read())
+else:
+    exec(open("positional_restraints_initial.py").read())
 
 #####################################################
 # Restraints setup
