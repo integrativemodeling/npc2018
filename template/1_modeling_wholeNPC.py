@@ -1357,6 +1357,8 @@ if inputs.mmcif:
     # Use final restraint values, not those for the initial modeling
     use_FG_anchor = True
     use_MembraneExclusion = True
+    # Don't add Mlp1/2 restraints, since these weren't ultimately used
+    is_basket = False
     exec(open("positional_restraints_final.py").read())
 else:
     exec(open("positional_restraints_initial.py").read())
