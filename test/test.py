@@ -4,6 +4,7 @@ import unittest
 import os
 import sys
 import subprocess
+import ihm.reader
 
 TOPDIR = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), '..'))
 
@@ -111,7 +112,10 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(s.citations), 1)
         self.assertEqual(s.citations[0].doi, '10.1038/nature26003')
         self.assertEqual(len(s.software), 13)
-        self.assertEqual(len(s.orphan_starting_models), 62)
+        if num_spokes == 3:
+            self.assertEqual(len(s.orphan_starting_models), 62 * 3)
+        else:
+            self.assertEqual(len(s.orphan_starting_models), 62)
         # Should be a single model in a single state for 1 or 3 spokes,
         # 2 models for 8 spokes
         self.assertEqual(len(s.state_groups), 1)
