@@ -354,7 +354,7 @@ class FGRepeats(object):
     beadsize = 20
     Bead = collections.namedtuple('Bead', ['start', 'end', 'len'])
     anchor = {'Nsp1': (601,636),
-              'Nup1': (301,351),
+              'Nup1': (301,350),
               'Nup49': (201,269),
               'Nup57': (201,286),
               'Nup60': (351,398),
