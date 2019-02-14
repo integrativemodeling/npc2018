@@ -21,7 +21,7 @@ import math
 import IMP.atom
 import IMP.rmf
 import IMP.algebra
-import IMP.pmi.output
+import IMP.pmi1.output
 
 def _rotation(angle):
     axis = IMP.algebra.Vector3D(0., 0., 1.)
@@ -134,7 +134,7 @@ class RMFReader(object):
 
     def _get_primary_coords(self, m, mhs, primary_comps):
         name = 'dcd-output'
-        o = IMP.pmi.output.Output(atomistic=True)
+        o = IMP.pmi1.output.Output(atomistic=True)
         o.dictionary_pdbs[name] = mhs[0]
         o._init_dictchain(name, mhs[0], multichar_chain=True)
 

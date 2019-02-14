@@ -9,19 +9,19 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
-#import IMP.pmi.topology
-#import IMP.pmi.dof
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
+#import IMP.pmi1.topology
+#import IMP.pmi1.dof
 import IMP.npc
 import IMP.npc.npc_restraints
 import random
@@ -111,9 +111,9 @@ print inputs
 # setting up topology and parameters
 #####################################################
 m = IMP.Model()
-#s = IMP.pmi.topology.System(m)
+#s = IMP.pmi1.topology.System(m)
 #st = s.create_state()
-simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
 try:
     from mpi4py import MPI
@@ -239,7 +239,7 @@ if (is_membrane):
 #####################################################
 # Model Building
 #####################################################
-bm1 = IMP.pmi.macros.BuildModel1(simo)
+bm1 = IMP.pmi1.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=3.0, sequence_connectivity_resolution=1.0)
@@ -339,7 +339,7 @@ if (use_ExcludedVolume):
     print ("EV included_objects in the main spoke = ", included_objects)
     print ("resolution for EV = ", res_ev)
 
-    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+    ev1 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                  included_objects = included_objects,
                                                                  #other_objects = other_objects,
                                                                  resolution = res_ev)
@@ -355,7 +355,7 @@ if (use_ExcludedVolume):
 # 4th Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
 XL_restraints = None
-mc4 = IMP.pmi.macros.ReplicaExchange0(m,
+mc4 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -380,6 +380,6 @@ mc4 = IMP.pmi.macros.ReplicaExchange0(m,
                                     #replica_exchange_object = rex2)
                                     #replica_exchange_object = rex3)
 mc4.execute_macro()
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank
 #exit(0)

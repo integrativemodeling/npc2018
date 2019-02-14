@@ -9,19 +9,19 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
-#import IMP.pmi.topology
-#import IMP.pmi.dof
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
+#import IMP.pmi1.topology
+#import IMP.pmi1.dof
 import IMP.npc
 import IMP.npc.npc_restraints
 import random
@@ -111,9 +111,9 @@ print inputs
 # setting up topology and parameters
 #####################################################
 m = IMP.Model()
-#s = IMP.pmi.topology.System(m)
+#s = IMP.pmi1.topology.System(m)
 #st = s.create_state()
-simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
 try:
     from mpi4py import MPI
@@ -533,7 +533,7 @@ if (is_basket):
 #####################################################
 # Model Building
 #####################################################
-bm1 = IMP.pmi.macros.BuildModel1(simo)
+bm1 = IMP.pmi1.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
 if (True):
@@ -681,7 +681,7 @@ for protein in clone_list_unique:
 
 print ("rigid_tuples = ", rigid_tuples)
 for rt in rigid_tuples:
-    hs = IMP.pmi.tools.select_by_tuple(simo,rt)
+    hs = IMP.pmi1.tools.select_by_tuple(simo,rt)
     simo.remove_floppy_bodies(hs)
 
 
@@ -736,7 +736,7 @@ class CompositeRepresentation(object):
     def __getitem__(self, protein):
         if protein not in self.protein_beads:
             # Make a single particle that covers the entire protein
-            low_res = IMP.pmi.tools.select(self.simo, resolution=res_ev,
+            low_res = IMP.pmi1.tools.select(self.simo, resolution=res_ev,
                                            name=protein)
             p = IMP.Particle(self.simo.m, "Sphere covering " + protein)
             c = IMP.core.Cover.setup_particle(p, low_res)
@@ -881,7 +881,7 @@ if (use_Composite):
         for protein in res[:-1]:
             rsr.add_type(cr.get_all_copies(protein))
         # Add restraint to the PMI scoring function
-        IMP.pmi.tools.add_restraint_to_model(simo.m, rsr)
+        IMP.pmi1.tools.add_restraint_to_model(simo.m, rsr)
 
 
 #####################################################
@@ -1067,21 +1067,21 @@ dpr_weight = 100.0
 dpr_radius = 50.0
 
 if (is_n84 and use_Distance_to_Point):
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.3, 271.6, 159.2), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(490,490,"Nup133"), anchor_point=IMP.algebra.Vector3D(417.3, 271.6, 159.2), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup133")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(313.0, -54.1, 218.2), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(324,324,"Nup85"), anchor_point=IMP.algebra.Vector3D(313.0, -54.1, 218.2), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup85")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(517.9, -51.6, 191.5), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(465,465,"Nup120"), anchor_point=IMP.algebra.Vector3D(517.9, -51.6, 191.5), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup120")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1092,7 +1092,7 @@ if (is_n84 and use_Distance_to_Point):
     """
     # Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure if it is real
     if (use_neighboring_spokes):
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
         dr.add_to_model()
         dr.set_label("Nup133-Nup120@2")
         dr.set_weight(10.0)
@@ -1101,24 +1101,24 @@ if (is_n84 and use_Distance_to_Point):
     """
 
 if (is_inner_ring and use_Distance_to_Point):
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(12,12,"Nup188"), anchor_point=IMP.algebra.Vector3D(256.0, -6.8, 107.2), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(12,12,"Nup188"), anchor_point=IMP.algebra.Vector3D(265.9, -11.3, 95.5), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(12,12,"Nup188"), anchor_point=IMP.algebra.Vector3D(256.0, -6.8, 107.2), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(12,12,"Nup188"), anchor_point=IMP.algebra.Vector3D(265.9, -11.3, 95.5), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup188_12")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(732,732,"Nup188"), anchor_point=IMP.algebra.Vector3D(314.0, -18.6, 89.4), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(732,732,"Nup188"), anchor_point=IMP.algebra.Vector3D(318.7, -20.0, 118.1), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(732,732,"Nup188"), anchor_point=IMP.algebra.Vector3D(314.0, -18.6, 89.4), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(732,732,"Nup188"), anchor_point=IMP.algebra.Vector3D(318.7, -20.0, 118.1), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup188_732")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1652,1652,"Nup188"), anchor_point=IMP.algebra.Vector3D(279.2, 90.8, 91.9), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1652,1652,"Nup188"), anchor_point=IMP.algebra.Vector3D(288.4, 86.5, 87.4), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1652,1652,"Nup188"), anchor_point=IMP.algebra.Vector3D(279.2, 90.8, 91.9), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1652,1652,"Nup188"), anchor_point=IMP.algebra.Vector3D(288.4, 86.5, 87.4), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup188_1652")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1127,24 +1127,24 @@ if (is_inner_ring and use_Distance_to_Point):
     print "DistanceToPointRestraint for Nup188 !!\n"
 
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1,1,"Nup192"), anchor_point=IMP.algebra.Vector3D(232.4, -76.8, 73.7), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1,1,"Nup192"), anchor_point=IMP.algebra.Vector3D(242.1, -61.8, 97.1), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1,1,"Nup192"), anchor_point=IMP.algebra.Vector3D(232.4, -76.8, 73.7), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1,1,"Nup192"), anchor_point=IMP.algebra.Vector3D(242.1, -61.8, 97.1), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup192_1")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(817,817,"Nup192"), anchor_point=IMP.algebra.Vector3D(297.6, -85.3, 18.7), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(817,817,"Nup192"), anchor_point=IMP.algebra.Vector3D(288.6, -75.3, 26.4), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(817,817,"Nup192"), anchor_point=IMP.algebra.Vector3D(297.6, -85.3, 18.7), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(817,817,"Nup192"), anchor_point=IMP.algebra.Vector3D(288.6, -75.3, 26.4), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup192_817")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1683,1683,"Nup192"), anchor_point=IMP.algebra.Vector3D(318.8, 16.3, 31.8), radius=dpr_radius, kappa=10.0)
-    #dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1683,1683,"Nup192"), anchor_point=IMP.algebra.Vector3D(330.7, 19.6, 38.8), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1683,1683,"Nup192"), anchor_point=IMP.algebra.Vector3D(318.8, 16.3, 31.8), radius=dpr_radius, kappa=10.0)
+    #dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1683,1683,"Nup192"), anchor_point=IMP.algebra.Vector3D(330.7, 19.6, 38.8), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup192_1683")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1153,35 +1153,35 @@ if (is_inner_ring and use_Distance_to_Point):
     print "DistanceToPointRestraint for Nup192 !!\n"
 
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(227,227,"Nup157"), anchor_point=IMP.algebra.Vector3D(377.1, -34.7, -1.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(227,227,"Nup157"), anchor_point=IMP.algebra.Vector3D(377.1, -34.7, -1.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup157_227")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(671,671,"Nup157"), anchor_point=IMP.algebra.Vector3D(361.6, -26.1, 70.6), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(671,671,"Nup157"), anchor_point=IMP.algebra.Vector3D(361.6, -26.1, 70.6), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup157_671")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(892,892,"Nup157"), anchor_point=IMP.algebra.Vector3D(364.6, 17.1, 49.9), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(892,892,"Nup157"), anchor_point=IMP.algebra.Vector3D(364.6, 17.1, 49.9), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup157_892")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1182,1182,"Nup157"), anchor_point=IMP.algebra.Vector3D(340.4, 40.8, 137.9), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1182,1182,"Nup157"), anchor_point=IMP.algebra.Vector3D(340.4, 40.8, 137.9), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup157_1182")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1385,1385,"Nup157"), anchor_point=IMP.algebra.Vector3D(285.4, 65.4, 137.1), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1385,1385,"Nup157"), anchor_point=IMP.algebra.Vector3D(285.4, 65.4, 137.1), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup157_1385")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1190,35 +1190,35 @@ if (is_inner_ring and use_Distance_to_Point):
     print "DistanceToPointRestraint for Nup157 !!\n"
 
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(237,237,"Nup170"), anchor_point=IMP.algebra.Vector3D(358.8, -132.7, -55.4), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(237,237,"Nup170"), anchor_point=IMP.algebra.Vector3D(358.8, -132.7, -55.4), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup170_237")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(709,709,"Nup170"), anchor_point=IMP.algebra.Vector3D(306.1, -129.5, -4.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(709,709,"Nup170"), anchor_point=IMP.algebra.Vector3D(306.1, -129.5, -4.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup170_709")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(992,992,"Nup170"), anchor_point=IMP.algebra.Vector3D(329.4, -87.6, -5.1), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(992,992,"Nup170"), anchor_point=IMP.algebra.Vector3D(329.4, -87.6, -5.1), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup170_992")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1284,1284,"Nup170"), anchor_point=IMP.algebra.Vector3D(359.7, -37.2, 68.7), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1284,1284,"Nup170"), anchor_point=IMP.algebra.Vector3D(359.7, -37.2, 68.7), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup170_1284")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1491,1491,"Nup170"), anchor_point=IMP.algebra.Vector3D(316.2, 1.8, 76.2), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(1491,1491,"Nup170"), anchor_point=IMP.algebra.Vector3D(316.2, 1.8, 76.2), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nup170_1491")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1227,14 +1227,14 @@ if (is_inner_ring and use_Distance_to_Point):
     print "DistanceToPointRestraint for Nup170 !!\n"
 
 if (is_nic96 and use_Distance_to_Point):
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(360,360,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(288.3, 175.5, 109.8), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(360,360,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(288.3, 175.5, 109.8), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nic96.1_360")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
     outputobjects.append(dpr)
     print(dpr.get_output())
 
-    dpr = IMP.pmi.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(835,835,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(324.8, 54.7, 104.0), radius=dpr_radius, kappa=10.0)
+    dpr = IMP.pmi1.restraints.basic.DistanceToPointRestraint(simo, tuple_selection=(835,835,"Nic96.1"), anchor_point=IMP.algebra.Vector3D(324.8, 54.7, 104.0), radius=dpr_radius, kappa=10.0)
     dpr.set_label("Nic96.1_835")
     dpr.set_weight(dpr_weight)
     dpr.add_to_model()
@@ -1310,7 +1310,7 @@ dr_weight = 10.0
 # Nup145n - Nup145c
 if (is_n84 and is_nucleoplasm):
     dist_max = 10.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup145n-Nup145c@11")
     dr.set_weight(dr_weight)
@@ -1320,7 +1320,7 @@ if (is_n84 and is_nucleoplasm):
 # Nup60 homo-dimer cross-link
 if (is_nucleoplasm):
     dist_max = 25.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup60.1_151-Nup60.2_151")
     dr.set_weight(dr_weight)
@@ -1330,7 +1330,7 @@ if (is_nucleoplasm):
 if (is_inner_ring):
     dist_max = 15.0
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup157N-C")
     dr.set_weight(dr_weight)
@@ -1338,7 +1338,7 @@ if (is_inner_ring):
     print(dr.get_output())
 
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup170N-C")
     dr.set_weight(dr_weight)
@@ -1347,7 +1347,7 @@ if (is_inner_ring):
 
     if (use_end_to_end_157_170):
         # end-to-end distance of Nup157 (~193.65 angstrom)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(227,227,"Nup157"), (1385,1385,"Nup157"), distancemin=160, distancemax=220, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(227,227,"Nup157"), (1385,1385,"Nup157"), distancemin=160, distancemax=220, resolution=1.0)
         dr.add_to_model()
         dr.set_label("Nup157_end-to-end")
         dr.set_weight(dr_weight)
@@ -1355,7 +1355,7 @@ if (is_inner_ring):
         print(dr.get_output())
 
         # end-to-end distance of Nup170 (~192.93 angstrom)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(237,237,"Nup170"), (1491,1491,"Nup170"), distancemin=160, distancemax=220, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(237,237,"Nup170"), (1491,1491,"Nup170"), distancemin=160, distancemax=220, resolution=1.0)
         dr.add_to_model()
         dr.set_label("Nup170_end-to-end")
         dr.set_weight(dr_weight)
@@ -1417,7 +1417,7 @@ if (is_membrane):
     dist_max = 25.0
 
     # same residue cross-link of Pom152 62-62
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
@@ -1426,8 +1426,8 @@ if (is_membrane):
 
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        #dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.add_to_model()
         #dr.set_label("Pom152-Pom152@12")
         dr.set_label("Pom152-Pom152@13")
@@ -1435,7 +1435,7 @@ if (is_membrane):
         outputobjects.append(dr)
         print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
@@ -1626,10 +1626,10 @@ if (use_XL):
     columnmap["Residue2"] = "Residue 2"
     columnmap["IDScore"] = "p value"
     columnmap["XLUniqueID"] = "XLUniqueID"
-    ids_map = IMP.pmi.tools.map()
+    ids_map = IMP.pmi1.tools.map()
     ids_map.set_map_element(1.0, 1.0)
 
-    xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+    xl1 = IMP.pmi1.restraints.crosslinking.ISDCrossLinkMS(simo,
                                                         '../data_npc/XL_optimized_ambiguity.csv',
                                                         length = 26.0,
                                                         slope = 0.00,
@@ -1650,7 +1650,7 @@ if (use_XL):
     psi2 = xl1.get_psi(1.0)[0]
     psi2.set_scale(0.05)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 0 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank
     XL_restraints = [xl1]
 else:
@@ -1659,7 +1659,7 @@ else:
 if (is_inner_ring and use_end_to_end_157_170):
     # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
     dist_max = 30.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup157C-Nup170C")
     dr.set_weight(dr_weight)
@@ -1672,7 +1672,7 @@ if (is_inner_ring and use_end_to_end_157_170):
 # Distance restraints for XL cliques involving the membrane nups
 #####################################################
 if (is_inner_ring and is_membrane):
-    db = IMP.pmi.tools.get_db_from_csv('../data_npc/XL_cliques.csv')
+    db = IMP.pmi1.tools.get_db_from_csv('../data_npc/XL_cliques.csv')
     dist_max = 30.0
 
     for nxl, entry in enumerate(db):
@@ -1682,7 +1682,7 @@ if (is_inner_ring and is_membrane):
         mol2 = entry["Protein 2"]
         res2 = int(entry["Residue 2"])
 
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo, (res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.add_to_model()
         temp_label = mol1 + "_" + str(res1) + "-" + mol2 + "_" + str(res2)
         dr.set_label(temp_label)
@@ -1722,7 +1722,7 @@ if (use_sampling_boundary):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
-    sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    sbr = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_outer_ring_newEM.gmm.60.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.01,
@@ -1734,7 +1734,7 @@ if (use_sampling_boundary):
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 0 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank
 
 
@@ -1742,14 +1742,14 @@ if (use_sampling_boundary):
 #####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (initial) - ", rank
 
 simo.optimize_floppy_bodies(300)
 print "\nEVAL 2 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
 
 #XL_restraints = None
-mc1 = IMP.pmi.macros.ReplicaExchange0(m,
+mc1 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1805,7 +1805,7 @@ if (use_EM3D):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the EM 3D restraint = ", mass)
-    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    gem = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_outer_ring_newEM.gmm.250.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
@@ -1816,7 +1816,7 @@ if (use_EM3D):
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 
 
@@ -1824,7 +1824,7 @@ if (use_EM3D):
 #####################################################
 # 2nd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc2 = IMP.pmi.macros.ReplicaExchange0(m,
+mc2 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1885,7 +1885,7 @@ if (use_ExcludedVolume):
     print ("EV other_objects = ", other_objects)
     print ("resolution for EV = ", res_ev)
 
-    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+    ev1 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                  included_objects = included_objects,
                                                                  #other_objects = other_objects,
                                                                  resolution = res_ev)
@@ -1897,7 +1897,7 @@ if (use_ExcludedVolume):
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
 
     if (use_neighboring_spokes):
-        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+        ev2 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                      included_objects = included_objects,
                                                                      other_objects = other_objects,
                                                                      resolution = res_ev)
@@ -1913,7 +1913,7 @@ if (use_ExcludedVolume):
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc3 = IMP.pmi.macros.ReplicaExchange0(m,
+mc3 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1969,7 +1969,7 @@ if (use_EM3D):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
-    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    gem = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted_inner_ring.gmm.500.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.00000025,
@@ -1980,7 +1980,7 @@ if (use_EM3D):
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 7 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 """
 
@@ -2015,7 +2015,7 @@ if (is_n84):
 #####################################################
 # 4th Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc4 = IMP.pmi.macros.ReplicaExchange0(m,
+mc4 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,

@@ -5,10 +5,10 @@ import IMP.atom
 import IMP.display
 import IMP.isd
 import IMP.isd.gmm_tools
-import IMP.pmi
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.topology
+import IMP.pmi1
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.topology
 from math import pi, sqrt
 import os
 

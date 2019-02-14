@@ -9,7 +9,7 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.tools
+import IMP.pmi1.tools
 
 
 #####################################################
@@ -55,7 +55,7 @@ etc5 = columnmap["etc5"]
 xls=[]
 xls.append(["Protein 1", "Residue 1", "Protein 2", "Residue 2", "p value", "XLUniqueID", "etc1", "etc2", "etc3", "etc4", "etc5"])
 xlunique_id = 1
-db = IMP.pmi.tools.get_db_from_csv(inputs.csv_file)
+db = IMP.pmi1.tools.get_db_from_csv(inputs.csv_file)
 
 for nxl, entry in enumerate(db):
     #print nxl, entry

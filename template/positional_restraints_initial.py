@@ -209,7 +209,7 @@ dr_weight = 10.0
 # Nup145n - Nup145c
 if (is_n84 and is_nucleoplasm):
     dist_max = 10.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Nup145n-Nup145c@11")
     dr.add_to_model()
     dr.set_weight(dr_weight)
@@ -219,7 +219,7 @@ if (is_n84 and is_nucleoplasm):
 # Nup60 homo-dimer cross-link
 if (is_nucleoplasm):
     dist_max = 25.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Nup60.1_151-Nup60.2_151")
     dr.add_to_model()
     dr.set_weight(dr_weight)
@@ -229,7 +229,7 @@ if (is_nucleoplasm):
 """
 # Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure if it is real
 if (is_n84 and use_neighboring_spokes):
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
     dr.set_label("Nup133-Nup120@2")
     dr.add_to_model()
     dr.set_weight(10.0)
@@ -239,7 +239,7 @@ if (is_n84 and use_neighboring_spokes):
 if (is_inner_ring):
     dist_max = 15.0
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Nup157N-C")
     dr.add_to_model()
     dr.set_weight(dr_weight)
@@ -247,7 +247,7 @@ if (is_inner_ring):
     print(dr.get_output())
 
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Nup170N-C")
     dr.add_to_model()
     dr.set_weight(dr_weight)
@@ -257,7 +257,7 @@ if (is_inner_ring):
     # Enforcing a binary interface Between Nup157 #976 and Nup170 #1475 (based on a cross-link ID #221)
     if (False):
         dist_max = 30.0
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(976,976,"Nup157"), (1475,1475,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.set_label("Nup157C-Nup170C")
         dr.add_to_model()
         dr.set_weight(dr_weight)
@@ -320,7 +320,7 @@ if (is_membrane):
     dist_max = 25.0
 
     # same residue cross-link of Pom152 62-62
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Pom152-Pom152@11")
     dr.add_to_model()
     dr.set_weight(dr_weight)
@@ -329,8 +329,8 @@ if (is_membrane):
 
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        #dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         #dr.set_label("Pom152-Pom152@12")
         dr.set_label("Pom152-Pom152@13")
         dr.add_to_model()
@@ -338,7 +338,7 @@ if (is_membrane):
         outputobjects.append(dr)
         print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.set_label("Pom152-Pom152@11")
     dr.add_to_model()
     dr.set_weight(dr_weight)

@@ -11,19 +11,19 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.em2d
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.representation
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.em2d
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.representation
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
 import random
 
 import os
@@ -112,8 +112,8 @@ print inputs
 # for bead representations
 #####################################################
 m = IMP.Model()
-simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
-#simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=True)
+simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+#simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=True)
 
 
 #####################################################
@@ -200,7 +200,7 @@ domains = \
  ("pom152",  "pom152_9",   0.9,  fasta_files+"pom152.txt",    "pom152",   pdb_files+"1238_1337.pdb",    "A",  (1244,1337,0),  True,          beadsize,       9,      [9],           4,                None,            None, [0]),
 ]
 
-bm1=IMP.pmi.macros.BuildModel1(simo)
+bm1=IMP.pmi1.macros.BuildModel1(simo)
 #bm1.set_gmm_models_directory(datadirectory+"em_gmm_model/")
 
 if (inputs.rmf_input is not None) :
@@ -210,7 +210,7 @@ if (inputs.rmf_input is not None) :
 
 bm1.build_model(data_structure = domains, sequence_connectivity_scale=sc_scale, sequence_connectivity_resolution=1.0)
 
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 1 : ", sf.evaluate(False), " (before applying the EM 2D restraint) - ", rank
 
 
@@ -220,7 +220,7 @@ resolution = 1.0
 ################################
 # Detergent
 ################################
-particles = IMP.pmi.tools.select(simo,
+particles = IMP.pmi1.tools.select(simo,
                                 resolution=resolution,
                                 name="detgnt")
 for p in particles:
@@ -233,7 +233,7 @@ for p in particles:
 ################################
 # Pom152
 ################################
-particles = IMP.pmi.tools.select(simo,
+particles = IMP.pmi1.tools.select(simo,
                                 resolution=resolution,
                                 name="pom152")
 for p in particles:
@@ -251,7 +251,7 @@ map = IMP.em.SampledDensityMap(ps, 30, 5.0)
 IMP.em.write_map(map, "em2d_particle_selected.mrc")
 
 # writing the pdb files
-output = IMP.pmi.output.Output()
+output = IMP.pmi1.output.Output()
 output.init_pdb("test_pdb_writing.pdb", simo.prot)
 output.write_pdb("test_pdb_writing.pdb")
 
@@ -277,10 +277,10 @@ em2d = IMP.em2d.PCAFitRestraint(
 rs.add_restraint(em2d)
 
 """
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 3 : ", sf.evaluate(False), " (before applying the EM 2D restraint) - ", rank
 
-em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D_FFT(simo,
+em2d = IMP.pmi1.restraints.em2d.ElectronMicroscopy2D_FFT(simo,
                                                     images,
                                                     resolution = resolution,
                                                     pixel_size = pixel_size,
@@ -289,7 +289,7 @@ em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D_FFT(simo,
 em2d.add_to_model()
 #outputobjects.append(em2d)
 
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 4 : ", sf.evaluate(False), " (after applying the EM 2D restraint) - ", rank
 exit(1)
 """
@@ -301,5 +301,5 @@ print("PCAFitRestraint score = ", score)
 print("CCC = ", math.exp(-float(score)))
 em2d.write_best_projections("best_projections.pgm")
 
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 2 : ", sf.evaluate(False), " (after applying the EM 2D restraint) - ", rank

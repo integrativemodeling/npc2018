@@ -9,19 +9,19 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
-#import IMP.pmi.topology
-#import IMP.pmi.dof
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
+#import IMP.pmi1.topology
+#import IMP.pmi1.dof
 import IMP.npc
 import IMP.npc.npc_restraints
 import random
@@ -111,9 +111,9 @@ print inputs
 # setting up topology and parameters
 #####################################################
 m = IMP.Model()
-#s = IMP.pmi.topology.System(m)
+#s = IMP.pmi1.topology.System(m)
 #st = s.create_state()
-simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
 try:
     from mpi4py import MPI
@@ -529,7 +529,7 @@ if (is_basket):
 #####################################################
 # Model Building
 #####################################################
-bm1 = IMP.pmi.macros.BuildModel1(simo)
+bm1 = IMP.pmi1.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
 if (True):
@@ -682,7 +682,7 @@ for protein in clone_list_unique:
 
 print ("rigid_tuples = ", rigid_tuples)
 for rt in rigid_tuples:
-    hs = IMP.pmi.tools.select_by_tuple(simo,rt)
+    hs = IMP.pmi1.tools.select_by_tuple(simo,rt)
     simo.remove_floppy_bodies(hs)
 
 
@@ -877,14 +877,14 @@ if (is_basket):
     # end-to-end distance of Mlps (230-350 angstrom)
     dist_min = 330.0    #dist_min = 230.0
     dist_max = 450.0    #dist_max = 350.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(500,500,"Mlp1"), (1875,1875,"Mlp1"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(500,500,"Mlp1"), (1875,1875,"Mlp1"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Mlp1_end-to-end")
     dr.set_weight(dr_weight)
     outputobjects.append(dr)
     print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(500,500,"Mlp2"), (1679,1679,"Mlp2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(500,500,"Mlp2"), (1679,1679,"Mlp2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Mlp2_end-to-end")
     dr.set_weight(dr_weight)
@@ -928,7 +928,7 @@ if (is_basket):
     # Mlp1-Mlp2 hetero-dimer
     dist_min = 3.0
     dist_max = 15.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(1875,1875,"Mlp1"), (1679,1679,"Mlp2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(1875,1875,"Mlp1"), (1679,1679,"Mlp2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Mlp1-Mlp2")
     dr.set_weight(dr_weight)
@@ -939,7 +939,7 @@ if (is_basket):
 # Nup145n - Nup145c
 if (is_n84 and is_nucleoplasm):
     dist_max = 10.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(605,605,"Nup145.1"), (1,1,"Nup145c@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup145n-Nup145c@11")
     dr.set_weight(dr_weight)
@@ -949,7 +949,7 @@ if (is_n84 and is_nucleoplasm):
 # Nup60 homo-dimer cross-link
 if (is_nucleoplasm):
     dist_max = 25.0
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(151,151,"Nup60.1"), (151,151,"Nup60.2"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup60.1_151-Nup60.2_151")
     dr.set_weight(dr_weight)
@@ -959,7 +959,7 @@ if (is_nucleoplasm):
 """
 # Nup120 - Nup133 to form the outer ring  (Seo et al, PNAS 2009) ; Not sure if it is real
 if (is_n84 and use_neighboring_spokes):
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(11,11,"Nup133"), (641,641,"Nup120@2"), distancemin=3.0, distancemax=35.0, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup133-Nup120@2")
     dr.set_weight(10.0)
@@ -970,7 +970,7 @@ if (is_n84 and use_neighboring_spokes):
 if (is_inner_ring):
     dist_max = 15.0
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(892,892,"Nup157"), (900,900,"Nup157"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup157N-C")
     dr.set_weight(dr_weight)
@@ -978,7 +978,7 @@ if (is_inner_ring):
     print(dr.get_output())
 
     # connection between NTD and CTD
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(992,992,"Nup170"), (1000,1000,"Nup170"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Nup170N-C")
     dr.set_weight(dr_weight)
@@ -1049,7 +1049,7 @@ if (is_membrane):
     dist_max = 25.0
 
     # same residue cross-link of Pom152 62-62
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(62,62,"Pom152"), (62,62,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
@@ -1059,8 +1059,8 @@ if (is_membrane):
     """
     if (use_neighboring_spokes):
         # TODO: Pom152 orientation?  (clockwise or counter-clockwise?)
-        #dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        #dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@12"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (1337,1337,"Pom152@13"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         dr.add_to_model()
         #dr.set_label("Pom152-Pom152@12")
         dr.set_label("Pom152-Pom152@13")
@@ -1068,7 +1068,7 @@ if (is_membrane):
         outputobjects.append(dr)
         print(dr.get_output())
 
-    dr = IMP.pmi.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+    dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo,(351,351,"Pom152"), (351,351,"Pom152@11"), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
     dr.add_to_model()
     dr.set_label("Pom152-Pom152@11")
     dr.set_weight(dr_weight)
@@ -1331,10 +1331,10 @@ if (use_XL):
     columnmap["Residue2"] = "Residue 2"
     columnmap["IDScore"] = "p value"
     columnmap["XLUniqueID"] = "XLUniqueID"
-    ids_map = IMP.pmi.tools.map()
+    ids_map = IMP.pmi1.tools.map()
     ids_map.set_map_element(1.0, 1.0)
 
-    xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+    xl1 = IMP.pmi1.restraints.crosslinking.ISDCrossLinkMS(simo,
                                                         '../data_npc/XL_Merged_wholeNPC_MLPs.csv',
                                                         length = 26.0,
                                                         slope = 0.00,
@@ -1355,7 +1355,7 @@ if (use_XL):
     psi2 = xl1.get_psi(1.0)[0]
     psi2.set_scale(0.05)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 1 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank
     XL_restraints = [xl1]
 else:
@@ -1397,7 +1397,7 @@ if (use_sampling_boundary):
     #mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint for the outer-ring = ", mass)
-    sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    sbr = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_outer_ring_newEM.gmm.250.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.01,
@@ -1409,7 +1409,7 @@ if (use_sampling_boundary):
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 2 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank
 
 
@@ -1417,13 +1417,13 @@ if (use_sampling_boundary):
 #####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print "\nEVAL 3 : ", sf.evaluate(False), " (initial) - ", rank
 
 simo.optimize_floppy_bodies(300)
 print "\nEVAL 4 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank
 
-mc1 = IMP.pmi.macros.ReplicaExchange0(m,
+mc1 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1496,7 +1496,7 @@ if (use_EM3D):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
-    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    gem = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_cropped_ynpc_eman_06_01_sym_cleaned_rotated_adjusted90.gmm.1250.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
@@ -1507,14 +1507,14 @@ if (use_EM3D):
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank
 
 """
 #####################################################
 # 2nd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc2 = IMP.pmi.macros.ReplicaExchange0(m,
+mc2 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1573,7 +1573,7 @@ if (use_ExcludedVolume):
     print ("EV other_objects = ", other_objects)
     print ("resolution for EV = ", res_ev)
 
-    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+    ev1 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                  included_objects = included_objects,
                                                                  #other_objects = other_objects,
                                                                  resolution = res_ev)
@@ -1585,7 +1585,7 @@ if (use_ExcludedVolume):
     print "ExcludedVolumeSphere1 for the main spoke !!\n"
 
     if (use_neighboring_spokes):
-        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+        ev2 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                      included_objects = included_objects,
                                                                      other_objects = other_objects,
                                                                      resolution = res_ev)
@@ -1596,14 +1596,14 @@ if (use_ExcludedVolume):
         print(ev2.get_output())
         print "ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n"
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print "\nEVAL 8 : ", sf.evaluate(False), " (after applying the Excluded Volume restraint) - ", rank
 
 """
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc3 = IMP.pmi.macros.ReplicaExchange0(m,
+mc3 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1634,7 +1634,7 @@ print "\nEVAL 9 : ", sf.evaluate(False), " (after performing the EV_sampling) - 
 #####################################################
 # 4th Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc4 = IMP.pmi.macros.ReplicaExchange0(m,
+mc4 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,

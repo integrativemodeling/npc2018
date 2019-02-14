@@ -14,21 +14,21 @@ import IMP.container
 
 import ihm.location
 import ihm.dataset
-import IMP.pmi.mmcif
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.em2d
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
-#import IMP.pmi.topology
-#import IMP.pmi.dof
+import IMP.pmi1.mmcif
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.em2d
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
+#import IMP.pmi1.topology
+#import IMP.pmi1.dof
 import IMP.npc
 import IMP.npc.npc_restraints
 import random
@@ -129,9 +129,9 @@ print(inputs)
 # setting up topology and parameters
 #####################################################
 m = IMP.Model()
-#s = IMP.pmi.topology.System(m)
+#s = IMP.pmi1.topology.System(m)
 #st = s.create_state()
-simo = IMP.pmi.representation.Representation(m,upperharmonic=True,disorderedlength=False)
+simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlength=False)
 
 # Record additional software used
 # Detection of templates for comparative modeling (HHPred)
@@ -299,7 +299,7 @@ use_XL = True
 use_EM3D = True
 
 class _ChainOfFGs(object):
-    """Override IMP.pmi.mmcif._Chain to substitute coordinates for FGs"""
+    """Override IMP.pmi1.mmcif._Chain to substitute coordinates for FGs"""
     def __init__(self, orig_chain, fg_repeats, fg_spheres):
         self.orig_chain = orig_chain
         self.fg_repeats = fg_repeats
@@ -491,7 +491,7 @@ class FGRepeats(object):
                 s.append((coord, radius))
 
 
-class ProtocolOutput(IMP.pmi.mmcif.ProtocolOutput):
+class ProtocolOutput(IMP.pmi1.mmcif.ProtocolOutput):
     def __init__(self, *args, **keys):
         super(ProtocolOutput, self).__init__(*args, **keys)
         self.fgs = FGRepeats(self)
@@ -867,7 +867,7 @@ if (is_basket):
 #####################################################
 # Model Building
 #####################################################
-bm1 = IMP.pmi.macros.BuildModel1(simo)
+bm1 = IMP.pmi1.macros.BuildModel1(simo)
 bm1.set_gmm_models_directory(gmm_f)
 
 if (True):
@@ -1149,7 +1149,7 @@ for protein in clone_list_unique:
 
 print ("rigid_tuples = ", rigid_tuples)
 for rt in rigid_tuples:
-    hs = IMP.pmi.tools.select_by_tuple(simo,rt)
+    hs = IMP.pmi1.tools.select_by_tuple(simo,rt)
     simo.remove_floppy_bodies(hs)
 
 
@@ -1205,7 +1205,7 @@ class CompositeRepresentation(object):
     def __getitem__(self, protein):
         if protein not in self.protein_beads:
             # Make a single particle that covers the entire protein
-            low_res = IMP.pmi.tools.select(self.simo, resolution=res_ev,
+            low_res = IMP.pmi1.tools.select(self.simo, resolution=res_ev,
                                            name=protein)
             p = IMP.Particle(self.simo.m, "Sphere covering " + protein)
             c = IMP.core.Cover.setup_particle(p, low_res)
@@ -1350,7 +1350,7 @@ if (use_Composite):
         for protein in res[:-1]:
             rsr.add_type(cr.get_all_copies(protein))
         # Add restraint to the PMI scoring function
-        IMP.pmi.tools.add_restraint_to_model(simo.m, rsr)
+        IMP.pmi1.tools.add_restraint_to_model(simo.m, rsr)
 
 # Add absolute position restraints
 if inputs.mmcif:
@@ -1375,10 +1375,10 @@ if (use_XL):
     columnmap["Residue2"] = "Residue 2"
     columnmap["IDScore"] = "p value"
     columnmap["XLUniqueID"] = "XLUniqueID"
-    ids_map = IMP.pmi.tools.map()
+    ids_map = IMP.pmi1.tools.map()
     ids_map.set_map_element(1.0, 1.0)
 
-    xl1 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+    xl1 = IMP.pmi1.restraints.crosslinking.ISDCrossLinkMS(simo,
                                                         '../data_npc/XL_optimized_ambiguity.csv',
                                                         length = 26.0,
                                                         slope = 0.00,
@@ -1409,13 +1409,13 @@ if (use_XL):
     psi2 = xl1.get_psi(1.0)[0]
     psi2.set_scale(0.05)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print("\nEVAL 1 : ", sf.evaluate(False), " (after applying the XL restraint) - ", rank)
     XL_restraints = [xl1]
 
     if inputs.mmcif:
         # Also add Mlp-specific crosslinks to the final deposition
-        xl2 = IMP.pmi.restraints.crosslinking.ISDCrossLinkMS(simo,
+        xl2 = IMP.pmi1.restraints.crosslinking.ISDCrossLinkMS(simo,
                  '../data_npc/XL_Merged_wholeNPC_MLPs.csv', length = 26.0,
                  slope = 0.00, columnmapping = columnmap, ids_map = ids_map,
                  resolution = 1.0, inner_slope = 0.01, filelabel = "wtDSS",
@@ -1439,7 +1439,7 @@ else:
 # Distance restraints for XL cliques involving the membrane nups
 #####################################################
 if (is_inner_ring and is_membrane):
-    db = IMP.pmi.tools.get_db_from_csv('../data_npc/XL_cliques.csv')
+    db = IMP.pmi1.tools.get_db_from_csv('../data_npc/XL_cliques.csv')
     dist_max = 30.0
 
     for nxl, entry in enumerate(db):
@@ -1449,7 +1449,7 @@ if (is_inner_ring and is_membrane):
         mol2 = entry["Protein 2"]
         res2 = int(entry["Residue 2"])
 
-        dr = IMP.pmi.restraints.basic.DistanceRestraint(simo, (res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
+        dr = IMP.pmi1.restraints.basic.DistanceRestraint(simo, (res1,res1,mol1), (res2,res2,mol2), distancemin=dist_min, distancemax=dist_max, resolution=1.0)
         temp_label = mol1 + "_" + str(res1) + "-" + mol2 + "_" + str(res2)
         dr.set_label(temp_label)
         dr.add_to_model()
@@ -1504,7 +1504,7 @@ if (use_sampling_boundary):
     #mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     mass *= 1.2           # 1.2 for adjustment of the GMM (after removing flexible GMMs)
     print ("Total mass for the Sampling Boundary EM restraint = ", mass)
-    sbr = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    sbr = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_SamplingBoundary.gmm.15.txt',
                                                     target_mass_scale=mass,
                                                     slope=0.01,
@@ -1516,21 +1516,21 @@ if (use_sampling_boundary):
     #sbr.center_model_on_target_density(simo)
     outputobjects.append(sbr)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print("\nEVAL 2 : ", sf.evaluate(False), " (after applying the Sampling Boundary EM restraint) - ", rank)
 
 
 #####################################################
 # 1st Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
 print("\nEVAL 3 : ", sf.evaluate(False), " (initial) - ", rank)
 
 if not inputs.dry_run:
     simo.optimize_floppy_bodies(300)
 print("\nEVAL 4 : ", sf.evaluate(False), " (after calling optimize_floppy_bodies(300)) - ", rank)
 
-mc1 = IMP.pmi.macros.ReplicaExchange0(m,
+mc1 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1588,7 +1588,7 @@ if (use_EM3D):
     mass = sum((IMP.atom.Mass(p).get_mass() for h in resdensities for p in IMP.atom.get_leaves(h)))
     mass *= 1.2 * 2.0           # 1.2 for adjustment of the GMM (after removing flexible GMMs) and 2.0 for approximation of the NPC spoke mass
     print ("Total mass for the EM restraint = ", mass)
-    gem = IMP.pmi.restraints.em.GaussianEMRestraint(resdensities,
+    gem = IMP.pmi1.restraints.em.GaussianEMRestraint(resdensities,
                                                     '../data_npc/em_gmm_model/SJ_cropped_sym8_avg_monomer_final_rotated_adjusted90.gmm.400.txt',
                                                     target_mass_scale=mass,
                                                     #slope=0.0000005,
@@ -1611,14 +1611,14 @@ if (use_EM3D):
     #gem.center_model_on_target_density(simo)
     outputobjects.append(gem)
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print("\nEVAL 6 : ", sf.evaluate(False), " (after applying the EM 3D restraint) - ", rank)
 
 
 #####################################################
 # 2nd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc2 = IMP.pmi.macros.ReplicaExchange0(m,
+mc2 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1682,7 +1682,7 @@ if (use_ExcludedVolume):
     print ("EV other_objects = ", other_objects)
     print ("resolution for EV = ", res_ev)
 
-    ev1 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+    ev1 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                  included_objects = included_objects,
                                                                  #other_objects = other_objects,
                                                                  resolution = res_ev)
@@ -1694,7 +1694,7 @@ if (use_ExcludedVolume):
     print("ExcludedVolumeSphere1 for the main spoke !!\n")
 
     if (use_neighboring_spokes):
-        ev2 = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(simo,
+        ev2 = IMP.pmi1.restraints.stereochemistry.ExcludedVolumeSphere(simo,
                                                                      included_objects = included_objects,
                                                                      other_objects = other_objects,
                                                                      resolution = res_ev)
@@ -1705,14 +1705,14 @@ if (use_ExcludedVolume):
         print(ev2.get_output())
         print("ExcludedVolumeSphere2 between the main spoke and the neighboring spokes !!\n")
 
-    sf = IMP.core.RestraintsScoringFunction(IMP.pmi.tools.get_restraint_set(m))
+    sf = IMP.core.RestraintsScoringFunction(IMP.pmi1.tools.get_restraint_set(m))
     print("\nEVAL 8 : ", sf.evaluate(False), " (after applying the Excluded Volume restraint) - ", rank)
 
 """
 #####################################################
 # 3rd Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc3 = IMP.pmi.macros.ReplicaExchange0(m,
+mc3 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1744,7 +1744,7 @@ print("\nEVAL 9 : ", sf.evaluate(False), " (after performing the EV_sampling) - 
 #####################################################
 # 4th Metropolis Monte Carlo sampling with Replica Exchange
 #####################################################
-mc4 = IMP.pmi.macros.ReplicaExchange0(m,
+mc4 = IMP.pmi1.macros.ReplicaExchange0(m,
                                     simo,
                                     monte_carlo_sample_objects = sampleobjects,
                                     output_objects = outputobjects,
@@ -1877,7 +1877,7 @@ if inputs.mmcif:
     images = ['%s/Images/Image-%d.pgm' % (n96_dir, num)
               for num in image_numbers]
     # todo: fill in correct # of micrographs
-    em2d = IMP.pmi.restraints.em2d.ElectronMicroscopy2D(simo, images,
+    em2d = IMP.pmi1.restraints.em2d.ElectronMicroscopy2D(simo, images,
                                                     resolution=1.0,
                                                     pixel_size = pixel_size,
                                                     image_resolution = 35.0,

@@ -9,19 +9,19 @@ import IMP.algebra
 import IMP.atom
 import IMP.container
 
-import IMP.pmi.restraints.crosslinking
-import IMP.pmi.restraints.stereochemistry
-import IMP.pmi.restraints.em
-import IMP.pmi.restraints.basic
-import IMP.pmi.restraints.proteomics
-import IMP.pmi.representation
-import IMP.pmi.macros
-import IMP.pmi.restraints
-import IMP.pmi.tools
-import IMP.pmi.output
-import IMP.pmi.samplers
-#import IMP.pmi.topology
-#import IMP.pmi.dof
+import IMP.pmi1.restraints.crosslinking
+import IMP.pmi1.restraints.stereochemistry
+import IMP.pmi1.restraints.em
+import IMP.pmi1.restraints.basic
+import IMP.pmi1.restraints.proteomics
+import IMP.pmi1.representation
+import IMP.pmi1.macros
+import IMP.pmi1.restraints
+import IMP.pmi1.tools
+import IMP.pmi1.output
+import IMP.pmi1.samplers
+#import IMP.pmi1.topology
+#import IMP.pmi1.dof
 import IMP.npc
 import IMP.npc.npc_restraints
 import random
@@ -153,12 +153,12 @@ for hier_name, hier_dict in hier_raw.items():
     del rh
 
     m = IMP.Model()
-    prots = IMP.pmi.analysis.get_hiers_from_rmf(m, 0, hier_name + ".rmf3")
+    prots = IMP.pmi1.analysis.get_hiers_from_rmf(m, 0, hier_name + ".rmf3")
     if not prots:
         raise ValueError("cannot read hiearchy from rmf")
     prot=prots[0]
 
-    o = IMP.pmi.output.Output()
+    o = IMP.pmi1.output.Output()
     o.init_pdb(hier_name + ".pdb", prot)
     o.write_pdb(hier_name + ".pdb")
     del o
