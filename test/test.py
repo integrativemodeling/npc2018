@@ -5,6 +5,10 @@ import os
 import sys
 import subprocess
 import ihm.reader
+try:
+    from ihm import cross_linkers
+except ImportError:
+    cross_linkers = None
 
 TOPDIR = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), '..'))
 
@@ -160,8 +164,12 @@ class Tests(unittest.TestCase):
                   if isinstance(r, ihm.restraint.CrossLinkRestraint)]
         self.assertEqual(len(xl_rsr), 2)
         xl1, xl2 = xl_rsr
-        self.assertEqual(xl1.linker_type, 'DSS')
-        self.assertEqual(xl2.linker_type, 'DSS')
+        if cross_linkers is None:
+            self.assertEqual(xl1.linker_type, 'DSS')
+            self.assertEqual(xl2.linker_type, 'DSS')
+        else:
+            self.assertEqual(xl1.linker.auth_name, cross_linkers.dss.auth_name)
+            self.assertEqual(xl2.linker.auth_name, cross_linkers.dss.auth_name)
         if num_spokes == 1:
             self.assertEqual(len(xl1.experimental_cross_links), 505)
         else:
