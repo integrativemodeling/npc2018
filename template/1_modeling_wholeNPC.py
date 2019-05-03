@@ -967,6 +967,9 @@ class SAXSFits(object):
         m = self.seqrange_re.match(row['Sequence coverage'])
         seqrange = (int(m.group(1)), int(m.group(2)))
         protein = row['Protein'].capitalize()
+        # Exclude fit in the file with invalid seqrange (Nup82 has 713 residues)
+        if protein == 'Nup82' and seqrange == (791,899):
+            return
         # For proteins with multiple copies, map to the first
         if protein in ('Nup145', 'Nup100', 'Nup116', 'Nup82'):
             protein += '.1'
