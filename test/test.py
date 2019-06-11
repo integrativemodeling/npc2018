@@ -157,8 +157,8 @@ class Tests(unittest.TestCase):
                           528, 655, 299, 1337, 959, 1113, 430, 538, 1317,
                           1076, 539, 1875, 1679])
         self.assertEqual(len(s.asym_units), 69 * num_spokes)
-        # 103 restraints
-        self.assertEqual(len(s.restraints), 103)
+        # 102 restraints
+        self.assertEqual(len(s.restraints), 102)
         # 2 crosslink restraints
         xl_rsr = [r for r in s.restraints
                   if isinstance(r, ihm.restraint.CrossLinkRestraint)]
@@ -187,10 +187,10 @@ class Tests(unittest.TestCase):
                     if isinstance(r, ihm.restraint.GeometricRestraint)]
         self.assertEqual(len(geom_rsr), 61)
 
-        # 37 SAXS restraints
+        # 36 SAXS restraints
         sas_rsr = [r for r in s.restraints
                    if isinstance(r, ihm.restraint.SASRestraint)]
-        self.assertEqual(len(sas_rsr), 37)
+        self.assertEqual(len(sas_rsr), 36)
         self.assertEqual(sas_rsr[0].segment, False)
         self.assertEqual(sas_rsr[0].fitting_method, 'FoXS')
         self.assertAlmostEqual(sas_rsr[0].radius_of_gyration, 27.9, places=1)
