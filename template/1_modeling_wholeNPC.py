@@ -14,6 +14,10 @@ import IMP.container
 
 import ihm.location
 import ihm.dataset
+try:
+    import ihm.reference
+except ImportError:
+    pass
 import IMP.pmi1.mmcif
 import IMP.pmi1.restraints.crosslinking
 import IMP.pmi1.restraints.stereochemistry
@@ -1776,6 +1780,29 @@ print("\nEVAL 10 : ", sf.evaluate(False), " (final evaluation) - ", rank)
 #exit(0)
 
 if inputs.mmcif:
+    # Link entities to UniProt
+    if hasattr(ihm, 'reference'):
+        for subunit, accession, db_begin in (
+                ('Nup84', 'P52891', 1), ('Nup85', 'P46673', 1),
+                ('Nup120', 'P35729', 1), ('Nup133', 'P36161', 1),
+                ('Nup145c', 'P49687', 606), ('Seh1', 'P53011', 1),
+                ('Sec13', 'Q04491', 1), ('Dyn2.1', 'Q02647', 1),
+                ('Nup82.1', 'P40368', 1), ('Nup159.1', 'P40477', 1),
+                ('Nsp1.1', 'P14907', 1), ('Nic96.1', 'P34077', 1),
+                ('Nup49.1', 'Q02199', 1), ('Nup57.1', 'P48837', 1),
+                ('Nup157', 'P40064', 1), ('Nup170', 'P38181', 1),
+                ('Nup188', 'P52593', 1), ('Nup192', 'P47054', 1),
+                ('Nup53', 'Q03790', 1), ('Nup59', 'Q05166', 1),
+                ('Ndc1', 'P32500', 1), ('Pom34', 'Q12445', 1),
+                ('Pom152', 'P39685', 1), ('Nup100.1', 'Q02629', 1),
+                ('Nup116.1', 'Q02630', 1), ('Nup42', 'P49686', 1),
+                ('Gle1', 'Q12315', 1), ('Nup145.1', 'P49687', 1),
+                ('Nup1', 'P20676', 1), ('Nup60.1', 'P39705', 1),
+                ('Mlp1', 'Q02455', 1), ('Mlp2', 'P40457', 1)):
+            ref = ihm.reference.UniProtSequence.from_accession(accession)
+            ref.alignments.append(ihm.reference.Alignment(db_begin=db_begin))
+            e = po.asym_units[subunit].entity.references.append(ref)
+
     if inputs.one_spoke:
         framework_rmf = '../results/RMF_files/cluster0_47-35_1spoke.rmf3'
     else:
