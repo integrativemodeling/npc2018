@@ -1,10 +1,10 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1194547.svg)](https://doi.org/10.5281/zenodo.1194547)
 
-These scripts demonstrate the use of [IMP](http://salilab.org/imp) in the modeling of the yeast NPC complex using diverse types of data as described in Seung Joong Kim, et al.'s 2018 NPC article published in Nature.
+These scripts demonstrate the use of [IMP](https://integrativemodeling.org/) in the modeling of the yeast NPC complex using diverse types of data as described in Seung Joong Kim, et al.'s 2018 NPC article published in Nature.
 
-The scripts work with the [IMP](http://salilab.org/imp) (version 2.6).
+The scripts work with the [IMP](https://integrativemodeling.org/) (version 2.6).
 A default build of IMP compiled with the IMP::npc module should work, but for most effective sampling, it should
-be built with [MPI](http://integrativemodeling.org/nightly/doc/html/namespaceIMP_1_1mpi.html) so that replica exchange can be used.
+be built with [MPI](https://integrativemodeling.org/nightly/doc/html/namespaceIMP_1_1mpi.html) so that replica exchange can be used.
 
 ## List of files and directories:
 
