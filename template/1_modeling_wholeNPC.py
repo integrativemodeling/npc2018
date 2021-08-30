@@ -18,6 +18,10 @@ try:
     import ihm.reference
 except ImportError:
     pass
+try:
+    import ihm.citations
+except ImportError:
+    pass
 import IMP.pmi1.mmcif
 import IMP.pmi1.restraints.crosslinking
 import IMP.pmi1.restraints.stereochemistry
@@ -139,67 +143,127 @@ simo = IMP.pmi1.representation.Representation(m,upperharmonic=True,disorderedlen
 
 # Record additional software used
 # Detection of templates for comparative modeling (HHPred)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='HHpred', classification='protein homology detection',
           description='Protein homology detection by HMM-HMM comparison',
           version='2.0.16',
-          location='https://toolkit.tuebingen.mpg.de/hhpred'))
+          location='https://toolkit.tuebingen.mpg.de/hhpred')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.citations.hhpred
+simo.add_metadata(s)
 
 # Secondary structure prediction (PSIPRED)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='PSIPRED', classification='secondary structure prediction',
           description='Protein secondary structure prediction based on '
                       'position-specific scoring matrices',
           version='4.0',
-          location='http://bioinf.cs.ucl.ac.uk/psipred/'))
+          location='http://bioinf.cs.ucl.ac.uk/psipred/')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.citations.psipred
+simo.add_metadata(s)
 
 # Disordered region prediction (DISOPRED)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='DISOPRED', classification='disorder prediction',
           description='prediction of protein disorder', version=3,
-          location='http://bioinf.cs.ucl.ac.uk/psipred/?disopred=1'))
+          location='http://bioinf.cs.ucl.ac.uk/psipred/?disopred=1')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.citations.disopred
+simo.add_metadata(s)
 
 # Domain boundary prediction (DomPred)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='DomPred', classification='domain boundary prediction',
           description='identification of putative domain boundaries',
-          location='http://bioinf.cs.ucl.ac.uk/dompred'))
+          location='http://bioinf.cs.ucl.ac.uk/dompred')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.Citation(
+        pmid='17430199',
+        title='Computer-assisted protein domain boundary prediction '
+              'using the DomPred server.',
+        journal='Curr Protein Pept Sci', volume=8, page_range=('181', '188'),
+        year=2007, authors=['Bryson K', 'Cozzetto D', 'Jones DT'],
+        doi='10.2174/138920307780363415')
+simo.add_metadata(s)
 
 # Coiled-coil region prediction (COILS/PCOILS)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='COILS/PCOILS', classification='coiled-coil prediction',
           description='prediction of coiled-coil structure',
-          location='https://toolkit.tuebingen.mpg.de/#/tools/pcoils'))
+          location='https://toolkit.tuebingen.mpg.de/#/tools/pcoils')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.Citation(
+        pmid='2031185',
+        title='Predicting coiled coils from protein sequences.',
+        journal='Science', volume=252, page_range=('1162', '1164'),
+        year=1991, authors=['Lupas A', 'Van Dyke M', 'Stock J'],
+        doi='10.1126/science.252.5009.1162')
+simo.add_metadata(s)
 
 # EM particle picking (EMAN2) & generation of Nic96 class averages (ISAC)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='EMAN2', classification='image processing',
           description='processing of data from transmission electron '
                       'microscopes',
           version='2.2',
-          location='http://blake.bcm.edu/emanwiki/EMAN2'))
+          location='http://blake.bcm.edu/emanwiki/EMAN2')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.Citation(
+        pmid='16859925',
+        title='EMAN2: an extensible image processing suite for electron '
+              'microscopy.', journal='J Struct Biol', volume=157,
+        page_range=('38', '46'), year=2007,
+        authors=['Tang G', 'Peng L', 'Baldwin PR', 'Mann DS', 'Jiang W',
+                 'Rees I', 'Ludtke SJ'], doi='10.1016/j.jsb.2006.05.009')
+simo.add_metadata(s)
 
 # Parallel tomographic analysis (Relion)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='RELION', classification='image processing',
           description='refinement of (multiple) 3D reconstructions or '
                       '2D class averages in electron cryo-microscopy',
           version='1.4',
-          location='https://www2.mrc-lmb.cam.ac.uk/relion/'))
+          location='https://www2.mrc-lmb.cam.ac.uk/relion/')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.citations.relion
+simo.add_metadata(s)
 
 # Prediction of transmembrane domains (SGD)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='SGD', classification='database',
           description='biological information for the budding yeast '
                       'Saccharomyces cerevisiae along with search and '
                       'analysis tools to explore these data',
-          location='https://www.yeastgenome.org/'))
+          location='https://www.yeastgenome.org/')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.Citation(
+        pmid='22110037',
+        title='Saccharomyces Genome Database: the genomics resource of '
+              'budding yeast.', journal='Nucleic Acids Res', volume=40,
+        page_range=('D700', 'D705'), year=2012,
+        authors=['Cherry JM', 'Hong EL', 'Amundsen C', 'Balakrishnan R',
+                 'Binkley G', 'Chan ET', 'Christie KR', 'Costanzo MC',
+                 'Dwight SS', 'Engel SR', 'Fisk DG', 'Hirschman JE',
+                 'Hitz BC', 'Karra K', 'Krieger CJ', 'Miyasato SR',
+                 'Nash RS', 'Park J', 'Skrzypek MS', 'Simison M', 'Weng S',
+                 'Wong ED'], doi='10.1093/nar/gkr1029')
+simo.add_metadata(s)
 
 # Prediction of membrane binding motifs (HeliQuest)
-simo.add_metadata(ihm.Software(
+s = ihm.Software(
           name='HeliQuest', classification='helix prediction',
           description='prediction of helix content from primary sequence',
-          location='http://heliquest.ipmc.cnrs.fr/'))
+          location='http://heliquest.ipmc.cnrs.fr/')
+if hasattr(ihm, 'citations'):
+    s.citation = ihm.Citation(
+        pmid='18662927',
+        title='HELIQUEST: a web server to screen sequences with specific '
+              'alpha-helical properties.', journal='Bioinformatics', volume=24,
+        page_range=('2101', '2102'), year=2008,
+        authors=['Gautier R', 'Douguet D', 'Antonny B', 'Drin G'],
+        doi='10.1093/bioinformatics/btn392')
+simo.add_metadata(s)
 
 simo.dry_run = inputs.dry_run
 
