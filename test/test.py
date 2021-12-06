@@ -113,7 +113,7 @@ class Tests(unittest.TestCase):
     def _check_mmcif_file(self, fname, num_spokes):
         with open(fname) as fh:
             s, = ihm.reader.read(fh)
-        self.assertEqual(len(s.citations), 1)
+        self.assertEqual(len(s.citations), 13)
         self.assertEqual(s.citations[0].doi, '10.1038/nature26003')
         self.assertEqual(len(s.software), 13)
         if num_spokes == 3:
