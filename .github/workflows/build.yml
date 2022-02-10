@@ -29,4 +29,4 @@ jobs:
         conda activate python${{ matrix.python-version }}
         cd test
         # Run a quick subset of all tests
-        python test.py Tests.test_mmcif_1spoke Tests.test_mmcif_3spoke Tests.test_mmcif_8spoke
+        python test.py Tests.test_mmcif_1spoke
