@@ -23,7 +23,7 @@ import IMP.pmi1.samplers
 #import IMP.pmi1.topology
 #import IMP.pmi1.dof
 import IMP.npc
-import IMP.npc.npc_restraints
+import IMP.pmi1.restraints.npc
 import random
 import os
 import math
@@ -928,7 +928,7 @@ if (use_Immuno_EM):
     for protein, r in RADIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
-        xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0)
+        xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0)
         xyr.set_label('Lower_%d_Upper_%d_%s' % (r[0], r[1], protein))
         xyr.set_weight(radial_weight)
         xyr.add_to_model()
@@ -987,7 +987,7 @@ if (use_Immuno_EM):
     for protein, z in ZAXIAL.iteritems():
         if (protein not in nup_list_unique):
             continue
-        zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
+        zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, protein, lower_bound=z[0], upper_bound=z[1], consider_radius=False, sigma=1.0)
         zax.set_label('Lower_%d_Upper_%d_%s' % (z[0], z[1], protein))
         zax.set_weight(zaxial_weight)
         zax.add_to_model()
@@ -1030,9 +1030,9 @@ if (not is_FG):
         if (protein not in nup_list_unique):
             continue
         if (protein in ['Nup1', 'Nup60.1', 'Nup60.2']):
-            xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='C')
+            xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='C')
         else:
-            xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='N')
+            xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, protein, lower_bound=r[0], upper_bound=r[1], consider_radius=False, sigma=1.0, term='N')
         xyr.set_label('Lower_%d_Upper_%d_%s' % (r[0], r[1], protein))
         xyr.set_weight(radial_weight)
         xyr.add_to_model()
@@ -1224,28 +1224,28 @@ if (is_nic96 and use_Distance_to_Point):
     print(dpr.get_output())
 
 if (is_inner_ring):
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
+    xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 340, "Nup188_477"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=40, upper_bound=180, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (477,477,"Nup188"), lower_bound=40, upper_bound=180, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (40, 180, "Nup188_477"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
+    xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=200, upper_bound=340, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 340, "Nup192_303"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=0, upper_bound=130, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (303,303,"Nup192"), lower_bound=0, upper_bound=130, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (0, 130, "Nup192_303"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
@@ -1253,28 +1253,28 @@ if (is_inner_ring):
     print (zax.get_output())
 
 if (is_nic96):
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
+    xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 350, "Nic96.1_360"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=40, upper_bound=140, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (360,360,"Nic96.1"), lower_bound=40, upper_bound=140, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (40, 140, "Nic96.1_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
     outputobjects.append(zax)
     print (zax.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
+    xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=200, upper_bound=350, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (200, 350, "Nic96.2_360"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=100, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (360,360,"Nic96.2"), lower_bound=0, upper_bound=100, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (0, 100, "Nic96.2_360"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
@@ -1358,35 +1358,35 @@ msl_weight  = 1.0
 # Transmembrane domains
 if (is_membrane):
     print "\nMembraneSurfaceLocationRestraint !!"
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (111,194,'Pom152'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Pom152_101_200')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (29,247,'Ndc1'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Ndc1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (64,150,'Pom34'), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma)
     msl.set_label('Pom34')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (475,475,'Nup53'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup53')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (528,528,'Nup59'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup59')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1424,14 +1424,14 @@ if (is_membrane):
     outputobjects.append(dr)
     print(dr.get_output())
 
-    xyr = IMP.npc.npc_restraints.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=515, upper_bound=550, consider_radius=False, sigma=1.0, term='M')
+    xyr = IMP.pmi1.restraints.npc.XYRadialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=515, upper_bound=550, consider_radius=False, sigma=1.0, term='M')
     xyr.set_label('Lower_%d_Upper_%d_%s' % (515, 550, "Pom152_859"))
     xyr.set_weight(radial_weight)
     xyr.add_to_model()
     outputobjects.append(xyr)
     print (xyr.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=0, upper_bound=25, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (859,859,"Pom152"), lower_bound=0, upper_bound=25, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (0, 25, "Pom152_859"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
@@ -1441,21 +1441,21 @@ if (is_membrane):
 
 # ALPS Motifs
 if (is_nucleoplasm):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (1,32,'Nup1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.1'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup60.1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.2'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (27,47,'Nup60.2'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup60.2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1464,21 +1464,21 @@ if (is_nucleoplasm):
 
 # ALPS Motifs
 if (is_n84):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (252,270,'Nup133'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup133')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (135,152,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup120_1')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (197,216,'Nup120'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup120_2')
     msl.set_weight(msl_weight)
     msl.add_to_model()
@@ -1487,21 +1487,21 @@ if (is_n84):
 
 # ALPS Motifs
 if (is_inner_ring):
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (310,334,'Nup157'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (310,334,'Nup157'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup157')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
+    yax = IMP.pmi1.restraints.npc.YAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
     yax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup157_ALPS"))
     yax.set_weight(yaxial_weight)
     yax.add_to_model()
     outputobjects.append(yax)
     print (yax.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-15, upper_bound=35, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (310,334,'Nup157'), lower_bound=-15, upper_bound=35, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (-15, 35, "Nup157_ALPS"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()
@@ -1509,21 +1509,21 @@ if (is_inner_ring):
     print (zax.get_output())
 
 
-    msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (320,344,'Nup170'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
+    msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (320,344,'Nup170'), tor_R=tor_R, tor_r=tor_r_ALPS, tor_th=tor_th_ALPS, sigma=msl_sigma)
     msl.set_label('Nup170')
     msl.set_weight(msl_weight)
     msl.add_to_model()
     outputobjects.append(msl)
     print (msl.get_output())
 
-    yax = IMP.npc.npc_restraints.YAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-170, upper_bound=-120, consider_radius=False, sigma=1.0, term='M')
+    yax = IMP.pmi1.restraints.npc.YAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-170, upper_bound=-120, consider_radius=False, sigma=1.0, term='M')
     yax.set_label('Lower_%d_Upper_%d_%s' % (-170, -120, "Nup170_ALPS"))
     yax.set_weight(yaxial_weight)
     yax.add_to_model()
     outputobjects.append(yax)
     print (yax.get_output())
 
-    zax = IMP.npc.npc_restraints.ZAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
+    zax = IMP.pmi1.restraints.npc.ZAxialPositionRestraint(simo, (320,344,'Nup170'), lower_bound=-60, upper_bound=-10, consider_radius=False, sigma=1.0, term='M')
     zax.set_label('Lower_%d_Upper_%d_%s' % (-60, -10, "Nup170_ALPS"))
     zax.set_weight(zaxial_weight)
     zax.add_to_model()

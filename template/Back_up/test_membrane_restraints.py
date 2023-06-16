@@ -23,7 +23,7 @@ import IMP.pmi1.samplers
 #import IMP.pmi1.topology
 #import IMP.pmi1.dof
 import IMP.npc
-import IMP.npc.npc_restraints
+import IMP.pmi1.restraints.npc
 import random
 import os
 import math
@@ -288,7 +288,7 @@ msl_weight  = 1000.0
 if (True):
     print "\nMembraneSurfaceLocationRestraint !!"
     for i in clones_range_A:
-        msl = IMP.npc.npc_restraints.MembraneSurfaceLocationRestraint(simo, (29,247,"Ndc1@%d"%i), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma, resolution = res_ev)
+        msl = IMP.pmi1.restraints.npc.MembraneSurfaceLocationRestraint(simo, (29,247,"Ndc1@%d"%i), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=msl_sigma, resolution = res_ev)
         msl.set_label("Ndc1@%d"%i)
         msl.set_weight(msl_weight)
         msl.add_to_model()
@@ -309,7 +309,7 @@ mex_weight  = 1000.0
 if (True):
     print "\nMembraneExclusionRestraint !!"
     for i in clones_range_A:
-        mex = IMP.npc.npc_restraints.MembraneExclusionRestraint(simo, (248,655,"Ndc1@%d"%i), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
+        mex = IMP.pmi1.restraints.npc.MembraneExclusionRestraint(simo, (248,655,"Ndc1@%d"%i), tor_R=tor_R, tor_r=tor_r, tor_th=tor_th, sigma=mex_sigma, resolution = res_ev)
         mex.set_label("Ndc1@%d"%i)
         mex.set_weight(mex_weight)
         mex.add_to_model()

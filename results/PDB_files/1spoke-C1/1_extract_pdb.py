@@ -23,7 +23,7 @@ import IMP.pmi1.samplers
 #import IMP.pmi1.topology
 #import IMP.pmi1.dof
 import IMP.npc
-import IMP.npc.npc_restraints
+import IMP.pmi1.restraints.npc
 import random
 import os
 import math

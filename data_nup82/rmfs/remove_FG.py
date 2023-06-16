@@ -18,7 +18,7 @@ import IMP.pmi1.samplers
 import IMP.pmi1.output
 import IMP.pmi1.macros
 import IMP.npc
-import IMP.npc.npc_restraints
+import IMP.pmi1.restraints.npc
 import os
 import sys
 
