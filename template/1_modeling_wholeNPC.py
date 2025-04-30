@@ -1007,8 +1007,8 @@ else:
 class SAXSFits(object):
     """Parse the SAXS csv file and add suitable fit data to the mmCIF file"""
     saxs_dir = '../input_data_files/SAXS'
-    seqrange_re = re.compile('(\d+)\s*\-\s*(\d+)')
-    sasbdb_re = re.compile('/data/(SASDB\w+)')
+    seqrange_re = re.compile(r'(\d+)\s*\-\s*(\d+)')
+    sasbdb_re = re.compile(r'/data/(SASDB\w+)')
 
     def __init__(self, po):
         self.po = po
@@ -1989,7 +1989,7 @@ if inputs.mmcif:
     sys.path.append('%s/Model_2B' % n96_dir)
     from get_transformations import get_transformations, get_centroid
     cccs = {}
-    pat = re.compile('Score (\S+) (\d+) ccc= ([\d.]+)')
+    pat = re.compile(r'Score (\S+) (\d+) ccc= ([\d.]+)')
     with open('%s/Model_2B/C1_logs_35.txt' % n96_dir) as fh:
         for match in pat.findall(fh.read()):
             cccs[int(match[1])] = float(match[2])
