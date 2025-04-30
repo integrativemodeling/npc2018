@@ -156,9 +156,9 @@ class Tests(unittest.TestCase):
                           823, 839, 472, 541, 1391, 1502, 1655, 1683, 475,
                           528, 655, 299, 1337, 959, 1113, 430, 538, 1317,
                           1076, 539, 1875, 1679])
-        self.assertEqual(len(s.asym_units), 69 * num_spokes)
-        # 102 restraints
-        self.assertEqual(len(s.restraints), 102)
+        self.assertEqual(len(s.asym_units), 68 * num_spokes)
+        # 101 restraints
+        self.assertEqual(len(s.restraints), 101)
         # 2 crosslink restraints
         xl_rsr = [r for r in s.restraints
                   if isinstance(r, ihm.restraint.CrossLinkRestraint)]
@@ -175,17 +175,17 @@ class Tests(unittest.TestCase):
         else:
             self.assertEqual(len(xl1.experimental_cross_links), 508)
         if num_spokes == 3:
-            self.assertEqual(len(xl1.cross_links), 970)
+            self.assertEqual(len(xl1.cross_links), 968)
         else:
             # todo: check 8-spoke model for these missing 9 XLs
-            self.assertEqual(len(xl1.cross_links), 961)
+            self.assertEqual(len(xl1.cross_links), 959)
         self.assertEqual(len(xl2.experimental_cross_links), 509)
         self.assertEqual(len(xl2.cross_links), 112)
 
-        # 61 geometric restraints
+        # 60 geometric restraints
         geom_rsr = [r for r in s.restraints
                     if isinstance(r, ihm.restraint.GeometricRestraint)]
-        self.assertEqual(len(geom_rsr), 61)
+        self.assertEqual(len(geom_rsr), 60)
 
         # 36 SAXS restraints
         sas_rsr = [r for r in s.restraints

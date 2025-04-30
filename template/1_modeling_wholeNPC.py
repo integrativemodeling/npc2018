@@ -14,6 +14,7 @@ import IMP.container
 
 import ihm.location
 import ihm.dataset
+import ihm.dumper
 try:
     import ihm.reference
 except ImportError:
@@ -2011,4 +2012,22 @@ if inputs.mmcif:
             stats[prefix + '_Translation%d' % n] = trn[n]
     scaffold_model.em2d_stats = stats
 
-    po.flush()
+    po.finalize()
+    # Remove not-modeled Nup42 from asyms, assemblies, crosslink restraints,
+    # geometric restraints
+    s = po.system
+    s.asym_units = [x for x in s.asym_units if x.entity.description != 'Nup42']
+    for a in s.orphan_assemblies:
+        # Modify Assembly object in place
+        for i in range(len(a) - 1, -1, -1):
+            if a[i].entity.description == 'Nup42':
+                del a[i]
+    for r in s.restraints:
+        if isinstance(r, ihm.restraint.CrossLinkRestraint):
+            r.cross_links = [x for x in r.cross_links
+                             if x.asym1.entity.description != 'Nup42'
+                             and x.asym2.entity.description != 'Nup42']
+    s.restraints = [x for x in s.restraints
+                    if not isinstance(x, ihm.restraint.GeometricRestraint)
+                    or x.feature.ranges[0].entity.description != 'Nup42']
+    ihm.dumper.write(po.fh, [po.system])
